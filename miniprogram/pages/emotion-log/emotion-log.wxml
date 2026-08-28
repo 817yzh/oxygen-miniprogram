@@ -1,0 +1,35 @@
+<!-- 情绪日志页(V0.6) -->
+<view class="page emotion-log">
+
+  <!-- 顶部统计 -->
+  <view class="log-header glass-card">
+    <view class="row gap-16">
+      <view class="flex-1 center col">
+        <text class="log-num">{{total}}</text>
+        <text class="aux">共记录</text>
+      </view>
+      <view class="flex-1 center col">
+        <text class="log-dist">{{recentDist}}</text>
+        <text class="aux">近7天情绪</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 日志列表 -->
+  <view class="log-list" wx:if="{{hasLogs}}">
+    <view class="log-item glass-card row" wx:for="{{logs}}" wx:key="index" data-raw="{{item.raw}}" bindtap="viewDetail">
+      <text class="log-date">{{item.date}}</text>
+      <view class="log-emoji">{{item.emoji}}</view>
+      <text class="flex-1 log-emotion">{{item.emotion}}</text>
+      <text class="log-kw aux">{{item.keyword}}</text>
+      <text class="log-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty center col gap-8" wx:else>
+    <text class="aux">还没有情绪记录，去打卡和氧氧聊聊吧 🌱</text>
+    <button class="btn btn--primary" bindtap="goCheckin">去打卡</button>
+  </view>
+
+</view>

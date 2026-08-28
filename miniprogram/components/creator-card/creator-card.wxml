@@ -1,0 +1,25 @@
+<!-- components/creator-card/creator-card.wxml -->
+<view class="creator-card glass-card row" bindtap="onTap" hover-class="cc-hover" wx:if="{{creator}}">
+  <!-- 头像 -->
+  <view class="cc-avatar center">
+    <image wx:if="{{creator.avatar}}" src="{{creator.avatar}}" mode="aspectFill" class="cc-avatar-img" />
+    <text wx:else class="cc-avatar-emoji">{{creator.avatarEmoji || '🫧'}}</text>
+  </view>
+
+  <!-- 信息 -->
+  <view class="flex-1 col" style="min-width:0">
+    <view class="row gap-4">
+      <text class="cc-name">{{creator.name}}</text>
+      <text class="cc-tag" wx:if="{{creator.personality}}">{{creator.personality}}</text>
+    </view>
+    <text class="cc-desc aux mt-2">{{creator.description}}</text>
+    <view class="row gap-4 mt-4" wx:if="{{creator.tags && creator.tags.length}}">
+      <text class="cc-s-tag" wx:for="{{creator.tags}}" wx:key="*this">{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 视频入口 -->
+  <view class="cc-play center" wx:if="{{showVideo && creator.videoUrl}}">
+    <text class="cc-play-icon">▶</text>
+  </view>
+</view>

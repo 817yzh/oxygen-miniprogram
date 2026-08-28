@@ -1,0 +1,4 @@
+<!-- 雷达图(canvas 2d) -->
+<view class="radar-wrap">
+  <canvas type="2d" id="radarCanvas" class="radar-canvas"></canvas>
+</view>

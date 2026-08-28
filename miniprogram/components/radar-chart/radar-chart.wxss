@@ -1,0 +1,7 @@
+.radar-wrap {
+  width: 100%;
+}
+.radar-canvas {
+  width: 320px;
+  height: 260px;
+}

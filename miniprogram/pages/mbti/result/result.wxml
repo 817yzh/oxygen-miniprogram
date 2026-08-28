@@ -1,0 +1,143 @@
+<!-- Page 5 · 氧系MBTI结果页 V2.4 (微光呼吸质感 · 高定卡片合集) -->
+<view class="page mbti-result" wx:if="{{hasTested}}">
+
+  <!-- ===== ① 第一视窗：核心结论名片化 ===== -->
+  <view class="hero-block">
+    <image class="hero-bg" src="{{result.heroImage}}" mode="aspectFill" wx:if="{{result.heroImage}}" />
+    <view class="hero-mask"></view>
+
+    <view class="hero-ip">
+      <yy-ip action="celebrate" size="md" bubble="这就是你！" />
+    </view>
+
+    <view class="hero-main">
+      <view class="hero-icon-wrap">
+        <view class="hero-icon">{{result.icon}}</view>
+      </view>
+      <text class="hero-name">{{result.typeName}}</text>
+      <text class="hero-tags">{{result.tagsText}}</text>
+      <text class="hero-desc">{{result.desc}}</text>
+
+      <view class="hero-match">
+        <view class="hero-match-bar">
+          <view class="hero-match-fill" style="width:{{result.match}}%"></view>
+        </view>
+        <text class="hero-match-num">匹配度 {{result.match}}%</text>
+      </view>
+
+      <view class="hero-state" wx:if="{{result.todayState}}">
+        <view class="hs-badge">{{result.todayState.state}}</view>
+        <text class="hs-calm">平静指数 {{result.todayState.calmPower}}%</text>
+        <text class="hs-note">{{result.todayState.note}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== ② 第二视窗：数据与地图 ===== -->
+  <view class="mid-area">
+
+    <!-- 能量胶囊 2x3 网格 -->
+    <view class="card fade-in-up" wx:if="{{energyCaps.length > 0}}" style="animation-delay: 0.05s">
+      <view class="card-title"><view class="title-dot"></view>氧气能量指数</view>
+      <view class="energy-grid">
+        <view class="energy-cap" wx:for="{{energyCaps}}" wx:key="label">
+          <text class="ec-icon">{{item.icon}}</text>
+          <view class="ec-body">
+            <text class="ec-label">{{item.label}}</text>
+            <text class="ec-value">{{item.value}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 你的氧气地图 → 横向滚动卡片 -->
+    <view class="card fade-in-up" style="animation-delay: 0.12s">
+      <view class="card-title"><view class="title-dot"></view>你的氧气地图</view>
+      <scroll-view scroll-x class="map-scroll" enhanced show-scrollbar="{{false}}">
+        <view class="map-track">
+          <view class="map-swipe-card">
+            <text class="ms-ico">🏔️</text>
+            <text class="ms-label">适合去哪</text>
+            <text class="ms-value">{{result.destinationsText}}</text>
+          </view>
+          <view class="map-swipe-card">
+            <text class="ms-ico">🏃</text>
+            <text class="ms-label">适合运动</text>
+            <text class="ms-value">{{result.sportsText}}</text>
+          </view>
+          <view class="map-swipe-card">
+            <text class="ms-ico">🌬️</text>
+            <text class="ms-label">充能方式</text>
+            <text class="ms-value">{{result.chargeWaysText}}</text>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <!-- 趣味标签云 -->
+    <view class="card fade-in-up" wx:if="{{tagCloud.length > 0}}" style="animation-delay: 0.19s">
+      <view class="card-title"><view class="title-dot"></view>我的标签</view>
+      <view class="tag-cloud">
+        <view class="cloud-tag" wx:for="{{tagCloud}}" wx:key="*this">{{item}}</view>
+      </view>
+      <view class="cloud-foot" wx:if="{{similarList.length > 0}}">
+        <text class="cf-text">已有 {{similarTotal}} 个同频「{{result.typeName}}」正在这里吸氧</text>
+      </view>
+    </view>
+
+    <!-- 同频氧系博主 · 灵感共振 (替换相似人格) -->
+    <view class="card fade-in-up" wx:if="{{creators.length > 0}}" style="animation-delay: 0.26s">
+      <view class="card-title"><view class="title-dot title-dot--spark"></view>同频氧系博主 · 灵感共振</view>
+      <scroll-view scroll-x class="creator-scroll" enhanced show-scrollbar="{{false}}">
+        <view class="creator-track">
+          <view class="creator-card" wx:for="{{creators}}" wx:key="id" data-id="{{item.id}}" bindtap="onCreatorTap" hover-class="cc-hover">
+            <!-- 头像：薄荷绿发光呼吸边框 -->
+            <view class="cc-avatar-glow">
+              <view class="cc-avatar">
+                <image wx:if="{{item.avatar}}" src="{{item.avatar}}" mode="aspectFill" class="cc-avatar-img" />
+                <text wx:else class="cc-avatar-emoji">{{item.avatarEmoji || '🫧'}}</text>
+              </view>
+            </view>
+            <!-- 昵称 + 金句 -->
+            <view class="cc-info">
+              <view class="cc-head">
+                <text class="cc-name">@{{item.name}}</text>
+                <text class="cc-persona">{{item.personality}}</text>
+              </view>
+              <text class="cc-quote">“{{item.quote}}”</text>
+              <!-- 氧气方案标签 -->
+              <view class="cc-plan" wx:if="{{item.plan}}">
+                <text class="cc-plan-ico">🫧</text>
+                <text class="cc-plan-text">{{item.plan}}</text>
+              </view>
+            </view>
+            <text class="cc-go">›</text>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <!-- Work Air 充氧宝推荐 (核心高亮卡) -->
+    <view class="card prod-pick fade-in-up" wx:if="{{productPick}}" bindtap="goProductCenter" hover-class="pp-hover" style="animation-delay: 0.33s">
+      <view class="row">
+        <view class="pp-icon center">🫧</view>
+        <view class="flex-1 col" style="min-width:0">
+          <text class="pp-name">{{productPick.product}}</text>
+          <text class="pp-desc aux">{{productPick.desc}}</text>
+        </view>
+        <text class="pp-go">去看看 →</text>
+      </view>
+      <view class="pp-aroma row mt-12">
+        <text class="pp-aroma-icon">🌿</text>
+        <text class="aux">{{productPick.aroma}} · {{productPick.aromaDesc}}</text>
+      </view>
+    </view>
+
+  </view>
+
+  <!-- ===== ③ 底部吸底主按钮(打卡已移至首页/我的) ===== -->
+  <view class="cta-bar">
+    <button class="cta-btn cta-btn--primary cta-btn--full" bindtap="goShare">🎴 生成我的分享卡</button>
+  </view>
+
+</view>

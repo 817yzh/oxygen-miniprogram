@@ -1,0 +1,18 @@
+<!-- 氧氧 IP 组件 (V0.4 动作系统版) -->
+<view class="yy-ip {{sizeClass}} {{actionClass}}" bindtap="onTapIP">
+  <!-- 气泡旁白 -->
+  <view class="ip-bubble" wx:if="{{bubble}}">{{bubble}}</view>
+
+  <!-- IP 形象本体：有动作图时用动作图，否则用默认 IP 图 -->
+  <image class="ip-body" src="{{ipSrc}}" mode="aspectFit" />
+
+  <!-- 动作动效层 -->
+  <view class="ip-effect">
+    <!-- 呼吸光晕 -->
+    <view class="glow"></view>
+    <!-- 粒子 -->
+    <view class="particle p1"></view>
+    <view class="particle p2"></view>
+    <view class="particle p3"></view>
+  </view>
+</view>

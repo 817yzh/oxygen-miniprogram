@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "yy-ip": "/components/yy-ip/yy-ip"
+  },
+  "navigationBarTitleText": "氧系人格",
+  "navigationBarBackgroundColor": "#0E2B22",
+  "navigationBarTextStyle": "white"
+}

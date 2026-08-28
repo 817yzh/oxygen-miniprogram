@@ -1,0 +1,294 @@
+/* 场景模拟器 V2.2 · 场景图Tab + Canvas仪表盘 + 一体化玻璃浮层 · 一屏不滚动 */
+page {
+  height: 100%;
+}
+
+.page.simu {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, #E4F7F1 0%, #EEFBF7 45%, #E9F7F2 100%);
+  overflow: hidden;
+  padding: 12rpx 0 20rpx;
+}
+
+/* ===== 顶部标题 ===== */
+.simu-head {
+  padding: 4rpx 32rpx 14rpx;
+  flex-shrink: 0;
+}
+.simu-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #1E4A3C;
+}
+.simu-sub {
+  display: block;
+  font-size: 22rpx;
+  color: #6B9E90;
+  margin-top: 4rpx;
+}
+
+/* ===== 1. 顶部：横向滑动场景卡（高约130px，大图质感） ===== */
+.simu-gallery {
+  width: 100%;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.simu-card {
+  display: inline-block;
+  width: 400rpx;
+  height: 210rpx;
+  margin-right: 16rpx;
+  position: relative;
+  border-radius: 24rpx;
+  overflow: hidden;
+  border: 4rpx solid rgba(255, 255, 255, 0.55);
+  box-shadow: 0 10rpx 26rpx rgba(23, 72, 60, 0.14);
+  transition: transform 0.22s, border-color 0.22s, box-shadow 0.22s;
+  vertical-align: top;
+}
+.simu-card:first-child {
+  margin-left: 24rpx;
+}
+.simu-card:last-child {
+  margin-right: 24rpx;
+}
+.simu-card-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.simu-card-title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 30rpx 20rpx 16rpx;
+  background: linear-gradient(0deg, rgba(6, 40, 32, 0.66) 0%, rgba(6, 40, 32, 0) 100%);
+  color: #FFFFFF;
+  font-size: 26rpx;
+  font-weight: 600;
+}
+/* 选中态：居中放大 + 薄荷发光边框 */
+.simu-card.on {
+  transform: scale(1.03);
+  border-color: #5BC9B3;
+  box-shadow: 0 0 0 5rpx rgba(91, 201, 179, 0.32), 0 10rpx 26rpx rgba(23, 72, 60, 0.2);
+}
+.simu-card-hover {
+  transform: scale(0.97);
+}
+
+/* ===== 2. 中部：Canvas 原生半圆弧仪表盘（240px直径） ===== */
+.simu-gauge-wrap {
+  position: relative;
+  margin: 0 auto;
+  width: 420rpx;
+  height: 420rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  transition: opacity 0.35s ease;
+}
+.simu-gauge-hidden {
+  opacity: 0;
+}
+.simu-gauge-canvas {
+  width: 420rpx;
+  height: 420rpx;
+  display: block;
+}
+/* 中心叠加：纯净数字 + 小标签（绝对居中于圆环内空区） */
+.simu-gauge-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14rpx;
+  pointer-events: none;
+}
+.simu-gauge-num-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6rpx;
+}
+.simu-gauge-num {
+  font-size: 100rpx;
+  font-weight: 800;
+  line-height: 1;
+}
+.simu-gauge-unit {
+  font-size: 42rpx;
+  font-weight: 700;
+}
+.simu-gauge-pill {
+  padding: 8rpx 28rpx;
+  border-radius: 999rpx;
+  color: #FFFFFF;
+  font-size: 24rpx;
+  font-weight: 600;
+  box-shadow: 0 6rpx 18rpx rgba(23, 72, 60, 0.16);
+}
+
+/* ===== 2.5 诊断中心 Glass 大卡片（聚合所有数据） ===== */
+.simu-diag {
+  margin: 18rpx 24rpx 0;
+  padding: 18rpx 28rpx 16rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(165deg, rgba(20, 52, 44, 0.72), rgba(12, 34, 29, 0.78));
+  backdrop-filter: blur(22rpx);
+  border-radius: 36rpx;
+  border: 1rpx solid rgba(114, 216, 196, 0.28);
+  box-shadow: 0 20rpx 56rpx rgba(6, 26, 20, 0.35);
+  flex-shrink: 0;
+}
+.simu-scene-line {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #E9FBF5;
+  margin-bottom: 6rpx;
+}
+.simu-tip {
+  font-size: 22rpx;
+  color: #9CC8BA;
+  margin-bottom: 6rpx;
+}
+/* 细进度条（薄荷绿→主题色，带呼吸光晕） */
+.simu-progress {
+  width: 62%;
+  height: 10rpx;
+  border-radius: 999rpx;
+  background: rgba(160, 210, 195, 0.22);
+  overflow: hidden;
+  margin-top: -6rpx;
+  animation: progBreath 2.4s ease-in-out infinite;
+}
+.simu-progress-fill {
+  height: 100%;
+  border-radius: 999rpx;
+  transition: width 0.5s;
+  box-shadow: 0 0 16rpx rgba(91, 201, 179, 0.6);
+}
+@keyframes progBreath {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 1; }
+}
+/* 三列参数：卡片底部灰底小网格 */
+.simu-metrics {
+  display: flex;
+  gap: 14rpx;
+  margin-top: 14rpx;
+  width: 100%;
+}
+.simu-metric {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4rpx;
+  padding: 12rpx 6rpx;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 18rpx;
+  border: 1rpx solid rgba(114, 216, 196, 0.18);
+}
+.simu-metric-label {
+  font-size: 20rpx;
+  color: #9CC8BA;
+}
+.simu-metric-value {
+  font-size: 28rpx;
+  font-weight: 800;
+}
+.simu-metric-note {
+  font-size: 18rpx;
+  color: #7FAF9E;
+}
+
+/* ===== 3. 一体化玻璃浮层（诊断 + 装备，置底） ===== */
+.simu-glass {
+  margin: auto 24rpx 0;
+  padding: 26rpx 24rpx 28rpx;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.78), rgba(240, 250, 246, 0.72));
+  backdrop-filter: blur(18rpx);
+  border-radius: 28rpx;
+  border: 1rpx solid rgba(91, 201, 179, 0.22);
+  box-shadow: 0 12rpx 36rpx rgba(23, 72, 60, 0.1);
+  flex-shrink: 0;
+}
+.simu-advice {
+  font-size: 25rpx;
+  line-height: 1.65;
+  color: #45655B;
+}
+.simu-glass-divider {
+  height: 2rpx;
+  background: linear-gradient(90deg, transparent, rgba(91, 201, 179, 0.3), transparent);
+  margin: 18rpx 0;
+}
+.simu-product-row {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+.simu-product-img {
+  width: 130rpx;
+  height: 130rpx;
+  flex-shrink: 0;
+  border-radius: 18rpx;
+}
+.simu-product-info {
+  flex: 1;
+  min-width: 0;
+}
+.simu-plan-name {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #1F3833;
+  margin-bottom: 10rpx;
+  line-height: 1.3;
+}
+.simu-product-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8rpx;
+  margin-bottom: 10rpx;
+}
+.simu-pro-tag {
+  font-size: 18rpx;
+  background: rgba(91, 201, 179, 0.16);
+  color: #2E8A75;
+  padding: 4rpx 12rpx;
+  border-radius: 999rpx;
+}
+.simu-aroma {
+  font-size: 20rpx;
+  color: #5A7A70;
+}
+.simu-cta {
+  margin-top: 18rpx;
+  width: 100%;
+  padding: 20rpx 0;
+  background: linear-gradient(135deg, #5BC9B3 0%, #4AB8A0 100%);
+  color: #FFFFFF;
+  font-size: 26rpx;
+  font-weight: 700;
+  border-radius: 999rpx;
+  border: none;
+  box-shadow: 0 10rpx 28rpx rgba(91, 201, 179, 0.4);
+  line-height: 1.4;
+  flex-shrink: 0;
+}
+.simu-cta::after {
+  border: none;
+}
+.simu-cta:active {
+  transform: scale(0.97);
+  opacity: 0.92;
+}

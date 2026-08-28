@@ -1,0 +1,13 @@
+/* pages/health-disclaimer/health-disclaimer.wxss */
+.disc-page {
+  background:
+    radial-gradient(circle at 85% 5%, rgba(114,216,196,0.2) 0%, transparent 45%),
+    radial-gradient(circle at 10% 15%, rgba(184,232,255,0.4) 0%, transparent 45%),
+    var(--yy-bg);
+}
+.disc-head { padding: 16px 0 4px; }
+.disc-emoji { font-size: 48px; }
+.disc-item { padding: 18rpx 24rpx; }
+.disc-title { font-size: 16px; font-weight: 800; color: var(--yy-text); }
+.disc-text { font-size: 13px; line-height: 1.8; color: var(--yy-text-sub); }
+.disc-footer { font-size: 12px; color: #b8cbc9; margin-bottom: 24px; }

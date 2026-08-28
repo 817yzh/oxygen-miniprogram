@@ -1,0 +1,31 @@
+/* components/creator-card/creator-card.wxss */
+.creator-card { align-items: center; gap: 14px; padding: 20rpx 22rpx; }
+.cc-hover { opacity: 0.85; transform: scale(0.99); }
+
+.cc-avatar {
+  width: 52px; height: 52px; border-radius: 999px;
+  background: linear-gradient(135deg,#72D8C4,#B8E8FF);
+  flex-shrink: 0; font-size: 24px;
+}
+.cc-avatar-img { width: 100%; height: 100%; border-radius: 999px; }
+.cc-avatar-emoji { font-size: 22px; }
+
+.cc-name { font-size: 15px; font-weight: 800; }
+.cc-tag {
+  font-size: 10px; color: var(--yy-primary);
+  background: rgba(114,216,196,0.12);
+  border-radius: 999px; padding: 2rpx 10rpx; white-space: nowrap;
+}
+.cc-desc { font-size: 12px; line-height: 1.5; }
+.cc-s-tag {
+  font-size: 10px; color: var(--yy-text-sub);
+  background: rgba(184,232,255,0.3);
+  border-radius: 999px; padding: 2rpx 10rpx;
+}
+
+.cc-play {
+  width: 40px; height: 40px; border-radius: 999px;
+  background: linear-gradient(135deg,#72D8C4,#2BB696);
+  flex-shrink: 0;
+}
+.cc-play-icon { color: #fff; font-size: 16px; margin-left: 2px; }

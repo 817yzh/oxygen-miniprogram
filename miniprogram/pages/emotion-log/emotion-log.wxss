@@ -1,0 +1,14 @@
+.emotion-log { padding-bottom: 40px; }
+
+.log-header { padding: 20px 18px; margin-bottom: 14px; }
+.log-num { font-size: 28px; font-weight: 800; color: var(--yy-primary, #72D8C4); }
+.log-dist { font-size: 18px; font-weight: 600; color: #264653; }
+
+.log-item { padding: 14px 18px; margin-bottom: 10px; align-items: center; }
+.log-date { width: 44px; font-size: 13px; color: #61706C; font-weight: 600; }
+.log-emoji { width: 28px; font-size: 20px; text-align: center; }
+.log-emotion { font-size: 14px; font-weight: 600; color: #264653; margin-left: 8px; }
+.log-kw { font-size: 12px; }
+.log-arrow { color: #9BB7AE; font-size: 16px; margin-left: 6px; }
+
+.empty { padding: 60px 0; text-align: center; }

@@ -1,0 +1,82 @@
+<!-- 场景模拟器 V2.3 · 三段式流式布局（Head/Tab + Canvas仪表盘 + 一体化玻璃浮层） -->
+<view class="page simu">
+
+  <!-- 顶部标题 -->
+  <view class="simu-head">
+    <text class="simu-title">🧪 场景模拟器</text>
+    <text class="simu-sub">选择明天的场景 · 测测氧需求</text>
+  </view>
+
+  <!-- ===== 一、顶部：横向滑动场景卡（高约130px，大图质感） ===== -->
+  <scroll-view class="simu-gallery" scroll-x show-scrollbar="{{false}}" bindscroll="onScroll">
+    <view
+      class="simu-card {{activeId===item.id?'on':''}}"
+      wx:for="{{sims}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      hover-class="simu-card-hover"
+      bindtap="select"
+    >
+      <image class="simu-card-img" src="{{item.img}}" mode="aspectFill" />
+      <view class="simu-card-title">
+        <text>{{item.icon}} {{item.short}}</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- ===== 二、中部：诊断中心 Glass 大卡片 ===== -->
+  <view class="simu-diag" wx:if="{{result}}">
+    <!-- 第一层：场景状态标题 -->
+    <view class="simu-scene-line">{{result.icon}} {{result.sceneLine}}</view>
+    <view class="simu-tip">{{result.tipLine}}</view>
+
+    <!-- 第二层：核心数据 -->
+    <view class="simu-gauge-wrap {{gaugeReady?'':'simu-gauge-hidden'}}">
+      <canvas
+        type="2d"
+        id="gaugeCanvas"
+        class="simu-gauge-canvas"
+        disable-scroll="false"
+      ></canvas>
+      <view class="simu-gauge-center">
+        <view class="simu-gauge-num-row">
+          <text class="simu-gauge-num" style="color:{{gaugeTheme.color}}">{{result.oxygenScore}}</text>
+          <text class="simu-gauge-unit" style="color:{{gaugeTheme.color}}">%</text>
+        </view>
+        <view class="simu-gauge-pill" style="background:{{gaugeTheme.color}}">
+          <text>{{gaugeTheme.label}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="simu-progress">
+      <view class="simu-progress-fill" style="width:{{result.oxygenScore}}%;background:linear-gradient(90deg,#5BC9B3,{{gaugeTheme.color}})"></view>
+    </view>
+
+    <!-- 第三层：细分参数灰底小网格 -->
+    <view class="simu-metrics">
+      <view class="simu-metric" wx:for="{{result.metrics}}" wx:key="label">
+        <text class="simu-metric-label">{{item.label}}</text>
+        <text class="simu-metric-value" style="color:{{gaugeTheme.color}}">{{item.value}}</text>
+        <text class="simu-metric-note">{{item.note}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== 三、底部：一体化玻璃浮层（诊断 + 装备合并） ===== -->
+  <view class="simu-glass" wx:if="{{result}}">
+    <view class="simu-advice">{{result.advice}}</view>
+    <view class="simu-glass-divider"></view>
+    <view class="simu-product-row">
+      <image class="simu-product-img" src="https://cdn.jsdelivr.net/gh/817yzh/oxygen-images@main/product-workair.png" mode="aspectFit" />
+      <view class="simu-product-info">
+        <view class="simu-plan-name">{{result.plan}}</view>
+        <view class="simu-product-tags">
+          <text class="simu-pro-tag" wx:for="{{result.planTags}}" wx:key="*this">{{item}}</text>
+        </view>
+        <text class="simu-aroma">🌿 {{result.aroma}}</text>
+      </view>
+    </view>
+    <button class="simu-cta" bindtap="goProductCenter">🫧 立即配型这套装备 ➔</button>
+  </view>
+
+</view>

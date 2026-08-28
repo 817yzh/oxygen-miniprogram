@@ -1,0 +1,48 @@
+<!-- components/oxygen-map/oxygen-map.wxml · 今日氧气地图 V1.0 氧气生命球 -->
+<view class="omap glass-card">
+  <!-- 头部：标题 + 状态标签 -->
+  <view class="omap-head">
+    <text class="omap-title">今日氧气状态</text>
+    <view class="omap-tag {{level}}-tag">{{levelText}}</view>
+  </view>
+
+  <!-- 氧气生命球 -->
+  <view class="lifeball-wrap">
+    <view class="lifeball-halo"></view>
+
+    <!-- 中心：综合氧气值 -->
+    <view class="lifeball-core">
+      <view class="lifeball-oval">🫧</view>
+      <text class="lifeball-num">{{avgValue}}</text>
+      <text class="lifeball-label">氧气指数</text>
+    </view>
+
+    <!-- 外围四维 -->
+    <view class="lifeball-dim dim-tl">
+      <text class="dim-ico">{{d1.icon}}</text>
+      <text class="dim-label">{{d1.label}}</text>
+      <text class="dim-num">{{d1.value}}</text>
+    </view>
+    <view class="lifeball-dim dim-tr">
+      <text class="dim-ico">{{d2.icon}}</text>
+      <text class="dim-label">{{d2.label}}</text>
+      <text class="dim-num">{{d2.value}}</text>
+    </view>
+    <view class="lifeball-dim dim-bl">
+      <text class="dim-ico">{{d3.icon}}</text>
+      <text class="dim-label">{{d3.label}}</text>
+      <text class="dim-num">{{d3.value}}</text>
+    </view>
+    <view class="lifeball-dim dim-br">
+      <text class="dim-ico">{{d4.icon}}</text>
+      <text class="dim-label">{{d4.label}}</text>
+      <text class="dim-num">{{d4.value}}</text>
+    </view>
+  </view>
+
+  <!-- 引导文案 -->
+  <view class="omap-hint" wx:if="{{hint}}">
+    <text class="omap-hint-ico">💬</text>
+    <text class="omap-hint-text">{{hint}}</text>
+  </view>
+</view>

@@ -1,0 +1,17 @@
+{
+  "name": "oxygen-backend",
+  "version": "0.1.0",
+  "description": "氧氧宝小程序 · 后端服务（测试版）· Node 原生实现，零第三方依赖，开箱即跑",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node src/server.js",
+    "test": "node tests/smoke-test.js",
+    "reset": "node scripts/reset-db.js"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "license": "UNLICENSED",
+  "private": true
+}

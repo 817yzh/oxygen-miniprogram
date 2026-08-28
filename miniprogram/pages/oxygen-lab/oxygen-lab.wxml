@@ -1,0 +1,70 @@
+<!-- 氧气探索 V2.0 · O-MBTI情绪实验室 + 三列功能 + 场景模拟器 -->
+<view class="lab-page">
+
+  <!-- ========== 第一层：顶部纯净大图头 O-MBTI（无文字遮挡） ========== -->
+  <view class="hero-section">
+    <image class="hero-bg" src="https://cdn.jsdelivr.net/gh/817yzh/oxygen-images@main/mbti-banner.png" mode="aspectFill" />
+    <view class="hero-gradient"></view>
+  </view>
+
+  <!-- ========== 第一点五层：信息卡片（收纳到图下方） ========== -->
+  <view class="mbti-card">
+    <view class="mbti-title">O-MBTI 氧气人格测试</view>
+    <view class="mbti-sub">30秒测出你的"精神血氧" · 解锁专属充氧方案</view>
+    <button class="mbti-cta" catchtap="goMbti">✦ 30秒开启测验 · 解锁我的 O-MBTI ➔</button>
+  </view>
+
+  <!-- ========== 第二层：中层高频功能区 三列网格 ========== -->
+  <view class="func-grid">
+    <view class="func-card" bindtap="goTest" hover-class="func-hover">
+      <view class="func-icon func-icon--lung">🫁</view>
+      <view class="func-title">含氧感自测</view>
+      <view class="func-desc">10题生成氧负荷报告</view>
+    </view>
+    <view class="func-card" bindtap="goSound" hover-class="func-hover">
+      <view class="func-icon func-icon--sound">🎵</view>
+      <view class="func-title">音疗冥想</view>
+      <view class="func-desc">五音调五脏 · 助眠减压</view>
+    </view>
+    <view class="func-card" bindtap="goSoulmate" hover-class="func-hover">
+      <view class="func-icon func-icon--social">👋</view>
+      <view class="func-title">氧气同好</view>
+      <view class="func-desc">匹配同频氧友</view>
+    </view>
+  </view>
+
+  <!-- ========== 第三层：底部决策区 ========== -->
+  <view class="bottom-section">
+    <view class="section-head">
+      <text class="section-title">场景模拟器</text>
+      <text class="section-sub">明天会发生什么？先测测氧需求</text>
+    </view>
+
+    <view class="sim-grid">
+      <view
+        class="sim-item"
+        wx:for="{{simulations}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        hover-class="sim-hover"
+        bindtap="goSimulator"
+      >
+        <view class="sim-icon">{{item.icon}}</view>
+        <view class="sim-info">
+          <view class="sim-title">{{item.title}}</view>
+          <view class="sim-tags">
+            <text class="sim-tag sim-tag--level sim-tag--{{item.oxygen}}">{{item.desc}}</text>
+            <text class="sim-tag sim-tag--ox">氧需 {{item.oxygenText}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部悬浮装备条 -->
+    <view class="equip-bar" bindtap="goProductCenter" hover-class="equip-hover">
+      <text class="equip-title">了解你的氧气装备 ➔</text>
+      <text class="equip-sub">Work Air 充氧宝 · 高原/桌面/运动/银发方案</text>
+    </view>
+  </view>
+
+</view>

@@ -1,0 +1,21 @@
+<!-- Page 4 · AI分析动画页 -->
+<view class="page mbti-loading center col">
+
+  <!-- 氧氧检测动画 -->
+  <view class="hero-ip">
+    <yy-ip action="detect" size="lg" />
+  </view>
+
+  <!-- 三阶段文字 -->
+  <view class="loading-text mt-24">
+    <text class="phase-text">{{phases[phaseIndex]}}</text>
+  </view>
+
+  <!-- 进度点 -->
+  <view class="loading-dots row gap-8 mt-16">
+    <view class="dot {{phaseIndex>=0?'on':''}}"></view>
+    <view class="dot {{phaseIndex>=1?'on':''}}"></view>
+    <view class="dot {{phaseIndex>=2?'on':''}}"></view>
+  </view>
+
+</view>

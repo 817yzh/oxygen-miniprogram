@@ -1,0 +1,65 @@
+.scene-detail { padding-bottom: 80px; }
+
+/* 场景头部 */
+.scene-hero { padding: 28px 0 20px; }
+.scene-icon { font-size: 56px; }
+.scene-title { font-size: 24px; font-weight: 800; color: #264653; margin-top: 8px; }
+.scene-sub { font-size: 13px; }
+
+/* 卡片 */
+.s-card { padding: 18px; margin-bottom: 14px; }
+.s-label { font-size: 13px; color: #72D8C4; font-weight: 700; display: block; margin-bottom: 6px; }
+.s-name { font-size: 16px; font-weight: 700; color: #264653; display: block; margin-bottom: 4px; }
+.s-desc { font-size: 13px; line-height: 1.6; display: block; }
+
+/* 标签 */
+.s-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.s-tag {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(114, 216, 196, 0.12);
+  color: #4A9E8E;
+  font-size: 12px;
+}
+
+/* 底部按钮 */
+.s-cta { position: fixed; left: 24px; right: 24px; bottom: 30px; }
+.s-btn {
+  /* 主题色渐变 */
+  background: linear-gradient(135deg, #72D8C4, #4A9E8E);
+  color: #FFF;
+  border: none;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 16px 0;
+  box-shadow: 0 8px 20px rgba(114, 216, 196, 0.35);
+}
+.s-btn::after { border: none; }
+
+/* ===== V0.7 五段式 ===== */
+.mt_sm { margin-top: 8px; }
+.s-aroma {
+  background: rgba(114,216,196,0.1); border-radius: 12px;
+  padding: 8px 12px; align-items: center; gap: 6px;
+}
+.s-aroma-icon { font-size: 16px; }
+
+/* 数据背书 */
+.ev-list { display: flex; flex-direction: column; gap: 10px; }
+.ev-item {
+  background: rgba(255,255,255,0.6); border-radius: 12px;
+  padding: 10px 12px;
+}
+.ev-data { font-size: 13px; display: block; line-height: 1.6; }
+.ev-source { font-size: 11px; display: block; margin-top: 3px; }
+
+/* 行动 */
+.s-act { padding: 18px; }
+.s-act-row { gap: 12px; }
+.s-act-btn {
+  border-radius: 16px; padding: 14px 0; font-size: 15px; font-weight: 700;
+  text-align: center; line-height: 1.4;
+}
+.s-act-rent { background: #fff; color: var(--yy-primary); border: 2px solid var(--yy-primary); }
+.s-act-buy { background: linear-gradient(135deg,#72D8C4,#4A9E8E); color: #fff; }

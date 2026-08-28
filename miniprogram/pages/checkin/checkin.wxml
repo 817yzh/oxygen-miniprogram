@@ -1,0 +1,81 @@
+<!-- Page 6 · 每日打卡页 -->
+<view class="page checkin">
+
+  <!-- IP 陪伴 -->
+  <view class="checkin-hero center">
+    <yy-ip action="accompany" size="sm" bubble="今天感觉怎么样？" />
+  </view>
+
+  <view class="h2 text-center mt-8">今天，你的氧气状态如何？</view>
+
+  <!-- 模式切换 -->
+  <view class="tab-switch row mt-16">
+    <view class="tab {{tabMode==='text'?'on':''}}" data-tab="text" bindtap="switchTab">✏️ 文字</view>
+    <view class="tab {{tabMode==='photo'?'on':''}}" data-tab="photo" bindtap="switchTab">📷 拍照</view>
+  </view>
+
+  <view class="privacy-tip aux mt-8">{{privacyText}}<text class="fun-perception" wx:if="{{tabMode==='photo'}}"> · 趣味感知，非健康诊断</text></view>
+
+  <!-- 文字输入 -->
+  <view class="glass-card mt-16" wx:if="{{tabMode==='text'}}">
+    <textarea
+      class="text-input"
+      style="height:140px"
+      maxlength="200"
+      placeholder="随便说说你现在的心情，比如：今天加班好累，有点烦……"
+      placeholder-class="ph"
+      value="{{userText}}"
+      bindinput="onTextInput"
+    />
+  </view>
+
+  <!-- 拍照 -->
+  <view class="glass-card mt-16" wx:else>
+    <view class="photo-area center" bindtap="takePhoto">
+      <image wx:if="{{photoSrc}}" src="{{photoSrc}}" mode="aspectFill" class="photo-preview" />
+      <view wx:else class="photo-placeholder center col">
+        <text class="photo-icon">📷</text>
+        <text class="aux mt-8">点击拍照 / 从相册选择</text>
+        <text class="aux mt-4" style="font-size:11px;opacity:0.8">趣味感知，不涉及健康诊断</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 场景选择 -->
+  <view class="section-title"><text class="body-sm">选择场景（可选）</text></view>
+  <view class="scene-row row gap-8">
+    <view class="scene-pill {{selectedScene==='高原旅行'?'on':''}}" data-scene="高原旅行" bindtap="pickScene">🏔️ 高原</view>
+    <view class="scene-pill {{selectedScene==='脑疲劳'?'on':''}}" data-scene="脑疲劳" bindtap="pickScene">🧠 脑疲劳</view>
+    <view class="scene-pill {{selectedScene==='运动恢复'?'on':''}}" data-scene="运动恢复" bindtap="pickScene">🏃 运动</view>
+    <view class="scene-pill {{selectedScene==='银发陪伴'?'on':''}}" data-scene="银发陪伴" bindtap="pickScene">💚 银发</view>
+  </view>
+
+  <!-- 身心状态自选标签(V0.6) -->
+  <view class="section-title"><text class="body-sm">今天身体哪里不舒服？</text></view>
+  <text class="aux" style="font-size:11px;margin-left:18px">选一选，氧氧会更懂你哦 🌱</text>
+  <view class="physical-row">
+    <view
+      class="physical-pill {{physicalSelected.indexOf(item) >= 0 ? 'on' : ''}}"
+      wx:for="{{physicalOptions}}"
+      wx:key="*this"
+      data-tag="{{item}}"
+      bindtap="pickPhysical"
+    >{{item}}</view>
+  </view>
+  <view class="other-input" wx:if="{{showOtherInput}}">
+    <input
+      class="other-field"
+      maxlength="20"
+      placeholder="说说哪里不舒服（20字内）"
+      placeholder-class="ph"
+      value="{{otherText}}"
+      bindinput="onOtherInput"
+    />
+  </view>
+
+  <!-- 提交 -->
+  <view class="footer-btn">
+    <button class="btn btn--primary btn--block {{canSubmit?'':'disabled'}}" bindtap="submit">生成我的状态</button>
+  </view>
+
+</view>

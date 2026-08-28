@@ -1,0 +1,30 @@
+<view class="page share-page">
+  <!-- 标题 -->
+  <view class="share-head">
+    <text class="share-title">🫧 我的氧气人格分享卡</text>
+    <text class="share-sub">晒出你的氧气身份，让朋友也找到频率</text>
+  </view>
+
+  <!-- 海报：静态高定海报 (6 人格对应 6 张成品图，零渲染失败) -->
+  <view class="poster-stage">
+    <view class="poster-glow"></view>
+    <image
+      class="poster-img"
+      src="/images/posters/poster_{{type}}.jpg"
+      mode="widthFix"
+      show-menu-by-longpress
+      binderror="onPosterError"
+    />
+    <view class="poster-tip">长按海报 · 也可以保存到手机</view>
+  </view>
+
+  <!-- 底部：黄金双按钮 (吸底) -->
+  <view class="share-actions">
+    <button class="share-btn share-btn--ghost" open-type="share">🔗 分享给好友</button>
+    <button class="share-btn share-btn--primary" bindtap="savePoster">📥 保存海报到相册</button>
+  </view>
+
+  <view class="tip center">
+    <text class="tip-text">分享给朋友，TA 扫码也能测出 TA 的氧气人格</text>
+  </view>
+</view>

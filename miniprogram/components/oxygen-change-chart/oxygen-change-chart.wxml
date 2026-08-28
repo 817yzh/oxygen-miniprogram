@@ -1,0 +1,54 @@
+<!-- components/oxygen-change-chart/oxygen-change-chart.wxml · 吸氧前后对比 -->
+<view class="ochg glass-card">
+  <!-- 简版模式(V0.8 首页小卡) -->
+  <block wx:if="{{compact}}">
+    <view class="ochg-head row">
+      <view class="flex-1">
+        <text class="aux" style="color:var(--yy-primary)">昨日氧气变化</text>
+        <text class="h2 mt-2">吸氧 → 状态提升</text>
+      </view>
+    </view>
+    <view class="ochg-compact col mt-8">
+      <view class="ochg-c-mini row" wx:for="{{rows}}" wx:key="label" wx:if="{{item.deltaText}}">
+        <text class="ochg-c-label">{{item.label}}</text>
+        <text class="ochg-c-delta">{{item.deltaText}}</text>
+      </view>
+    </view>
+    <text class="ochg-link aux mt-8" bindtap="goDetail">查看详情 →</text>
+  </block>
+
+  <!-- 完整模式 -->
+  <block wx:else>
+    <view class="ochg-head row">
+      <view class="flex-1">
+        <text class="aux" style="color:var(--yy-primary)">我的氧气变化</text>
+        <text class="h2 mt-2">吸氧前 → 吸氧后</text>
+      </view>
+    </view>
+
+    <!-- 表头 -->
+    <view class="ochg-cols row mt-12">
+      <text class="ochg-col-label">指标</text>
+      <text class="ochg-col-before">使用前</text>
+      <text class="ochg-col-after">使用后</text>
+    </view>
+
+    <!-- 数据行 -->
+    <view class="ochg-row row" wx:for="{{rows}}" wx:key="label">
+      <text class="ochg-r-label">{{item.label}}</text>
+      <view class="ochg-r-before row">
+        <view class="ochg-bar"><view class="ochg-fill f-before" style="width:{{item.before}}%"></view></view>
+        <text class="ochg-num-before">{{item.before}}{{item.unit}}</text>
+      </view>
+      <view class="ochg-r-after row">
+        <view class="ochg-bar"><view class="ochg-fill f-after" style="width:{{item.afterW}}%"></view></view>
+        <text class="ochg-num-after">{{item.after}}{{item.unit}} <text class="ochg-delta">{{item.deltaText}}</text></text>
+      </view>
+    </view>
+
+    <!-- 模拟数据说明 -->
+    <view class="ochg-note row mt-12" wx:if="{{note}}">
+      <text class="ochg-note-text">ℹ️ {{note}}</text>
+    </view>
+  </block>
+</view>

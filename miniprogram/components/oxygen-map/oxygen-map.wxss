@@ -1,0 +1,101 @@
+/* components/oxygen-map/oxygen-map.wxss · 今日氧气地图 V1.0 氧气生命球 */
+
+.omap { padding: 30rpx 30rpx 26rpx; position: relative; overflow: hidden; }
+
+/* 头部 */
+.omap-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22rpx; }
+.omap-title { font-size: 30rpx; font-weight: 600; color: #214E34; }
+
+.omap-tag { font-size: 22rpx; padding: 6rpx 20rpx; border-radius: 999rpx; }
+.high-tag { color: #1E8E5A; background: rgba(30,142,90,.12); }
+.mid-tag  { color: #B8860B; background: rgba(184,134,11,.12); }
+.low-tag  { color: #C0563B; background: rgba(192,86,59,.12); }
+
+/* ===== 生命球 3x3 网格 ===== */
+.lifeball-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto auto auto;
+  gap: 8rpx;
+  align-items: center;
+  justify-items: center;
+  position: relative;
+  padding: 10rpx 0;
+}
+
+/* 呼吸光晕背景 */
+.lifeball-halo {
+  position: absolute;
+  width: 280rpx;
+  height: 280rpx;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(114,216,196,.28) 0%, rgba(114,216,196,.06) 60%, transparent 70%);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  animation: breathe 3.5s ease-in-out infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+@keyframes breathe {
+  0%,100% { opacity: .7; transform: translate(-50%,-50%) scale(1); }
+  50%     { opacity: 1;  transform: translate(-50%,-50%) scale(1.12); }
+}
+
+/* 中心氧气值 */
+.lifeball-core {
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  width: 170rpx;
+  height: 170rpx;
+  border-radius: 50%;
+  background: linear-gradient(160deg, #BDEAD7 0%, #A6E6C0 100%);
+  box-shadow: 0 10rpx 30rpx rgba(114,216,196,.45), inset 0 -4rpx 10rpx rgba(255,255,255,.4);
+  animation: floaty 3.5s ease-in-out infinite;
+}
+@keyframes floaty {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-6rpx); }
+}
+.lifeball-oval { font-size: 44rpx; line-height: 1; margin-bottom: 4rpx; }
+.lifeball-num { font-size: 56rpx; font-weight: 800; color: #214E34; line-height: 1.1; }
+.lifeball-label { font-size: 20rpx; color: #3E6B55; margin-top: 2rpx; }
+
+/* 四维 */
+.lifeball-dim {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rpx;
+  background: rgba(255,255,255,.55);
+  border-radius: 18rpx;
+  padding: 14rpx 16rpx;
+  min-width: 118rpx;
+  z-index: 1;
+  border: 1rpx solid rgba(114,216,196,.15);
+}
+.dim-tl { grid-column: 1; grid-row: 1; }
+.dim-tr { grid-column: 3; grid-row: 1; }
+.dim-bl { grid-column: 1; grid-row: 3; }
+.dim-br { grid-column: 3; grid-row: 3; }
+.dim-ico { font-size: 30rpx; }
+.dim-label { font-size: 20rpx; color: #5A7A6C; }
+.dim-num { font-size: 26rpx; font-weight: 700; color: #214E34; }
+
+/* 引导文案 */
+.omap-hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 12rpx;
+  margin-top: 22rpx;
+  background: rgba(114,216,196,.08);
+  border-radius: 16rpx;
+  padding: 16rpx 20rpx;
+}
+.omap-hint-ico { font-size: 26rpx; }
+.omap-hint-text { font-size: 24rpx; color: #3E6B55; line-height: 1.5; flex: 1; }

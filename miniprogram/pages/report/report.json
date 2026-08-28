@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "radar-chart": "/components/radar-chart/radar-chart",
+    "trend-chart": "/components/trend-chart/trend-chart",
+    "recipe-card": "/components/recipe-card/recipe-card",
+    "creator-card": "/components/creator-card/creator-card"
+  }
+}

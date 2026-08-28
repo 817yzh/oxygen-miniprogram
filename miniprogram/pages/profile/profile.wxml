@@ -1,0 +1,101 @@
+<!-- 我的页面 V2.0 · 氧气数字绿洲 / 健康能量仪表盘 -->
+<view class="profile-page">
+
+  <!-- 顶部：氧气身份卡（整图背景版 V3） -->
+  <view class="user-card">
+    <!-- 整图垫底：header_background.png（本地图必须用 image 标签，wxss 不支持本地背景图） -->
+    <image class="user-card-bg" src="https://cdn.jsdelivr.net/gh/817yzh/oxygen-images@main/header_background.png" mode="aspectFill"></image>
+    <view class="user-card-content">
+      <view class="user-info">
+        <text class="user-name">{{user ? user.name : '氧氧 · 陪伴者'}}</text>
+        <view class="user-tag" wx:if="{{mbti}}">
+          {{mbti.icon}} {{mbti.typeName}}
+        </view>
+        <text class="user-guide" wx:else bindtap="goMbti">测出你的氧系人格 → 解锁专属报告</text>
+        <view class="oxygen-bar">
+          <view class="oxygen-bar-fill" style="width: {{oxygenScore}}%"></view>
+          <text class="oxygen-bar-text">氧气值 {{oxygenScore}}</text>
+        </view>
+      </view>
+      <view class="companion-badge">
+        <text class="badge-num">{{companionDays}}</text>
+        <text class="badge-label">陪伴天</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 中部：核心数据看板（3列能量卡） -->
+  <view class="dash-grid">
+    <view class="dash-cell dash-cell--oxygen">
+      <view class="dash-icon">🫁</view>
+      <view class="dash-num-row">
+        <text class="dash-num">{{oxygenHours}}</text>
+        <text class="dash-unit">小时</text>
+      </view>
+      <text class="dash-label">累计充氧</text>
+    </view>
+    <view class="dash-cell dash-cell--emotion">
+      <view class="dash-icon">💚</view>
+      <view class="dash-num-row">
+        <text class="dash-num">{{companionDays}}</text>
+        <text class="dash-unit">天</text>
+      </view>
+      <text class="dash-label">情绪护航</text>
+    </view>
+    <view class="dash-cell dash-cell--growth">
+      <view class="dash-icon">🌱</view>
+      <view class="dash-num-row">
+        <text class="dash-num">{{growthLevel}}</text>
+      </view>
+      <text class="dash-label">{{growthName}}</text>
+    </view>
+  </view>
+
+  <!-- 下部：功能分组 ① 健康与陪伴 -->
+  <view class="grp-card">
+    <text class="grp-title">🌿 我的健康与陪伴</text>
+    <view class="grp-item" bindtap="goReport">
+      <view class="grp-ico grp-ico--heart">📋</view>
+      <text class="grp-text">健康档案 · 充氧报告</text>
+      <text class="grp-arrow">›</text>
+    </view>
+    <view class="grp-item" bindtap="goEmotionLog">
+      <view class="grp-ico grp-ico--book">📖</view>
+      <text class="grp-text">情绪日志与聊天记录</text>
+      <text class="grp-arrow">›</text>
+    </view>
+    <view class="grp-item" bindtap="goGrowth">
+      <view class="grp-ico grp-ico--leaf">🌱</view>
+      <text class="grp-text">成长中心 · 胶囊兑换</text>
+      <text class="grp-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 下部：功能分组 ② 设备与设置 -->
+  <view class="grp-card">
+    <text class="grp-title">🔧 设备与设置</text>
+    <view class="grp-item" bindtap="goDevice">
+      <view class="grp-ico grp-ico--battery">🔋</view>
+      <text class="grp-text">我的充氧宝</text>
+      <text class="grp-status">电量 87% ›</text>
+    </view>
+    <view class="grp-item" bindtap="onPrivacy">
+      <view class="grp-ico grp-ico--lock">🔒</view>
+      <text class="grp-text">隐私与数据说明</text>
+      <text class="grp-arrow">›</text>
+    </view>
+    <view class="grp-item" bindtap="onHealthDeclare">
+      <view class="grp-ico grp-ico--shield">🛡️</view>
+      <text class="grp-text">健康声明</text>
+      <text class="grp-arrow">›</text>
+    </view>
+    <view class="grp-item" bindtap="clearData">
+      <view class="grp-ico grp-ico--trash">🗑️</view>
+      <text class="grp-text grp-text--danger">清除本地数据</text>
+      <text class="grp-arrow">›</text>
+    </view>
+  </view>
+
+  <view class="about">氧氧宝 · 你的氧气频率陪伴者</view>
+
+</view>

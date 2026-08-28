@@ -1,0 +1,104 @@
+/* pages/share/personality-share/personality-share.wxss V5.0 静态海报版 */
+.share-page {
+  background:
+    radial-gradient(circle at 85% 4%, rgba(184,232,255,0.5) 0%, transparent 42%),
+    radial-gradient(circle at 8% 12%, rgba(114,216,196,0.2) 0%, transparent 40%),
+    var(--yy-bg);
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding-bottom: 150px;
+}
+
+.share-head { text-align: center; padding: 8px 0 16px; }
+.share-title { font-size: 22px; font-weight: 800; color: var(--yy-text); }
+.share-sub { display: block; font-size: 13px; color: var(--yy-text-sub); margin-top: 6px; }
+
+/* ===== 海报舞台：暗绿高级感 ===== */
+.poster-stage {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  background: linear-gradient(160deg, #0E2B22 0%, #14382D 45%, #0B241C 100%);
+  box-shadow: 0 16px 48px rgba(16,185,129,0.18);
+  border: 1px solid rgba(16,185,129,0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 16px 16px;
+}
+
+/* 呼吸光晕 */
+.poster-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 320px;
+  height: 320px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(114,216,196,0.22) 0%, rgba(114,216,196,0) 70%);
+  animation: stageGlow 3.5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes stageGlow {
+  0%, 100% { transform: translate(-50%,-50%) scale(0.85); opacity: 0.6; }
+  50% { transform: translate(-50%,-50%) scale(1.1); opacity: 1; }
+}
+
+/* 静态高定海报本体 */
+.poster-img {
+  position: relative;
+  width: 100%;
+  border-radius: 18px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+}
+
+/* 长按提示 */
+.poster-tip {
+  margin-top: 12px;
+  font-size: 12px;
+  color: rgba(214,245,236,0.65);
+  letter-spacing: 0.5px;
+}
+
+/* ===== 底部黄金双按钮 (吸底) ===== */
+.share-actions {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  display: flex;
+  gap: 12px;
+  padding: 16px 20px calc(16px + env(safe-area-inset-bottom));
+  background: linear-gradient(180deg, rgba(245,252,250,0.85), rgba(245,252,250,0.98));
+  backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(114,216,196,0.15);
+  z-index: 100;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.share-btn {
+  flex: 1;
+  height: 52px;
+  line-height: 52px;
+  border-radius: 26px;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+
+.share-btn--ghost {
+  background: rgba(255,255,255,0.9);
+  color: #4A9E8E;
+  border: 1.5px solid rgba(114,216,196,0.6);
+}
+
+.share-btn--primary {
+  background: linear-gradient(135deg, #6FE0C6 0%, #38C0A0 100%);
+  color: #FFF;
+  box-shadow: 0 8px 24px rgba(56,192,160,0.35);
+}
+
+.tip { margin-top: 16px; }
+.tip-text { font-size: 12px; color: var(--yy-text-sub); line-height: 1.6; }

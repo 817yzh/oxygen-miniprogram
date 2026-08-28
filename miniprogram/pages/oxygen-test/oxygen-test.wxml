@@ -1,0 +1,88 @@
+<!-- 含氧感自测 -->
+<view class="page otest">
+
+  <!-- ===== 开始页 ===== -->
+  <block wx:if="{{step === 0}}">
+    <view class="otest-hero center col">
+      <view class="otest-badge center">🫁</view>
+      <text class="otest-title">含氧感自测</text>
+      <text class="aux mt-4">10 题 · 约 1 分钟</text>
+      <text class="aux mt-4" style="text-align:center;line-height:1.7">测出你的氧负荷水平<br/>覆盖脑力压力 · 运动恢复 · 高原适应</text>
+    </view>
+    <view class="otest-dim mt-24">
+      <view class="dim-row row" wx:for="{{dims}}" wx:key="id">
+        <text class="dim-icon">{{item.icon}}</text>
+        <text class="dim-name">{{item.name}}</text>
+        <text class="dim-bar"><view class="dim-fill" style="width:75%"></view></text>
+      </view>
+    </view>
+    <button class="btn btn--primary btn--block mt-32" bindtap="begin">开始测试</button>
+    <view class="skip mt-16 center">
+      <text class="aux" bindtap="goHome">暂不测试，先回家看看 →</text>
+    </view>
+  </block>
+
+  <!-- ===== 答题页 ===== -->
+  <block wx:else>
+    <!-- 进度条 -->
+    <view class="otest-progress row">
+      <view class="otest-progress-bar"><view class="otest-progress-fill" style="width:{{progress}}%"></view></view>
+      <text class="aux">{{step}}/{{total}}</text>
+    </view>
+
+    <view class="otest-question mt-16">
+      <text class="otest-q">{{current.q}}</text>
+      <view class="otest-opts mt-16">
+        <view
+          class="opt-item row"
+          wx:for="{{current.options}}"
+          wx:key="text"
+          data-idx="{{index}}"
+          hover-class="opt-hover"
+          bindtap="choose"
+        >
+          <text class="opt-text">{{item.text}}</text>
+          <text class="opt-check">›</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="otest-nav row mt-16" wx:if="{{step > 1}}">
+      <text class="aux" bindtap="prev">← 上一题</text>
+    </view>
+  </block>
+
+  <!-- ===== 结果页 ===== -->
+  <block wx:if="{{step === total + 1}}">
+    <view class="otest-result center col">
+      <text class="otest-big">{{report.level}} 氧需求</text>
+      <text class="aux mt-4">氧负荷指数</text>
+      <view class="otest-ring center" style="background:conic-gradient(#72D8C4 {{report.total}}%,#E2F2EC 0)">
+        <view class="otest-ring-inner center"><text class="otest-ring-num">{{report.total}}</text></view>
+      </view>
+    </view>
+
+    <view class="glass-card mt-16">
+      <text class="h2">三维氧负荷</text>
+      <view class="report-dim mt-12">
+        <view class="rep-row row" wx:for="{{dims}}" wx:key="id">
+          <text class="rep-name">{{item.icon}} {{item.name}}</text>
+          <view class="energy-bar"><view class="energy-fill {{report[id]>=70?'high':report[id]>=45?'mid':'low'}}" style="width:{{report[id]}}%"></view></view>
+          <text class="rep-num aux">{{report[id]}}</text>
+        </view>
+      </view>
+      <text class="rep-top aux mt-12">最需要关注：{{topDim()}}</text>
+    </view>
+
+    <view class="glass-card mt-16">
+      <text class="h2">给你的建议</text>
+      <text class="rep-advice mt-8">{{report.advice}}</text>
+      <button class="btn btn--ghost btn--block mt-16" bindtap="goProductCenter">看看充氧宝方案 →</button>
+    </view>
+
+    <view class="otest-actions mt-16 center col">
+      <button class="btn btn--ghost" bindtap="retry">再测一次</button>
+    </view>
+  </block>
+
+</view>

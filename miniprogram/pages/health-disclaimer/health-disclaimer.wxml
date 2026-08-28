@@ -1,0 +1,16 @@
+<view class="page disc-page">
+  <view class="disc-head center col">
+    <text class="disc-emoji">📋</text>
+    <text class="h1 mt-8">健康与数据声明</text>
+    <text class="aux mt-4">氧氧陪你，理性健康</text>
+  </view>
+
+  <view class="disc-item glass-card mt-16" wx:for="{{content}}" wx:key="title">
+    <text class="disc-title">{{item.title}}</text>
+    <text class="disc-text aux mt-8">{{item.text}}</text>
+  </view>
+
+  <view class="disc-footer aux center mt-24">
+    有任何疑问，可联系氧氧团队 💚
+  </view>
+</view>

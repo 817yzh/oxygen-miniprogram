@@ -1,0 +1,97 @@
+/* 氧系MBTI 引导页 · 极简治愈版 */
+.mbti-home {
+  position: relative;
+  min-height: 100vh;
+  box-sizing: border-box;
+  overflow: hidden;
+  background: linear-gradient(175deg, #0E2B22 0%, #123B2F 40%, #1A4D40 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== 流光渐变氛围背景 ===== */
+.bg-flow {
+  position: absolute;
+  top: -30%;
+  left: -20%;
+  width: 140%;
+  height: 100%;
+  background:
+    radial-gradient(circle at 30% 40%, rgba(114,216,196,0.35) 0%, transparent 55%),
+    radial-gradient(circle at 80% 70%, rgba(184,232,255,0.18) 0%, transparent 45%),
+    radial-gradient(circle at 60% 10%, rgba(56,192,160,0.25) 0%, transparent 50%);
+  filter: blur(30px);
+  animation: flowMove 9s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+@keyframes flowMove {
+  0% { transform: translate(0, 0) scale(1); opacity: 0.8; }
+  100% { transform: translate(-3%, 4%) scale(1.06); opacity: 1; }
+}
+
+/* ===== 顶部 Hero：绝对留白 ===== */
+.hero {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 36px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 放大 IP + 呼吸浮动 */
+.hero-ip {
+  animation: ipFloat 4s ease-in-out infinite;
+  filter: drop-shadow(0 16px 40px rgba(56,192,160,0.35));
+}
+@keyframes ipFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* 文案锚点 */
+.hero-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 34px;
+  text-align: center;
+}
+.h1 {
+  font-size: 24px;
+  font-weight: 800;
+  color: #F2FBF7;
+  line-height: 1.5;
+  letter-spacing: 0.5px;
+}
+.sub {
+  margin-top: 14px;
+  font-size: 14px;
+  color: rgba(214,245,236,0.72);
+  letter-spacing: 1px;
+}
+
+/* ===== 主行动按钮：薄荷绿高亮渐变 ===== */
+.cta-btn {
+  margin-top: 44px;
+  width: 280px;
+  height: 56px;
+  line-height: 56px;
+  border-radius: 28px;
+  border: none;
+  padding: 0;
+  box-sizing: border-box;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #FFFFFF;
+  background: linear-gradient(135deg, #6FE0C6 0%, #38C0A0 60%, #2FA98C 100%);
+  box-shadow: 0 12px 34px rgba(56,192,160,0.45), inset 0 1px 0 rgba(255,255,255,0.4);
+}
+/* 禁用微信 button 默认边框伪元素 */
+.cta-btn::after {
+  border: none;
+}

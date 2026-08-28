@@ -1,0 +1,7 @@
+.trend-wrap {
+  width: 100%;
+}
+.trend-canvas {
+  width: 320px;
+  height: 200px;
+}

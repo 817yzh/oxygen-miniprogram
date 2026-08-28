@@ -1,0 +1,251 @@
+<!-- 充氧宝 · 产品生态中心 -->
+<view class="page product">
+
+  <!-- 顶部 Header：产品名 + 一句话卖点 -->
+  <view class="prod-header center col">
+    <text class="prod-brand">Work Air 充氧宝</text>
+    <text class="prod-tagline aux">便携富氧机 · 给生活充点氧</text>
+  </view>
+
+  <!-- 分段导航（顶层导航） -->
+  <view class="seg row">
+    <view class="seg-item {{activeTab==='product'?'on':''}}" data-tab="product" bindtap="switchTab">产品</view>
+    <view class="seg-item {{activeTab==='tech'?'on':''}}" data-tab="tech" bindtap="switchTab">原理</view>
+    <view class="seg-item {{activeTab==='scene'?'on':''}}" data-tab="scene" bindtap="switchTab">选型</view>
+    <view class="seg-item {{activeTab==='faq'?'on':''}}" data-tab="faq" bindtap="switchTab">FAQ</view>
+  </view>
+
+  <!-- ========== 产品 ========== -->
+  <block wx:if="{{activeTab==='product'}}">
+    <!-- 形态联动展示区：悬浮舞台 + 配色球 -->
+    <view class="prod-show">
+      <view class="prod-stage">
+        <view class="stage-glow"></view>
+        <image class="prod-stage-img {{curStyle.blend?'prod-stage-img--blend':''}}" src="{{curStyle.big}}" mode="aspectFit" />
+      </view>
+      <view class="swatches row">
+        <view
+          wx:for="{{styles}}"
+          wx:key="id"
+          class="swatch {{item.swatch}} {{curStyle.id===item.id?'on':''}}"
+          data-id="{{item.id}}"
+          bindtap="switchStyle"
+        ></view>
+      </view>
+      <text class="style-desc">{{curStyle.name}} · {{curStyle.sub}}</text>
+    </view>
+
+    <!-- 核心参数（2x2 微晶网格 + 线条 Icon + 大数字） -->
+    <view class="prod-sec">
+      <text class="sec-title">核心参数</text>
+      <view class="spec-grid">
+        <view class="spec-cell" wx:for="{{specGrid}}" wx:key="title">
+          <image class="spec-cell-ico" src="{{item.icon}}" />
+          <view class="spec-cell-numrow">
+            <text class="spec-cell-title">{{item.title}}</text>
+            <text class="spec-cell-unit">{{item.unit}}</text>
+          </view>
+          <text class="spec-cell-desc aux">{{item.desc}}</text>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- ========== 技术原理 ========== -->
+  <block wx:if="{{activeTab==='tech'}}">
+    <!-- 原理视频卡片（16:9，微晶玻璃） -->
+    <view class="tech-video-wrap">
+      <video
+        class="tech-video"
+        src="https://cdn.jsdelivr.net/gh/817yzh/oxygen-images@main/tech-principle.mp4"
+        controls="{{false}}"
+        enable-progress-gesture="false"
+        id="techVideo"
+        bindplay="onTechVideoPlay"
+        object-fit="cover"
+      ></video>
+      <view class="tech-cover {{techVideoPlaying?'tech-cover--hide':''}}" catchtap="playTechVideo">
+        <image class="tech-cover-img" src="https://cdn.jsdelivr.net/gh/817yzh/oxygen-images@main/workair-hero.png" mode="aspectFill" />
+        <view class="tech-play-btn">
+          <text class="tech-play-ico">▶</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 发光流向线（3 步） -->
+    <view class="tech-flowline">
+      <view class="tf-node">
+        <text class="tf-ico">🌬</text>
+        <text class="tf-name">空气吸入</text>
+        <text class="tf-sub aux">含氧量 21%</text>
+      </view>
+      <view class="tf-link">
+        <view class="tf-arrow">➜</view>
+      </view>
+      <view class="tf-node">
+        <text class="tf-ico">🧲</text>
+        <text class="tf-name">永磁分离</text>
+        <text class="tf-sub aux">捕捉氧分子</text>
+      </view>
+      <view class="tf-link">
+        <view class="tf-arrow">➜</view>
+      </view>
+      <view class="tf-node">
+        <text class="tf-ico">🍃</text>
+        <text class="tf-name">富氧输出</text>
+        <text class="tf-sub aux">高浓度富氧流</text>
+      </view>
+    </view>
+
+    <text class="tech-desc aux">利用氧分子顺磁、氮分子逆磁的物理特性，让空气通过永磁体单元系统，把氧气从空气中富集出来，持续输出安全的富氧空气。无需耗材、无噪音。</text>
+
+    <!-- PK 对比双卡 -->
+    <view class="tech-pk row">
+      <view class="pk-card pk-win col">
+        <text class="pk-title">Work Air 充氧宝</text>
+        <view class="pk-line"><text class="pk-chip">✓</text><text>0 耗材 · 静音 · 便携</text></view>
+        <view class="pk-line"><text class="pk-chip">✓</text><text>安全富氧 · 随充随用</text></view>
+      </view>
+      <view class="pk-card pk-lose col">
+        <text class="pk-title">传统钢瓶</text>
+        <view class="pk-line"><text class="pk-chip pk-chip-x">✕</text><text>需定期换瓶 · 笨重</text></view>
+        <view class="pk-line"><text class="pk-chip pk-chip-x">✕</text><text>高压储存 · 危险</text></view>
+      </view>
+    </view>
+    <text class="core-line">{{specs.core}}</text>
+  </block>
+
+  <!-- ========== 场景方案 ========== -->
+  <block wx:if="{{activeTab==='scene'}}">
+    <!-- 顶部引导：Find Your Air -->
+    <view class="air-guide">
+      <text class="air-title">Find Your Air</text>
+      <text class="air-sub">左右滑动场景卡 · 选择你的专属搭配</text>
+    </view>
+
+    <!-- 横向滑动场景卡（iOS Cards 轮播） -->
+    <swiper
+      class="scene-swiper"
+      style="height: 300px;"
+      indicator-dots
+      indicator-color="rgba(0,230,184,0.2)"
+      indicator-active-color="#00E6B8"
+      current="{{cardIndex}}"
+      bindchange="onCardChange"
+    >
+      <swiper-item wx:for="{{scenarios}}" wx:key="id">
+        <view class="scene-card">
+          <image class="scene-card-img" src="{{item.cover}}" mode="aspectFill" />
+          <view class="scene-card-mask"></view>
+          <view class="scene-card-info">
+            <text class="scene-card-title">{{item.title}}</text>
+            <text class="scene-card-sub">{{item.sub}}</text>
+          </view>
+        </view>
+      </swiper-item>
+    </swiper>
+
+    <!-- 联动信息卡（随滑动更新） -->
+    <view class="combo-card">
+      <view class="combo-row">
+        <image class="combo-ico" src="{{curScenario.hwIcon}}" />
+        <text class="combo-k">硬件</text>
+        <text class="combo-v">{{curScenario.hw}}</text>
+      </view>
+      <view class="combo-row">
+        <image class="combo-ico" src="{{curScenario.scentIcon}}" />
+        <text class="combo-k">香氛</text>
+        <text class="combo-v">{{curScenario.scent}}</text>
+      </view>
+      <view class="combo-row">
+        <image class="combo-ico" src="{{curScenario.accIcon}}" />
+        <text class="combo-k">配件</text>
+        <text class="combo-v">{{curScenario.acc}}</text>
+      </view>
+      <text class="combo-fit">适用：{{curScenario.fit}}</text>
+      <view class="combo-link center" data-index="{{cardIndex}}" bindtap="openSheet">
+        <text>查看此组合 ➔</text>
+      </view>
+    </view>
+  </block>
+
+  <!-- ========== FAQ + 认证 + 购买 ========== -->
+  <block wx:if="{{activeTab==='faq'}}">
+    <!-- 认证与背书：2×2 横向网格信任墙 -->
+    <view class="prod-sec">
+      <text class="sec-title">认证与背书</text>
+      <view class="cert-grid">
+        <view class="cert-item" wx:for="{{certs}}" wx:key="id">
+          <image class="cert-icon" src="{{item.icon}}" />
+          <view class="cert-body">
+            <text class="cert-title">{{item.title}}</text>
+            <text class="cert-desc">{{item.desc}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- FAQ：分类 Tab + 手风琴折叠 -->
+    <view class="prod-sec">
+      <text class="sec-title">常见问题 FAQ</text>
+      <view class="faq-tabs row">
+        <view class="faq-tab {{faqTab===item.id?'on':''}}" wx:for="{{faqCats}}" wx:key="id" data-tab="{{item.id}}" bindtap="switchFaqTab">{{item.label}}</view>
+      </view>
+      <view class="faq-list mt-12">
+        <view class="faq-item" wx:for="{{faqList}}" wx:key="id" data-id="{{item.id}}" bindtap="toggleFaq">
+          <view class="faq-q row">
+            <text class="faq-q-text">{{item.q}}</text>
+            <text class="faq-arrow {{item.open?'up':''}}">∨</text>
+          </view>
+          <view class="faq-a-wrap {{item.open?'open':''}}">
+            <text class="faq-a">{{item.answer}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 底部 CTA（仅产品 Tab 显示，原理/选型/FAQ 纯体验阅读不推销） -->
+  <view class="buy-bar row" wx:if="{{activeTab==='product'}}">
+    <view class="buy-btn buy-btn--ghost flex-1 center" bindtap="onRent">租赁 79/天</view>
+    <view class="buy-btn buy-btn--primary flex-1 center" bindtap="onBuy">购买 1680 元</view>
+  </view>
+
+  <!-- ========== 组合抽屉 Bottom Sheet ========== -->
+  <view class="sheet-mask {{sheetOpen?'sheet-mask--show':''}}" catchtap="closeSheet"></view>
+  <view class="sheet {{sheetOpen?'sheet--open':''}}">
+    <view class="sheet-handle"></view>
+
+    <!-- ① 全家福 Showcase（swiper 切换，contain 完整呈现） -->
+    <swiper class="sheet-show" style="height: 350rpx;" current="{{sheetIndex}}" bindchange="onSheetChange">
+      <swiper-item wx:for="{{scenarios}}" wx:key="id">
+        <image class="sheet-show-img" src="{{item.comboImg}}" mode="aspectFit" />
+      </swiper-item>
+    </swiper>
+    <view class="sheet-tags">
+      <view class="sheet-tag"><text class="st-ico">⚙</text><text class="st-t">硬件</text><text class="st-v">{{curSheet.hw}}</text></view>
+      <view class="sheet-tag"><text class="st-ico">🌿</text><text class="st-t">香氛</text><text class="st-v">{{curSheet.scent}}</text></view>
+      <view class="sheet-tag"><text class="st-ico">🔗</text><text class="st-t">配件</text><text class="st-v">{{curSheet.acc}}</text></view>
+    </view>
+    <text class="sheet-scene">适用于：{{curSheet.fit}}</text>
+
+    <!-- ② 模式双选 -->
+    <view class="sheet-plans row">
+      <view class="sheet-plan {{planMode==='rent'?'on':''}}" data-mode="rent" bindtap="choosePlan">
+        <text class="sp-kind">体验租赁</text>
+        <text class="sp-price">¥<text class="sp-num">{{curSheet.rent}}</text>/天</text>
+      </view>
+      <view class="sheet-plan {{planMode==='buy'?'on':''}}" data-mode="buy" bindtap="choosePlan">
+        <text class="sp-kind">买断组合</text>
+        <text class="sp-price">¥{{curSheet.buy}}</text>
+        <text class="sp-rec">推荐</text>
+      </view>
+    </view>
+
+    <!-- ③ 主 CTA -->
+    <view class="sheet-cta center" hover-class="sheet-cta-hover" bindtap="packOrder">
+      <text>立即打包下单 ➔</text>
+    </view>
+  </view>
+
+</view>

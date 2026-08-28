@@ -1,0 +1,446 @@
+/* Page 5 · 氧系MBTI结果页 V2.4 (微光呼吸质感) */
+.mbti-result {
+  background:
+    radial-gradient(circle at 85% 4%, rgba(184,232,255,0.5) 0%, transparent 42%),
+    radial-gradient(circle at 8% 12%, rgba(114,216,196,0.2) 0%, transparent 40%),
+    var(--yy-bg);
+  padding-bottom: 160px;
+}
+
+/* ========== ① Hero 视觉 C 位 ========== */
+.hero-block {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  margin: 12px 0 16px;
+  min-height: 380px;
+  box-shadow: 0 16px 48px rgba(114,216,196,0.28);
+  border: 1px solid rgba(16,185,129,0.15);
+}
+
+.hero-bg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+}
+
+.hero-mask {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(180deg, rgba(10,40,34,0.10) 0%, rgba(10,40,34,0.55) 100%);
+}
+
+.hero-ip {
+  position: relative;
+  padding: 16px 0 0;
+  display: flex;
+  justify-content: center;
+}
+
+.hero-main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 24px 24px;
+  color: #FFF;
+}
+
+/* Hero 图标呼吸浮动 */
+.hero-icon-wrap {
+  animation: heroFloat 3s ease-in-out infinite;
+}
+.hero-icon {
+  font-size: 52px;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.25));
+}
+@keyframes heroFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.hero-name {
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.35);
+}
+
+.hero-tags {
+  font-size: 13px;
+  margin-top: 6px;
+  opacity: 0.95;
+  font-weight: 600;
+  background: rgba(255,255,255,0.22);
+  padding: 3px 14px;
+  border-radius: 999px;
+  backdrop-filter: blur(6px);
+}
+
+.hero-desc {
+  font-size: 13px;
+  line-height: 1.6;
+  margin-top: 10px;
+  text-align: center;
+  opacity: 0.92;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.3);
+}
+
+.hero-match {
+  width: 100%;
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.hero-match-bar {
+  flex: 1;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.30);
+  overflow: hidden;
+  backdrop-filter: blur(4px);
+}
+.hero-match-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #FFF 0%, #B8F5E2 60%, #6FE0C6 100%);
+  box-shadow: 0 0 12px rgba(255,255,255,0.6);
+}
+.hero-match-num {
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  color: #FFF;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.3);
+}
+
+/* 今日氧气状态 → 一行徽章 */
+.hero-state {
+  width: 100%;
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.16);
+  border: 1px solid rgba(255,255,255,0.28);
+  border-radius: 16px;
+  padding: 10px 14px;
+  backdrop-filter: blur(8px);
+  flex-wrap: wrap;
+}
+.hs-badge {
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.9);
+  color: #0F6B58;
+  font-size: 12px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+.hs-calm {
+  font-size: 12px;
+  font-weight: 700;
+  color: #FFF;
+  flex-shrink: 0;
+}
+.hs-note {
+  font-size: 11px;
+  color: rgba(255,255,255,0.85);
+  line-height: 1.5;
+  flex: 1;
+  min-width: 120px;
+}
+
+/* ========== ② 中部卡片区 ========== */
+.mid-area {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 卡片材质：高透半透明白 + 微光 */
+.card {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 18px;
+  box-shadow: 0 8px 32px rgba(16,185,129,0.06);
+  border: 1px solid rgba(16,185,129,0.10);
+}
+
+/* 标题点睛：微光小方点 */
+.card-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: #1F3833;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: 0.5px;
+}
+.title-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 3px;
+  background: linear-gradient(135deg, #6FE0C6, #38C0A0);
+  box-shadow: 0 0 8px rgba(56,192,160,0.5);
+  flex-shrink: 0;
+}
+.title-dot--spark {
+  background: linear-gradient(135deg, #B8F5E2, #7DD3FC);
+  box-shadow: 0 0 8px rgba(125,211,252,0.6);
+}
+
+/* 卡片渐显动画 */
+.fade-in-up {
+  animation: fadeInUp 0.6s ease both;
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 能量胶囊 2x3 网格 */
+.energy-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.energy-cap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(114,216,196,0.12), rgba(184,232,255,0.10));
+  border: 1px solid rgba(114,216,196,0.15);
+}
+.ec-icon {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.85);
+  flex-shrink: 0;
+}
+.ec-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.ec-label { font-size: 12px; color: #61706C; }
+.ec-value { font-size: 18px; font-weight: 800; color: #1F3833; line-height: 1; }
+
+/* 氧气地图 → 横向滚动 */
+.map-scroll { width: 100%; white-space: nowrap; }
+.map-track { display: flex; gap: 12px; padding: 2px; }
+.map-swipe-card {
+  display: flex;
+  flex-direction: column;
+  width: 190px;
+  flex-shrink: 0;
+  padding: 16px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #EAF8F4, #FFFFFF);
+  border: 1px solid rgba(114,216,196,0.18);
+  white-space: normal;
+}
+.ms-ico {
+  width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  border-radius: 12px;
+  background: rgba(184,232,255,0.4);
+  margin-bottom: 10px;
+}
+.ms-label { font-size: 12px; color: #7AA799; font-weight: 600; margin-bottom: 4px; }
+.ms-value { font-size: 15px; font-weight: 600; color: #1F3833; line-height: 1.5; }
+
+/* 趣味标签云 */
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.cloud-tag {
+  padding: 7px 16px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.9);
+  border: 1px solid rgba(114,216,196,0.5);
+  color: var(--yy-text);
+  font-size: 13px;
+  font-weight: 600;
+}
+.cloud-foot { margin-top: 12px; }
+.cf-text {
+  font-size: 12px;
+  color: #4A9E8E;
+  font-weight: 600;
+  background: rgba(114,216,196,0.10);
+  padding: 8px 14px;
+  border-radius: 12px;
+  display: block;
+}
+
+/* ========== 同频氧系博主 · 灵感共振 ========== */
+.creator-scroll { width: 100%; white-space: nowrap; }
+.creator-track { display: flex; gap: 14px; padding: 2px; }
+.creator-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 330px;
+  flex-shrink: 0;
+  padding: 16px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(240,252,248,0.95), rgba(255,255,255,0.9));
+  border: 1px solid rgba(16,185,129,0.12);
+  box-shadow: 0 8px 24px rgba(16,185,129,0.06);
+  white-space: normal;
+}
+.cc-hover { opacity: 0.88; transform: scale(0.98); }
+
+/* 头像：薄荷绿发光呼吸边框 */
+.cc-avatar-glow {
+  width: 60px;
+  height: 60px;
+  border-radius: 999px;
+  padding: 3px;
+  background: linear-gradient(135deg, #6FE0C6, #7DD3FC);
+  box-shadow: 0 0 14px rgba(56,192,160,0.5);
+  animation: avatarGlow 3s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes avatarGlow {
+  0%, 100% { box-shadow: 0 0 10px rgba(56,192,160,0.4); }
+  50% { box-shadow: 0 0 20px rgba(56,192,160,0.75); }
+}
+.cc-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(135deg,#72D8C4,#B8E8FF);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.cc-avatar-img { width: 100%; height: 100%; border-radius: 999px; }
+.cc-avatar-emoji { font-size: 26px; }
+
+.cc-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.cc-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.cc-name { font-size: 15px; font-weight: 800; color: #1F3833; }
+.cc-persona {
+  font-size: 10px;
+  color: var(--yy-primary);
+  background: rgba(114,216,196,0.12);
+  border-radius: 999px;
+  padding: 2px 8px;
+  white-space: nowrap;
+  font-weight: 600;
+}
+.cc-quote {
+  font-size: 12px;
+  color: #61706C;
+  line-height: 1.5;
+  font-style: italic;
+}
+.cc-plan {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(114,216,196,0.10);
+  border-radius: 999px;
+  padding: 3px 10px;
+  align-self: flex-start;
+  margin-top: 2px;
+}
+.cc-plan-ico { font-size: 11px; }
+.cc-plan-text { font-size: 11px; color: #2BB696; font-weight: 600; }
+.cc-go { color: #9BB7AE; font-size: 20px; flex-shrink: 0; }
+
+/* Work Air 氧装备推荐 (核心高亮卡) */
+.prod-pick {
+  border: 1px solid rgba(16,185,129,0.18);
+  box-shadow: 0 8px 32px rgba(16,185,129,0.10);
+}
+.pp-icon {
+  width: 46px; height: 46px; border-radius: 14px;
+  background: linear-gradient(135deg,#72D8C4,#B8E8FF); font-size: 24px;
+  margin-right: 12px; flex-shrink: 0;
+}
+.pp-name { font-size: 15px; font-weight: 700; color:#1F3833; }
+.pp-desc { font-size: 12px; margin-top: 3px; }
+.pp-go {
+  font-size: 12px; color:#fff; background: linear-gradient(135deg,#72D8C4,#4A9E8E);
+  border-radius: 999px; padding: 6px 12px; font-weight: 600; white-space: nowrap;
+}
+.pp-hover { opacity: 0.88; transform: scale(0.98); }
+.pp-aroma {
+  background: rgba(114,216,196,0.1); border-radius: 12px;
+  padding: 8px 12px; align-items: center; gap: 6px;
+}
+.pp-aroma-icon { font-size: 16px; }
+
+/* ========== ③ 底部吸底双按钮 ========== */
+.cta-bar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  display: flex;
+  gap: 12px;
+  padding: 16px 20px calc(16px + env(safe-area-inset-bottom));
+  background: linear-gradient(180deg, rgba(245,252,250,0.85), rgba(245,252,250,0.98));
+  backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(114,216,196,0.15);
+  z-index: 100;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.cta-btn {
+  flex: 1;
+  height: 50px;
+  line-height: 50px;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+
+.cta-btn--full {
+  flex: none;
+  width: 100%;
+}
+
+.cta-btn--ghost {
+  background: rgba(255,255,255,0.9);
+  color: #4A9E8E;
+  border: 1.5px solid rgba(114,216,196,0.6);
+}
+
+.cta-btn--primary {
+  background: linear-gradient(135deg, #6FE0C6 0%, #38C0A0 100%);
+  color: #FFF;
+  box-shadow: 0 8px 24px rgba(56,192,160,0.35);
+}

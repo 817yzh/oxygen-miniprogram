@@ -1,0 +1,19 @@
+<!-- components/oxygen-suggestion/oxygen-suggestion.wxml
+     今日氧气建议(V0.8) 简卡 -->
+<view class="sugg-card glass-card">
+  <view class="sugg-head row">
+    <text class="sugg-title">💡 今日氧气建议</text>
+    <text class="aux" wx:if="{{note}}">{{note}}</text>
+  </view>
+
+  <view class="sugg-main row mt-8" wx:if="{{suggestion}}">
+    <view class="sugg-icon">{{suggestion.icon}}</view>
+    <view class="flex-1 col" style="min-width:0">
+      <text class="sugg-desc">{{suggestion.desc}}</text>
+      <text class="sugg-tip">{{suggestion.tip}}</text>
+      <view class="sugg-product row mt-4" wx:if="{{suggestion.product}}">
+        <text class="sugg-prod-tag">🫧 {{suggestion.product}}</text>
+      </view>
+    </view>
+  </view>
+</view>

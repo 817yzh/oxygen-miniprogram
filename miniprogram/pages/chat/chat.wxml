@@ -1,0 +1,169 @@
+<!--
+  pages/chat/chat.wxml
+  V2.1 · 氧氧聊天页（陪伴主舞台 + 流动卡片 3层结构）
+  第一层: 顶部陪伴主舞台(灵狐大IP+数据胶囊)
+  第二层: 中间灵动对话区(小课堂融入对话流)
+  第三层: 底部情绪快捷栏+输入框
+-->
+<view class="chat-page">
+
+  <!-- ========== 第一层：顶部陪伴主舞台 ========== -->
+  <view class="main-stage">
+    <!-- 灵狐大IP主视觉（侧坐氧气球吸氧） -->
+    <image class="stage-ip" src="https://cdn.jsdelivr.net/gh/817yzh/oxygen-images@main/ip-fox-main.png" mode="aspectFill" />
+
+    <!-- 顶部渐变遮罩（让导航栏区域融合） -->
+    <view class="stage-top-mask"></view>
+
+    <!-- 数据胶囊：左侧 亲密度 -->
+    <view class="data-capsule capsule-left">
+      <text class="capsule-text">Lv.{{intimacyLevel}} {{intimacyTitle}}</text>
+    </view>
+
+    <!-- 数据胶囊：右侧 清凉指数+今日吸氧 -->
+    <view class="data-capsule capsule-right">
+      <text class="capsule-text">清凉 {{coolIndex}}% · 吸氧 {{todayOxygenMin}}分</text>
+    </view>
+
+    <!-- 底部渐变过渡（融合到对话区） -->
+    <view class="stage-bottom-mask"></view>
+  </view>
+
+  <!-- ========== 第二层：中间灵动对话区 ========== -->
+  <scroll-view class="chat-body" scroll-y scroll-into-view="{{scrollToView}}" scroll-with-animation>
+    <view class="chat-content">
+
+    <!-- 氧氧记得你：极简悬浮入口 -->
+    <view class="memory-mini" bindtap="toggleMemoryPanel">
+      <text class="memory-mini-icon">🧠</text>
+      <text class="memory-mini-text">氧氧记得你：{{memoryCount > 0 ? '已记住' + memoryCount + '项偏好' : '暂无偏好记录'}}</text>
+      <text class="memory-mini-arrow">设置 ›</text>
+    </view>
+
+    <!-- 聊天气泡 -->
+    <view class="msg-row {{item.role}}" wx:for="{{messages}}" wx:key="index" id="msg-{{index}}">
+      <block wx:if="{{item.role==='oxygen'}}">
+        <image class="msg-avatar" src="https://cdn.jsdelivr.net/gh/817yzh/oxygen-images@main/ip-standard.png" mode="aspectFit" />
+        <view class="bubble bubble-oxygen">{{item.content}}</view>
+      </block>
+      <block wx:else>
+        <view class="bubble bubble-user">{{item.content}}</view>
+      </block>
+    </view>
+
+    <!-- 底部卡片容器：小课堂+正念呼吸，内容少时自动靠底部 -->
+    <view class="chat-bottom-cards">
+
+    <!-- 小课堂卡片：以氧氧消息形式融入对话流 -->
+    <view class="msg-row oxygen" wx:if="{{coolTip}}">
+      <image class="msg-avatar" src="https://cdn.jsdelivr.net/gh/817yzh/oxygen-images@main/ip-standard.png" mode="aspectFit" />
+      <view class="course-card">
+        <view class="course-head">
+          <text class="course-icon">💡</text>
+          <text class="course-title">氧氧小课堂 · 清凉小贴士</text>
+        </view>
+        <view class="course-content">{{coolTip}}</view>
+        <view class="course-actions">
+          <view class="course-btn" bindtap="playWhiteNoise">🔊 听瀑布白噪音</view>
+          <view class="course-btn" bindtap="refreshCourse">换一期 ↻</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 正念呼吸卡片：用户表达疲惫时推送 -->
+    <view class="msg-row oxygen" wx:if="{{showBreathingCard}}">
+      <image class="msg-avatar" src="https://cdn.jsdelivr.net/gh/817yzh/oxygen-images@main/ip-standard.png" mode="aspectFit" />
+      <view class="breath-card" bindtap="startBreathing">
+        <view class="breath-icon">🧘</view>
+        <view class="breath-info">
+          <text class="breath-title">5分钟正念呼吸</text>
+          <text class="breath-desc">跟随氧氧的节奏，深呼吸放松身心</text>
+        </view>
+        <text class="breath-go">开始 ›</text>
+      </view>
+    </view>
+
+    </view>
+
+    <!-- 记忆详情面板 -->
+    <view class="memory-panel" wx:if="{{showMemoryPanel}}">
+      <view class="panel-head">
+        <text class="panel-title">氧氧记忆</text>
+        <text class="panel-close" bindtap="toggleMemoryPanel">收起 ✕</text>
+      </view>
+      <view class="pref-form">
+        <view class="pref-field" wx:for="{{prefFields}}" wx:for-item="f" wx:key="key">
+          <text class="pref-label">{{f.label}}</text>
+          <view class="pref-options">
+            <view class="pref-opt {{f.value === opt ? 'on' : ''}}"
+                  wx:for="{{f.options}}" wx:for-item="opt" wx:key="*this"
+                  data-key="{{f.key}}" data-val="{{opt}}" bindtap="pickPref">{{opt}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    </view>
+  </scroll-view>
+
+  <!-- ========== 第三层：底部情绪快捷栏 + 输入框 ========== -->
+  <view class="bottom-area">
+    <!-- 快捷情绪胶囊 -->
+    <scroll-view class="quick-bar" scroll-x show-scrollbar="{{false}}">
+      <view class="quick-tag" data-tag="hot" bindtap="quickTagTap">
+        <text class="tag-icon">🔥</text>
+        <text class="tag-text">燥热烦躁</text>
+      </view>
+      <view class="quick-tag" data-tag="tired" bindtap="quickTagTap">
+        <text class="tag-icon">😮‍💨</text>
+        <text class="tag-text">工作累了</text>
+      </view>
+      <view class="quick-tag" data-tag="cheer" bindtap="quickTagTap">
+        <text class="tag-icon">💪</text>
+        <text class="tag-text">求鼓励</text>
+      </view>
+      <view class="quick-tag" data-tag="oxygen" bindtap="quickTagTap">
+        <text class="tag-icon">🫧</text>
+        <text class="tag-text">想要吸氧</text>
+      </view>
+      <view class="quick-tag" data-tag="anxious" bindtap="quickTagTap">
+        <text class="tag-icon">😰</text>
+        <text class="tag-text">有点焦虑</text>
+      </view>
+      <view class="quick-tag" data-tag="happy" bindtap="quickTagTap">
+        <text class="tag-icon">😄</text>
+        <text class="tag-text">今天开心</text>
+      </view>
+    </scroll-view>
+
+    <!-- 输入栏 -->
+    <view class="input-bar">
+      <view class="voice-toggle {{recording?'voice-rec':''}}"
+            bindtouchstart="startRecord" bindtouchend="stopRecord" bindtouchcancel="stopRecord">
+        <text>{{recording ? '⏹' : '🎤'}}</text>
+      </view>
+      <input
+        class="chat-input"
+        placeholder="和氧氧说说吧…"
+        placeholder-class="ph"
+        value="{{inputText}}"
+        bindinput="onInput"
+        confirm-type="send"
+        bindconfirm="send"
+      />
+      <button class="send-btn {{canSend?'on':''}}" bindtap="send">发送</button>
+    </view>
+  </view>
+
+  <!-- 冰爽微特效层 -->
+  <view class="fx-layer" wx:if="{{showFx}}">
+    <view class="ice-cube" wx:for="{{fxParticles}}" wx:key="id"
+          style="left: {{item.x}}%; animation-delay: {{item.delay}}s;"></view>
+  </view>
+
+  <!-- 录音提示 -->
+  <view class="record-tip" wx:if="{{recordingTip}}">
+    <text>🎤 {{recordingTip}}</text>
+  </view>
+
+</view>

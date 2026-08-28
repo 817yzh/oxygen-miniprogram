@@ -1,0 +1,50 @@
+/* pages/soulmate/soulmate.wxss */
+.soul-page {
+  background:
+    radial-gradient(circle at 85% 5%, rgba(184,232,255,0.5) 0%, transparent 45%),
+    radial-gradient(circle at 8% 12%, rgba(114,216,196,0.2) 0%, transparent 40%),
+    var(--yy-bg);
+}
+.soul-head { padding: 16px 0 4px; }
+.soul-emoji { font-size: 48px; }
+
+.soul-ico { font-size: 30px; margin-right: 12px; }
+.soul-arrow { color: var(--yy-primary); font-size: 18px; font-weight: 700; }
+.soul-hover { opacity: 0.85; transform: scale(0.99); }
+
+.mine-card { align-items: center; gap: 14px; }
+.soul-my-icon { font-size: 42px; }
+.soul-my-name { font-size: 20px; font-weight: 800; color: var(--yy-text); }
+.soul-my-count { font-size: 12px; }
+.mine-cert {
+  font-size: 11px; color: #2BB696; background: rgba(114,216,196,0.15);
+  border-radius: 999px; padding: 4rpx 14rpx; white-space: nowrap;
+}
+
+.section-title { margin: 24px 4px 12px; }
+.soul-list { display: flex; flex-direction: column; gap: 12px; }
+.soul-card { align-items: center; gap: 12px; padding: 18rpx 20rpx; }
+.soul-avatar {
+  width: 50px; height: 50px; border-radius: 999px;
+  background: linear-gradient(135deg,#72D8C4,#B8E8FF);
+  font-size: 24px; position: relative; flex-shrink: 0;
+}
+.soul-dot {
+  position: absolute; right: 0; bottom: 0;
+  width: 12px; height: 12px; border-radius: 999px;
+  background: #ccc; border: 2px solid #fff;
+}
+.soul-dot.online { background: #2BB696; }
+.soul-nick { font-size: 15px; font-weight: 700; }
+.soul-tag {
+  font-size: 10px; color: var(--yy-primary); background: rgba(114,216,196,0.12);
+  border-radius: 999px; padding: 2rpx 10rpx;
+}
+.soul-sig { font-size: 12px; }
+.soul-mbti { font-size: 11px; color: var(--yy-text-sub); }
+.soul-say {
+  font-size: 12px; color: #fff; background: linear-gradient(135deg,#72D8C4,#2BB696);
+  border-radius: 999px; padding: 10rpx 20rpx; white-space: nowrap;
+}
+
+.soul-footer { color: #b8cbc9; margin-bottom: 24px; }

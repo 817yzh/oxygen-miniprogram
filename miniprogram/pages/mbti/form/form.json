@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "yy-ip": "/components/yy-ip/yy-ip"
+  },
+  "navigationBarTitleText": "认识你",
+  "navigationBarBackgroundColor": "#0E2B22",
+  "navigationBarTextStyle": "white"
+}

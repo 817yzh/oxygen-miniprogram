@@ -1,0 +1,24 @@
+# ===== 密钥与本地配置 =====
+# 后端密钥（绝不提交）
+backend/.env
+.env
+*.env.local
+
+# ===== Node =====
+node_modules/
+npm-debug.log
+
+# ===== 运行时数据 =====
+# 后端 JSON 数据存储（运行时生成）
+backend/data/
+!backend/data/.gitkeep
+
+# ===== 临时文件 =====
+tmp_*
+*.log
+.DS_Store
+Thumbs.db
+
+# ===== 小程序开发者工具 =====
+miniprogram/project.private.config.json
+miniprogram/.swc/

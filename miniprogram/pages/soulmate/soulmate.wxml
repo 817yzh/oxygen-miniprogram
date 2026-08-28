@@ -1,0 +1,75 @@
+<view class="page soul-page">
+
+  <!-- 头部 -->
+  <view class="soul-head center col">
+    <text class="soul-emoji">👋</text>
+    <text class="h1 mt-8">氧气同好</text>
+    <text class="aux mt-4">找到和你有一样氧气频率的人</text>
+  </view>
+
+  <!-- 我的同好圈(未测人格时) -->
+  <view class="glass-card row mt-16" wx:if="{{!hasPersonality}}" bindtap="goMbti" hover-class="soul-hover">
+    <text class="soul-ico">🏔️</text>
+    <view class="flex-1 col gap-4">
+      <text class="h2">先测出你的氧气人格</text>
+      <text class="aux">才能匹配到和你同频的氧友</text>
+    </view>
+    <text class="soul-arrow">→</text>
+  </view>
+
+  <!-- 我的同好人格 -->
+  <view class="mine-card glass-card--morning glass-card row mt-16" wx:else>
+    <text class="soul-my-icon">{{myIcon}}</text>
+    <view class="flex-1 col gap-2">
+      <text class="aux">与你有同频的</text>
+      <text class="soul-my-name">{{myPersonality}}</text>
+      <text class="soul-my-count aux mt-2">{{soulmates.length}} 位氧友与你同频</text>
+    </view>
+    <text class="mine-cert">✓ 已认证</text>
+  </view>
+
+  <!-- 同好列表 -->
+  <view class="section-title"><text class="h2">为你匹配的氧友</text></view>
+  <view class="soul-list" wx:if="{{hasPersonality}}">
+    <view class="soul-card glass-card row" wx:for="{{soulmates}}" wx:key="id">
+      <view class="soul-avatar center">
+        <text>{{item.icon}}</text>
+        <view class="soul-dot {{item.online ? 'online' : ''}}"></view>
+      </view>
+      <view class="flex-1 col" style="min-width:0">
+        <view class="row gap-4">
+          <text class="soul-nick">{{item.nickname}}</text>
+          <text class="soul-tag">{{item.tag}}</text>
+        </view>
+        <text class="soul-sig aux mt-2">{{item.signature}}</text>
+        <text class="soul-mbti aux mt-2">{{item.mbti}} · {{item.personality}}</text>
+      </view>
+      <view class="soul-say" data-name="{{item.nickname}}" bindtap="sayHi" catchtap="sayHi">打招呼</view>
+    </view>
+  </view>
+
+  <!-- 拉同好 -->
+  <view class="section-title"><text class="h2">让更多同好看到你</text></view>
+  <view class="glass-card row mt-8" bindtap="goShare" hover-class="soul-hover">
+    <text class="soul-ico">🎴</text>
+    <view class="flex-1 col gap-4">
+      <text class="h2">分享我的氧气人格卡</text>
+      <text class="aux">晒出人格身份卡，吸引更多同频氧友</text>
+    </view>
+    <text class="soul-arrow">→</text>
+  </view>
+
+  <view class="glass-card row mt-12" bindtap="goCheckin" hover-class="soul-hover">
+    <text class="soul-ico">🌱</text>
+    <view class="flex-1 col gap-4">
+      <text class="h2">和同好一起打卡</text>
+      <text class="aux">互相督促，一起养成氧气好习惯</text>
+    </view>
+    <text class="soul-arrow">→</text>
+  </view>
+
+  <view class="soul-footer aux center mt-24">
+    🫧 同频的人，终会遇见
+  </view>
+
+</view>

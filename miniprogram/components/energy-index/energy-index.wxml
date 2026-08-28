@@ -1,0 +1,13 @@
+<!-- 氧气能量指数组件 -->
+<view class="energy-index">
+  <view class="ei-item" wx:for="{{items}}" wx:key="label">
+    <view class="ei-row">
+      <text class="ei-icon">{{item.icon}}</text>
+      <text class="ei-label">{{item.label}}</text>
+      <text class="ei-value">{{item.value}}</text>
+    </view>
+    <view class="ei-bar">
+      <view class="ei-fill" style="width:{{item.value}}%"></view>
+    </view>
+  </view>
+</view>

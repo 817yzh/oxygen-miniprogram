@@ -1,0 +1,300 @@
+/*
+ * pages/oxygen-lab/oxygen-lab.wxss
+ * V2.0 · 氧气探索页（O-MBTI爆款区 + 三列功能 + 场景模拟器）
+ * 一屏不滚动
+ */
+
+page {
+  height: 100%;
+}
+
+.lab-page {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #F0F9F6;
+  overflow-y: auto;
+}
+
+/* ========== 第一层：顶部纯净大图头 O-MBTI（图文分离，零文字叠加） ========== */
+.hero-section {
+  position: relative;
+  width: 100%;
+  height: 420rpx;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: #F0F9F6;
+}
+
+.hero-bg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* 底部渐变过渡：墨绿 → 浅薄荷绿，消除切片断层感 */
+.hero-gradient {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 140rpx;
+  background: linear-gradient(to bottom, transparent 0%, #F0F9F6 100%);
+  pointer-events: none;
+}
+
+/* 信息卡片：收纳到图下方，透光薄荷绿卡 */
+.mbti-card {
+  flex-shrink: 0;
+  position: relative;
+  margin: -36rpx 24rpx 0;
+  padding: 28rpx 28rpx 32rpx;
+  background: rgba(255, 255, 255, 0.74);
+  backdrop-filter: blur(18rpx);
+  border-radius: 28rpx;
+  border: 1rpx solid rgba(114, 216, 196, 0.22);
+  box-shadow: 0 16rpx 36rpx rgba(23, 72, 60, 0.12);
+}
+
+.mbti-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #1E4A3C;
+  margin-bottom: 10rpx;
+  letter-spacing: 1rpx;
+}
+
+.mbti-sub {
+  font-size: 23rpx;
+  color: #5A7A70;
+  line-height: 1.5;
+  margin-bottom: 22rpx;
+}
+
+.mbti-cta {
+  width: 100%;
+  padding: 20rpx 0;
+  background: linear-gradient(135deg, #72D8C4 0%, #5BC9B3 100%);
+  color: #FFFFFF;
+  font-size: 27rpx;
+  font-weight: 600;
+  border-radius: 40rpx;
+  border: none;
+  box-shadow: 0 8rpx 24rpx rgba(114, 216, 196, 0.4);
+  line-height: 1.4;
+  text-align: center;
+}
+
+.mbti-cta::after {
+  border: none;
+}
+
+.mbti-cta:active {
+  transform: scale(0.97);
+  opacity: 0.9;
+}
+
+/* ========== 第二层：中层高频功能区 三列网格 ========== */
+.func-grid {
+  display: flex;
+  gap: 16rpx;
+  padding: 20rpx 24rpx 12rpx;
+  flex-shrink: 0;
+}
+
+.func-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20rpx 12rpx 16rpx;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 20rpx;
+  border: 1rpx solid rgba(114, 216, 196, 0.15);
+  box-shadow: 0 4rpx 16rpx rgba(114, 216, 196, 0.08);
+  transition: transform 0.15s;
+}
+
+.func-hover {
+  transform: scale(0.95);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.func-icon {
+  width: 68rpx;
+  height: 68rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 34rpx;
+  border-radius: 18rpx;
+  margin-bottom: 12rpx;
+}
+
+.func-icon--lung {
+  background: linear-gradient(135deg, rgba(114, 216, 196, 0.25), rgba(184, 232, 255, 0.2));
+}
+
+.func-icon--sound {
+  background: linear-gradient(135deg, rgba(74, 101, 145, 0.2), rgba(114, 216, 196, 0.25));
+}
+
+.func-icon--social {
+  background: linear-gradient(135deg, rgba(255, 159, 67, 0.2), rgba(244, 167, 187, 0.2));
+}
+
+.func-title {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #2D5A4D;
+  margin-bottom: 6rpx;
+}
+
+.func-desc {
+  font-size: 18rpx;
+  color: #6B9E90;
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* ========== 第三层：底部决策区 ========== */
+.bottom-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 8rpx 24rpx 16rpx;
+  min-height: 0;
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12rpx;
+  margin-bottom: 16rpx;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #2D5A4D;
+}
+
+.section-sub {
+  font-size: 20rpx;
+  color: #8AB5A8;
+}
+
+.sim-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.sim-item {
+  width: calc(50% - 8rpx);
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+  padding: 16rpx;
+  background: rgba(255, 255, 255, 0.88);
+  border-radius: 20rpx;
+  border: 1rpx solid rgba(114, 216, 196, 0.15);
+  box-shadow: 0 4rpx 12rpx rgba(114, 216, 196, 0.06);
+  transition: transform 0.15s;
+  box-sizing: border-box;
+}
+
+.sim-hover {
+  transform: scale(0.96);
+  background: rgba(255, 255, 255, 0.98);
+}
+
+.sim-icon {
+  width: 56rpx;
+  height: 56rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 28rpx;
+  background: rgba(114, 216, 196, 0.12);
+  border-radius: 14rpx;
+  flex-shrink: 0;
+}
+
+.sim-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.sim-title {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #2D5A4D;
+}
+
+.sim-tags {
+  display: flex;
+  gap: 8rpx;
+  flex-wrap: wrap;
+}
+
+.sim-tag {
+  padding: 4rpx 12rpx;
+  border-radius: 12rpx;
+  font-size: 18rpx;
+  line-height: 1.4;
+}
+
+.sim-tag--level.sim-tag--high {
+  background: rgba(255, 159, 67, 0.18);
+  color: #E88A3C;
+}
+
+.sim-tag--level.sim-tag--mid {
+  background: rgba(114, 216, 196, 0.18);
+  color: #3A9A85;
+}
+
+.sim-tag--level.sim-tag--low {
+  background: rgba(155, 200, 150, 0.18);
+  color: #5A9A55;
+}
+
+.sim-tag--ox {
+  background: rgba(114, 216, 196, 0.1);
+  color: #6B9E90;
+}
+
+/* 底部悬浮装备条 */
+.equip-bar {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20rpx;
+  background: linear-gradient(135deg, rgba(114, 216, 196, 0.14) 0%, rgba(91, 201, 179, 0.09) 100%);
+  border-radius: 20rpx;
+  border: 1rpx solid rgba(114, 216, 196, 0.22);
+  transition: opacity 0.15s;
+}
+
+.equip-hover {
+  opacity: 0.8;
+  transform: scale(0.98);
+}
+
+.equip-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #2D6B5A;
+  margin-bottom: 6rpx;
+}
+
+.equip-sub {
+  font-size: 20rpx;
+  color: #6B9E90;
+}

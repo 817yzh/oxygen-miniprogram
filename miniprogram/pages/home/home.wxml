@@ -1,0 +1,142 @@
+<!--
+  pages/home/home.wxml
+  V2.1 · 高质感治愈首页（一屏不滚动）
+  改动: 背景清透渐变 / IP物理趴球 / 玻璃球+内部粒子 / 微光气泡 / 点击球体弹维度气泡
+-->
+<view class="home-v2">
+
+  <!-- ========== 1. 顶部问候区 ========== -->
+  <view class="greeting-area">
+    <text class="greeting-title">{{greetMain}}</text>
+    <text class="greeting-sub">{{userName}}，今天是陪伴你的第 {{companionDay}} 天 💚</text>
+  </view>
+
+  <!-- 今日氧气记录入口（点击唤起状态轻选抽屉） -->
+  <view class="status-bar {{statusBarDone ? 'status-bar--done' : ''}}" bindtap="onIpTap" hover-class="status-bar--press">
+    <view class="status-bar-icon">{{statusBarDone ? '✓' : '✍️'}}</view>
+    <text class="status-bar-text">{{statusBarText}}</text>
+    <view class="status-bar-arrow">{{statusBarDone ? '' : '→'}}</view>
+  </view>
+
+  <!-- ========== 2. 主视觉区：IP + 氧气球（物理重叠） ========== -->
+  <view class="main-stage">
+
+    <!-- 装饰微光气泡（背景层，拉出纵深感） -->
+    <view class="glow-bubble bubble-1"></view>
+    <view class="glow-bubble bubble-2"></view>
+    <view class="glow-bubble bubble-3"></view>
+
+    <!-- IP形象：物理趴在球顶（点击同样可唤起记录） -->
+    <view class="ip-wrap" catchtap="onIpTap">
+      <image
+        class="ip-avatar {{ipTapActive ? 'ip-tap-active' : ''}}"
+        src="https://cdn.jsdelivr.net/gh/817yzh/oxygen-images@main/ip-final.png"
+        mode="aspectFit"
+      />
+    </view>
+
+    <!-- 点击IP后弹出的治愈气泡 -->
+    <view class="comfort-bubble {{showComfortBubble ? 'bubble-show' : ''}}" wx:if="{{comfortWord}}">
+      {{comfortWord}}
+    </view>
+
+    <!-- 玻璃氧气球（点击弹维度气泡） -->
+    <view class="oxygen-ball breathing" bindtap="onBallTap">
+      <!-- 球内气泡粒子（缓慢上升，让球"活"起来） -->
+      <view class="inner-particle particle-1"></view>
+      <view class="inner-particle particle-2"></view>
+      <view class="inner-particle particle-3"></view>
+      <view class="inner-particle particle-4"></view>
+      <!-- 球心数字 -->
+      <view class="ball-inner">
+        <text class="ball-number">{{oxygenScore}}</text>
+        <text class="ball-label">氧气指数</text>
+        <text class="ball-slogan">吸一口气，开启美好能量</text>
+      </view>
+    </view>
+
+    <!-- 点击球体后弹出的4个维度气泡 + 2个氛围无字气泡（围绕球体，微弧形错落） -->
+    <view class="dim-bubbles {{showDimBubbles ? 'bubbles-show' : ''}}">
+      <view class="dim-bubble" wx:for="{{oxygenMetrics}}" wx:key="key" wx:for-index="idx">
+        <text class="dim-bubble-icon">{{item.icon}}</text>
+        <text class="dim-bubble-value">{{item.value}}</text>
+        <text class="dim-bubble-label">{{item.label}}</text>
+      </view>
+      <!-- 氛围无字气泡（一大一小，纯半透明高光水滴） -->
+      <view class="atmosphere-bubble atm-big"></view>
+      <view class="atmosphere-bubble atm-small"></view>
+    </view>
+
+  </view>
+
+  <!-- ========== 3. 极淡提示文字 ========== -->
+  <text class="ball-hint">{{showDimBubbles ? '点击球体收起维度' : '点击球体查看详细数据'}}</text>
+
+  <!-- ========== 4. 底部按钮区：吸氧 + AI陪伴 聊一聊 ========== -->
+  <view class="action-area">
+    <view class="oxygen-btn breathing-glow" bindtap="startOxygenTherapy" hover-class="btn-hover">
+      <text class="btn-icon">🫁</text>
+      <text class="btn-text">开启1分钟吸氧</text>
+    </view>
+    <view class="chat-link" bindtap="goChat" hover-class="btn-hover">
+      <text class="chat-link-ico">💬</text>
+      <text class="chat-link-text">和灵狐聊一聊</text>
+    </view>
+  </view>
+
+  <!-- ========== 5. 今日充氧手账抽屉（点击IP/状态条/气泡升起） ========== -->
+  <view class="drawer-mask {{drawerOpen ? 'drawer-mask--show' : ''}}" bindtap="closeDrawer" catchtouchmove="noop"></view>
+  <view class="checkin-drawer {{drawerOpen ? 'drawer-open' : ''}}">
+    <view class="drawer-handle"></view>
+    <view class="drawer-title-row">
+      <text class="drawer-title">{{drawerTitle}}</text>
+      <text class="drawer-sub">选一下状态，留一口今天的氧气（30秒）</text>
+    </view>
+
+    <!-- Q2 · 五档氧状态轻选 -->
+    <view class="mood-options">
+      <view
+        class="mood-pill {{moodPick === item.key ? 'mood-on' : ''}}"
+        wx:for="{{moodOptions}}"
+        wx:key="key"
+        data-key="{{item.key}}"
+        bindtap="onPickMood"
+      >
+        <text class="mood-icon">{{item.icon}}</text>
+        <text class="mood-text">{{item.label}}</text>
+      </view>
+    </view>
+
+    <!-- 氧气瞬间照片（可选） -->
+    <view class="photo-row">
+      <view class="photo-upload {{photoPath ? 'photo-has' : ''}}" bindtap="onTakePhoto">
+        <image wx:if="{{photoPath}}" class="photo-preview" src="{{photoPath}}" mode="aspectFill" />
+        <block wx:else>
+          <text class="photo-plus">📷</text>
+          <text class="photo-label">拍一口今天的氧气</text>
+        </block>
+      </view>
+      <text class="photo-hint">可选 · 一杯咖啡 / 天空 / 书桌</text>
+    </view>
+
+    <!-- 手账输入 -->
+    <view class="drawer-note">
+      <textarea
+        class="note-input"
+        placeholder="今天发生了什么开心的小事吗……"
+        placeholder-class="note-placeholder"
+        value="{{noteText}}"
+        bindinput="onNoteInput"
+        maxlength="60"
+        auto-height
+      />
+    </view>
+
+    <!-- 确认按钮 -->
+    <button class="drawer-confirm" bindtap="confirmCheckin" hover-class="drawer-confirm--press">
+      <text class="drawer-confirm-ico">🌿</text>
+      <text class="drawer-confirm-label">存好今天的氧气</text>
+    </button>
+  </view>
+
+</view>

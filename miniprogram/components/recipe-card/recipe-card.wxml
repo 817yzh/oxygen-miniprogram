@@ -1,0 +1,46 @@
+<!-- 健康食谱卡片(V0.8) -->
+<view class="recipe-card glass-card" wx:if="{{recipe}}">
+  <!-- 头部 -->
+  <view class="rc-head">
+    <text class="rc-title">🥗 今日健康食谱</text>
+    <text class="rc-sub">基于今日状态为你推荐</text>
+  </view>
+
+  <!-- 食谱名 -->
+  <view class="rc-name">{{recipe.name}}</view>
+  <view class="rc-desc aux">{{recipe.description}}</view>
+
+  <!-- 为什么推荐 -->
+  <view class="rc-block">
+    <text class="rc-label">📋 为什么推荐</text>
+    <text class="rc-text">{{why}}</text>
+  </view>
+
+  <!-- 怎么做(简版) -->
+  <view class="rc-block">
+    <text class="rc-label">📝 怎么做（简版）</text>
+    <text class="rc-steps">{{recipe.steps[0]}}</text>
+  </view>
+
+  <!-- 效果标签 -->
+  <view class="rc-tags" wx:if="{{recipe.tags.length > 0}}">
+    <view class="rc-tag" wx:for="{{recipe.tags}}" wx:key="*this">{{item}}</view>
+  </view>
+
+  <!-- 查看完整做法 -->
+  <view class="rc-more" bindtap="toggleDetail">
+    <text>{{showDetail ? '收起完整做法 ▲' : '查看完整做法 →'}}</text>
+  </view>
+
+  <!-- 展开详情 -->
+  <view class="rc-detail" wx:if="{{showDetail}}">
+    <view class="rc-block">
+      <text class="rc-label">🧺 食材</text>
+      <text class="rc-text" wx:for="{{recipe.ingredients}}" wx:key="*this">{{item}}</text>
+    </view>
+    <view class="rc-block">
+      <text class="rc-label">👨‍🍳 完整做法</text>
+      <view class="rc-step" wx:for="{{recipe.steps}}" wx:key="index">{{index + 1}}. {{item}}</view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,84 @@
+/* pages/sound-therapy/sound-therapy.wxss */
+.sound-page {
+  background:
+    radial-gradient(circle at 85% 5%, rgba(184,232,255,0.5) 0%, transparent 45%),
+    radial-gradient(circle at 8% 12%, rgba(114,216,196,0.2) 0%, transparent 40%),
+    var(--yy-bg);
+}
+.sound-head { padding: 16px 0 4px; }
+.sound-emoji { font-size: 48px; }
+
+.demo-tip {
+  margin-top: 12px;
+  padding: 12rpx 20rpx;
+  border-radius: 16rpx;
+  background: rgba(255,159,67,0.1);
+}
+.demo-text { font-size: 12px; color: #B2732E; }
+
+.section-title { margin: 24px 4px 12px; }
+.sound-card { align-items: center; gap: 14px; padding: 20rpx 24rpx; }
+.sound-icon {
+  width: 52px; height: 52px; border-radius: 18rpx;
+  background: linear-gradient(135deg,#72D8C4,#B8E8FF);
+  font-size: 26px; flex-shrink: 0;
+}
+.sound-name { font-size: 16px; font-weight: 800; }
+.sound-desc { font-size: 12px; }
+.sound-duration { font-size: 11px; color: var(--yy-primary); }
+.sound-play { color: var(--yy-primary); font-size: 20px; font-weight: 800; }
+.sound-hover { opacity: 0.85; transform: scale(0.99); }
+
+.tone-list { }
+.tone-card {
+  align-items: center; gap: 12px;
+  padding: 16rpx 8rpx;
+  border-bottom: 1px solid rgba(184,232,255,0.3);
+}
+.tone-card:last-child { border-bottom: none; }
+.tone-dot { width: 18px; height: 18px; border-radius: 999px; flex-shrink: 0; }
+.tone-name { font-size: 14px; font-weight: 700; }
+.tone-mood { font-size: 12px; }
+.tone-info {
+  width: 24px; height: 24px; border-radius: 999px;
+  border: 1px solid var(--yy-primary); color: var(--yy-primary);
+  text-align: center; line-height: 24px; font-size: 13px; font-weight: 700;
+}
+
+.sound-footer { color: #b8cbc9; margin-bottom: 24px; }
+
+/* 播放浮层 */
+.player-mask {
+  position: fixed; top:0; left:0; right:0; bottom:0;
+  background: rgba(20,40,35,0.55);
+  display: flex; align-items: flex-end; z-index: 100;
+}
+.player-card {
+  width: 100%;
+  background: linear-gradient(170deg,#F6FFF8,#EAFBF6);
+  border-radius: 28px 28px 0 0;
+  padding: 28rpx 36rpx 40rpx;
+  box-sizing: border-box;
+}
+.player-head { justify-content: space-between; align-items: center; }
+.player-title { font-size: 20px; font-weight: 800; }
+.player-bar {
+  height: 10px; border-radius: 999px;
+  background: rgba(114,216,196,0.2); overflow: hidden;
+}
+.player-fill {
+  height: 100%; border-radius: 999px;
+  background: linear-gradient(90deg,#72D8C4,#2BB696);
+}
+.player-time { justify-content: space-between; margin-top: 6px; }
+.tone-detail { gap: 6px; }
+
+.player-ctrl { }
+.player-btn {
+  width: 80px; height: 80px; border-radius: 999px;
+  background: linear-gradient(135deg,#72D8C4,#2BB696);
+  box-shadow: 0 8px 24px rgba(43,182,150,0.4);
+}
+.player-btn-icon { font-size: 30px; color: #fff; }
+.player-guide { margin-top: 14px; }
+.player-guide-text { font-size: 13px; color: var(--yy-text-sub); }

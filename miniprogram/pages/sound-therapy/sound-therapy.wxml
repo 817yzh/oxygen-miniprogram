@@ -1,0 +1,99 @@
+<view class="page sound-page">
+
+  <!-- 头部 -->
+  <view class="sound-head center col">
+    <text class="sound-emoji">🎵</text>
+    <text class="h1 mt-8">音疗冥想</text>
+    <text class="aux mt-4">五音调五脏 · 给身心一次深呼吸</text>
+  </view>
+
+  <!-- 演示提示 -->
+  <view class="demo-tip row center">
+    <text class="demo-text">🎧 演示版：音频为模拟进度，正式版将接入真实音源</text>
+  </view>
+
+  <!-- 场景包列表 -->
+  <view class="section-title"><text class="h2">按场景选择</text></view>
+  <view class="scene-list">
+    <view
+      class="sound-card glass-card row"
+      wx:for="{{scenes}}"
+      wx:key="key"
+      data-key="{{item.key}}"
+      bindtap="openScene"
+      hover-class="sound-hover"
+    >
+      <view class="sound-icon center">{{item.icon}}</view>
+      <view class="flex-1 col" style="min-width:0">
+        <text class="sound-name">{{item.name}}</text>
+        <text class="sound-desc aux mt-2">{{item.desc}}</text>
+        <text class="sound-duration aux mt-2">⏱ {{item.duration}}</text>
+      </view>
+      <text class="sound-play">▶</text>
+    </view>
+  </view>
+
+  <!-- 五音科普 -->
+  <view class="section-title"><text class="h2">五音疗法 · 知一点</text></view>
+  <view class="tone-list">
+    <view
+      class="tone-card row"
+      wx:for="{{tones}}"
+      wx:key="key"
+      data-key="{{item.key}}"
+      bindtap="goToTone"
+    >
+      <view class="tone-dot" style="background:{{item.color}}"></view>
+      <view class="flex-1 col" style="min-width:0">
+        <text class="tone-name">{{item.name}} · 养{{item.organ}}</text>
+        <text class="tone-mood aux mt-2">{{item.mood}}</text>
+      </view>
+      <text class="tone-info">?</text>
+    </view>
+  </view>
+
+  <view class="sound-footer aux center mt-24">
+    🫧 配合充氧宝深呼吸，效果更佳
+  </view>
+
+  <!-- ===== 播放浮层 ===== -->
+  <view class="player-mask" wx:if="{{current}}" bindtap="closeDetail">
+    <view class="player-card" catchtap="noop">
+      <view class="player-head row">
+        <text class="player-title">{{current.icon}} {{current.name}}</text>
+        <text class="aux">{{current.duration}}</text>
+      </view>
+
+      <!-- 进度 -->
+      <view class="player-bar mt-16">
+        <view class="player-fill" style="width:{{progress}}%"></view>
+      </view>
+      <view class="player-time row">
+        <text class="aux">0:00</text>
+        <text class="aux">{{progress}}%</text>
+      </view>
+
+      <!-- 五音组合说明 -->
+      <view class="tone-detail col mt-16" wx:if="{{current.toneDetail}}">
+        <text class="aux" wx:for="{{current.toneDetail}}" wx:key="key">
+          · {{item.name}}({{item.organ}}) {{item.mood}}
+        </text>
+      </view>
+
+      <!-- 控制 -->
+      <view class="player-ctrl center mt-20">
+        <view class="player-btn center" bindtap="togglePlay">
+          <text class="player-btn-icon">{{playing ? '⏸' : '▶'}}</text>
+        </view>
+      </view>
+
+      <!-- 引导 -->
+      <view class="player-guide center mt-16">
+        <text class="player-guide-text">{{playing ? '放松呼吸，跟随音律 🫧' : '点击播放，开始冥想'}}</text>
+      </view>
+
+      <button class="btn btn--ghost btn--block mt-16" bindtap="goCheckin">完成这次冥想 · 去打卡 🌱</button>
+    </view>
+  </view>
+
+</view>

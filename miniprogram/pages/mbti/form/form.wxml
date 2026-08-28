@@ -1,0 +1,64 @@
+<!-- 氧系MBTI 信息采集页 · 沉浸式动态问答版 -->
+<view class="page mbti-form">
+
+  <!-- 顶部：极细薄荷绿进度条 -->
+  <view class="progress-wrap">
+    <view class="progress-track">
+      <view class="progress-bar"></view>
+    </view>
+    <text class="progress-tip">完成基本信息 · 用 30 秒认识你</text>
+  </view>
+
+  <!-- 题目氛围标题 -->
+  <view class="q-title">
+    <text class="q-kicker">关于你 · 简单几问</text>
+    <text class="q-h1">先让我认识一下你 🌱</text>
+  </view>
+
+  <!-- 毛玻璃题目卡片 -->
+  <view class="glass-card">
+
+    <!-- 头像上传 + 趣味表情感知 -->
+    <view class="avatar-upload center" bindtap="onAvatarTap">
+      <image wx:if="{{avatar}}" src="{{avatar}}" mode="aspectFill" class="avatar-preview" />
+      <view wx:else class="avatar-placeholder">
+        <text class="avatar-plus">+</text>
+      </view>
+      <text class="aux mt-8">上传头像 · 趣味感知</text>
+    </view>
+
+    <!-- 趣味表情感知结果 -->
+    <view class="face-tip" wx:if="{{faceDetecting || faceText}}">
+      <text wx:if="{{faceDetecting}}" class="aux">🫧 {{faceText}}</text>
+      <text wx:elif="{{faceText}}" class="face-result">🌱 {{faceText}}</text>
+    </view>
+
+    <!-- 生日(必填) -->
+    <view class="field">
+      <text class="field-label">你的生日</text>
+      <picker mode="date" value="{{birthday}}" bindchange="onBirthday">
+        <view class="field-picker {{birthday?'':'placeholder'}}">{{birthday || '选择生日 · 用于推算你的氧气节奏'}}</view>
+      </picker>
+    </view>
+
+    <!-- 性别：治愈系胶囊选项 -->
+    <view class="field">
+      <text class="field-label">你的性别</text>
+      <view class="gender-row row gap-12">
+        <view class="gender-pill {{gender==='male'?'on':''}}" data-g="male" bindtap="onGender" hover-class="pill-press">男</view>
+        <view class="gender-pill {{gender==='female'?'on':''}}" data-g="female" bindtap="onGender" hover-class="pill-press">女</view>
+        <view class="gender-pill {{gender==='other'?'on':''}}" data-g="other" bindtap="onGender" hover-class="pill-press">保密</view>
+      </view>
+    </view>
+
+  </view>
+
+  <!-- 底部：IP 陪伴身影 + 薄荷绿按钮 -->
+  <view class="footer">
+    <view class="footer-ip">
+      <yy-ip action="accompany" size="sm" bubble="慢慢来，交给我就好" />
+    </view>
+    <button class="cta-btn {{canSubmit?'':'cta-disabled'}}" bindtap="next">开始分析 ✦</button>
+  </view>
+
+</view>

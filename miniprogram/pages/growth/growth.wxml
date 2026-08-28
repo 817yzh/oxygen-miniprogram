@@ -1,0 +1,104 @@
+<!-- Page 8 · 成长中心(升级) -->
+<view class="page growth">
+
+  <!-- 成长IP -->
+  <view class="growth-hero center">
+    <yy-ip action="grow" size="md" bubble="氧氧的变化 {{badge}}" />
+  </view>
+
+  <!-- 等级卡(带氧氧状态) -->
+  <view class="level-card glass-card center col">
+    <text class="level-badge">Lv.{{level}}</text>
+    <text class="level-name mt-8">{{levelName}}</text>
+    <text class="oxy-state aux mt-8">{{oxyStateText}}</text>
+    <view class="exp-bar mt-16">
+      <view class="exp-fill" style="width:{{exp}}%"></view>
+    </view>
+    <text class="aux mt-8">{{exp}} / {{expMax}} 成长值</text>
+
+    <!-- 下一等级解锁提示 -->
+    <view class="next-level-tip row mt-12" wx:if="{{nextLevel}}">
+      <text class="aux">还差 {{nextRemain}} 成长值，解锁「{{nextLevel.name}}」</text>
+      <text class="next-arrow">→</text>
+    </view>
+  </view>
+
+  <!-- 成长瞬间 -->
+  <view class="section-title"><text class="h2">成长瞬间</text></view>
+  <view class="glass-card" wx:if="{{hasMoments}}">
+    <view class="moment-item row" wx:for="{{moments}}" wx:key="index">
+      <view class="moment-dot"></view>
+      <text class="flex-1">{{item.date}} · 记录了「{{item.emotion}}」</text>
+      <text class="aux">{{item.scene || '日常'}}</text>
+    </view>
+  </view>
+  <view class="glass-card center col gap-8" wx:else>
+    <text class="aux">还没有成长瞬间，去打卡记录第一个吧</text>
+  </view>
+
+  <!-- 成长轨迹时间线(V0.5) -->
+  <view class="section-title"><text class="h2">🌱 成长轨迹</text></view>
+  <view class="glass-card timeline-card" wx:if="{{timeline && timeline.length > 0}}">
+    <view class="timeline-item row" wx:for="{{timeline}}" wx:key="index">
+      <view class="timeline-marker">{{item.icon}}</view>
+      <view class="timeline-line" wx:if="{{index < timeline.length - 1}}"></view>
+      <view class="flex-1 col gap-2 timeline-content {{index === 0 ? 'latest' : ''}}">
+        <text class="timeline-text">{{item.text}}</text>
+        <text class="aux timeline-date" wx:if="{{item.date && item.date !== 'day0'}}">{{item.date}}</text>
+        <text class="aux timeline-date" wx:else>开始</text>
+      </view>
+    </view>
+  </view>
+  <view class="glass-card center col gap-8" wx:else>
+    <text class="aux">你的成长故事，从第一次打卡开始 ✨</text>
+  </view>
+
+  <!-- 经验记录 -->
+  <view class="section-title"><text class="h2">经验记录</text></view>
+  <view class="glass-card" wx:if="{{records.length > 0}}">
+    <view class="exp-item row" wx:for="{{records}}" wx:key="index">
+      <view class="exp-dot"></view>
+      <text class="flex-1">{{item.date}} · {{item.emotion}}</text>
+      <text class="aux">+{{item.energy}} EXP</text>
+    </view>
+  </view>
+  <view class="glass-card center col gap-8" wx:else>
+    <text class="aux">还没有打卡记录</text>
+    <button class="btn btn--primary" bindtap="goCheckin">去打卡</button>
+  </view>
+
+  <!-- 成就 (V0.7 完整成就墙: 含未解锁) -->
+  <view class="section-title"><text class="h2">成就</text></view>
+  <view class="achieve-grid">
+    <view class="achieve-item glass-card center col {{item.unlocked?'':'locked'}}" wx:for="{{achievements}}" wx:key="id">
+      <text class="achieve-icon">{{item.unlocked ? item.icon : '🔒'}}</text>
+      <text class="body-sm mt-8">{{item.name}}</text>
+      <text class="aux" style="text-align:center">{{item.unlocked ? item.desc : '尚未解锁'}}</text>
+    </view>
+  </view>
+
+  <!-- V0.7 等级奖励 -->
+  <view class="section-title"><text class="h2">等级奖励</text></view>
+  <view class="reward-list">
+    <view class="reward-item row" wx:for="{{rewardList}}" wx:key="level">
+      <view class="reward-lv center">Lv{{item.level}}</view>
+      <text class="flex-1">{{item.name}} · {{item.reward}}</text>
+      <text class="reward-check {{item.level <= growthLevel?'on':''}}">{{item.level <= growthLevel ? '✓ 已解锁' : '🔒'}}</text>
+    </view>
+  </view>
+
+  <!-- V0.7 成长值明细 -->
+  <view class="section-title"><text class="h2">我的成长值</text></view>
+  <view class="growth-total center col">
+    <text class="growth-total-num">{{growthTotal}}</text>
+    <text class="aux">累计成长值</text>
+  </view>
+  <view class="growth-log glass-card">
+    <view class="log-item row" wx:for="{{growthLog}}" wx:key="time">
+      <text class="flex-1">{{item.label}}</text>
+      <text class="log-exp">+{{item.exp}}</text>
+    </view>
+    <text class="aux mt-8" wx:if="{{growthLog.length===0}}">还没有成长记录，从和氧氧聊天开始吧 💚</text>
+  </view>
+
+</view>

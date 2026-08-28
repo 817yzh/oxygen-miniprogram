@@ -1,0 +1,46 @@
+.recipe-card {
+  padding: 20px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #FFF9F0, #FFF);
+  box-shadow: 0 4px 14px rgba(255, 159, 67, 0.08);
+}
+
+.rc-head { margin-bottom: 10px; }
+.rc-title { font-size: 16px; font-weight: 800; color: #264653; display: block; }
+.rc-sub { font-size: 11px; color: #9BB7AE; margin-top: 2px; display: block; }
+
+.rc-name { font-size: 20px; font-weight: 800; color: #4A9E8E; }
+.rc-desc { font-size: 12px; margin-top: 2px; }
+
+.rc-block { margin-top: 14px; }
+.rc-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: #FF9F43;
+  margin-bottom: 4px;
+}
+.rc-text { display: block; font-size: 13px; color: #48575E; line-height: 1.6; }
+.rc-steps { display: block; font-size: 13px; color: #48575E; line-height: 1.6; }
+
+.rc-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.rc-tag {
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(255, 159, 67, 0.12);
+  color: #E0712F;
+  font-size: 11px;
+}
+
+.rc-more {
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px dashed #E5C9A3;
+  text-align: center;
+  color: #4A9E8E;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.rc-detail { margin-top: 10px; }
+.rc-step { font-size: 13px; color: #48575E; line-height: 1.8; }

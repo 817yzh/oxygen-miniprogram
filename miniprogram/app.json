@@ -1,0 +1,69 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/home/home",
+    "pages/breathing/breathing",
+    "pages/chat/chat",
+    "pages/oxygen-lab/oxygen-lab",
+    "pages/product-center/product-center",
+    "pages/profile/profile",
+    "pages/oxygen-profile/oxygen-profile",
+    "pages/mbti/index/index",
+    "pages/mbti/form/form",
+    "pages/mbti/loading/loading",
+    "pages/mbti/result/result",
+    "pages/checkin/checkin",
+    "pages/report/report",
+    "pages/growth/growth",
+    "pages/emotion-log/emotion-log",
+    "pages/scene-detail/index",
+    "pages/chat-stat/chat-stat",
+    "pages/oxygen-test/oxygen-test",
+    "pages/scene-simulator/scene-simulator",
+    "pages/share/personality-share/personality-share",
+    "pages/health-disclaimer/health-disclaimer",
+    "pages/sound-therapy/sound-therapy",
+    "pages/soulmate/soulmate"
+  ],
+  "window": {
+    "navigationBarTitleText": "氧氧宝",
+    "navigationBarBackgroundColor": "#F8FBFA",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F8FBFA",
+    "backgroundTextStyle": "light"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#10B981",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "陪伴",
+        "iconPath": "images/tab/tab-companion.png",
+        "selectedIconPath": "images/tab/tab-companion-active.png"
+      },
+      {
+        "pagePath": "pages/oxygen-lab/oxygen-lab",
+        "text": "探索",
+        "iconPath": "images/tab/tab-explore.png",
+        "selectedIconPath": "images/tab/tab-explore-active.png"
+      },
+      {
+        "pagePath": "pages/product-center/product-center",
+        "text": "充氧宝",
+        "iconPath": "images/tab/tab-device.png",
+        "selectedIconPath": "images/tab/tab-device-active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "images/tab/tab-me.png",
+        "selectedIconPath": "images/tab/tab-me-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

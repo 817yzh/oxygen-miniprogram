@@ -1,0 +1,314 @@
+/* 我的页面 V2.0 · 氧气数字绿洲 / 健康能量仪表盘 */
+page {
+  height: 100%;
+}
+
+.profile-page {
+  min-height: 100%;
+  background: linear-gradient(180deg, #E8F7F2 0%, #F0FAF7 40%, #F5FCFA 100%);
+  padding: 20rpx 24rpx 32rpx;
+  box-sizing: border-box;
+}
+
+/* ========== 顶部：氧气身份卡 ========== */
+.user-card {
+  position: relative;
+  border-radius: 28rpx;
+  overflow: visible;
+  margin-bottom: 24rpx;
+  box-shadow: 0 12rpx 36rpx rgba(23, 72, 60, 0.15);
+  /* 兜底：即使 glow 异常也有深绿背景，绝不透明漏底 */
+  background: linear-gradient(135deg, #0F2922 0%, #1A4D40 100%);
+}
+
+.user-card-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #1A5A4A 0%, #0D352B 50%, #072019 100%);
+  z-index: 1;
+  border-radius: 28rpx;
+}
+
+.user-card-glow::before {
+  content: '';
+  position: absolute;
+  top: -60rpx;
+  right: -40rpx;
+  width: 280rpx;
+  height: 280rpx;
+  background: radial-gradient(circle, rgba(114, 216, 196, 0.3) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.user-card-content {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: flex-start;
+  padding: 40rpx 24rpx 40rpx 250rpx;
+  gap: 16rpx;
+  min-height: 240rpx;
+  justify-content: flex-end;
+}
+
+.user-ip {
+  position: absolute;
+  top: -6rpx;
+  left: -24rpx;
+  width: 740rpx;
+  height: 416rpx;
+  z-index: 2;
+  animation: ipBreathe 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes ipBreathe {
+  0%, 100% { transform: scale(1) translateY(0); }
+  50% { transform: scale(1.015) translateY(-3rpx); }
+}
+
+.user-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.user-name {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: 1rpx;
+}
+
+.user-tag {
+  align-self: flex-start;
+  padding: 6rpx 18rpx;
+  border-radius: 20rpx;
+  background: rgba(114, 216, 196, 0.25);
+  border: 1rpx solid rgba(114, 216, 196, 0.4);
+  color: #A8E6D5;
+  font-size: 22rpx;
+  font-weight: 600;
+}
+
+.user-guide {
+  font-size: 22rpx;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.5;
+}
+
+/* 氧气值进度条 */
+.oxygen-bar {
+  position: relative;
+  height: 36rpx;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 18rpx;
+  margin-top: 6rpx;
+  overflow: hidden;
+}
+
+.oxygen-bar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #72D8C4 0%, #5BC9B3 100%);
+  border-radius: 18rpx;
+  transition: width 0.6s ease;
+}
+
+.oxygen-bar-text {
+  position: relative;
+  z-index: 2;
+  display: block;
+  text-align: center;
+  line-height: 36rpx;
+  font-size: 20rpx;
+  color: #FFFFFF;
+  font-weight: 600;
+  text-shadow: 0 1rpx 4rpx rgba(0, 0, 0, 0.3);
+}
+
+/* 陪伴天数徽章：尾巴尖端附近 */
+.companion-badge {
+  position: absolute;
+  right: 28rpx;
+  top: 40rpx;
+  width: 92rpx;
+  height: 92rpx;
+  border-radius: 50%;
+  background: rgba(114, 216, 196, 0.3);
+  border: 2rpx solid rgba(114, 216, 196, 0.6);
+  backdrop-filter: blur(8rpx);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 6;
+  box-shadow: 0 4rpx 16rpx rgba(114, 216, 196, 0.35);
+}
+
+.badge-num {
+  font-size: 28rpx;
+  font-weight: 800;
+  color: #A8E6D5;
+  line-height: 1;
+}
+
+.badge-label {
+  font-size: 16rpx;
+  color: rgba(168, 230, 213, 0.8);
+  margin-top: 4rpx;
+}
+
+/* ========== 中部：核心数据看板 ========== */
+.dash-grid {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  gap: 16rpx;
+  margin-bottom: 24rpx;
+}
+
+.dash-cell {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20rpx 12rpx 18rpx;
+  border-radius: 20rpx;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1rpx solid rgba(114, 216, 196, 0.15);
+  box-shadow: 0 6rpx 20rpx rgba(23, 72, 60, 0.06);
+}
+
+.dash-icon {
+  width: 56rpx;
+  height: 56rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30rpx;
+  border-radius: 14rpx;
+  margin-bottom: 12rpx;
+}
+
+.dash-cell--oxygen .dash-icon {
+  background: linear-gradient(135deg, rgba(114, 216, 196, 0.25), rgba(184, 232, 255, 0.2));
+}
+
+.dash-cell--emotion .dash-icon {
+  background: linear-gradient(135deg, rgba(91, 201, 179, 0.25), rgba(114, 216, 196, 0.2));
+}
+
+.dash-cell--growth .dash-icon {
+  background: linear-gradient(135deg, rgba(155, 200, 150, 0.25), rgba(114, 216, 196, 0.2));
+}
+
+.dash-num-row {
+  display: flex;
+  align-items: baseline;
+  gap: 4rpx;
+  margin-bottom: 4rpx;
+}
+
+.dash-num {
+  font-size: 36rpx;
+  font-weight: 800;
+  color: #1F3833;
+  line-height: 1;
+}
+
+.dash-unit {
+  font-size: 20rpx;
+  color: #5BC9B3;
+  font-weight: 600;
+}
+
+.dash-label {
+  font-size: 20rpx;
+  color: #7AA799;
+  text-align: center;
+}
+
+/* ========== 下部：功能分组卡 ========== */
+.grp-card {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(12rpx);
+  border-radius: 20rpx;
+  border: 1rpx solid rgba(114, 216, 196, 0.15);
+  box-shadow: 0 6rpx 20rpx rgba(23, 72, 60, 0.05);
+  padding: 8rpx 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.grp-title {
+  display: block;
+  font-size: 24rpx;
+  font-weight: 700;
+  color: #5A8A7A;
+  letter-spacing: 1rpx;
+  padding: 16rpx 4rpx 12rpx;
+}
+
+.grp-item {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 22rpx 4rpx;
+  border-bottom: 1rpx solid rgba(114, 216, 196, 0.1);
+}
+
+.grp-item:last-child {
+  border-bottom: none;
+}
+
+.grp-ico {
+  width: 52rpx;
+  height: 52rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 26rpx;
+  border-radius: 14rpx;
+  flex-shrink: 0;
+  background: rgba(114, 216, 196, 0.1);
+}
+
+.grp-text {
+  flex: 1;
+  font-size: 28rpx;
+  color: #1F3833;
+  font-weight: 500;
+}
+
+.grp-text--danger {
+  color: #D4756A;
+}
+
+.grp-arrow {
+  font-size: 32rpx;
+  color: #A8C5BC;
+  flex-shrink: 0;
+}
+
+.grp-status {
+  font-size: 22rpx;
+  color: #5BC9B3;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+/* 底部 */
+.about {
+  text-align: center;
+  font-size: 20rpx;
+  color: #B8CBC9;
+  margin-top: 16rpx;
+  padding-bottom: 20rpx;
+}

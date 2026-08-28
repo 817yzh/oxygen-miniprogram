@@ -1,0 +1,9 @@
+{
+  "desc": "氧氧宝 sitemap 配置",
+  "rules": [
+    {
+      "action": "allow",
+      "page": "*"
+    }
+  ]
+}

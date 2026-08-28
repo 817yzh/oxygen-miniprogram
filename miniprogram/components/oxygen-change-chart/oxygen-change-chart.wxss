@@ -1,0 +1,35 @@
+/* components/oxygen-change-chart/oxygen-change-chart.wxss */
+
+.ochg { padding: 28rpx 30rpx; }
+
+.ochg-cols {
+  gap: 12rpx; align-items: center;
+  padding-bottom: 12rpx;
+  border-bottom: 1rpx solid rgba(114,216,196,0.25);
+}
+.ochg-col-label { width: 96rpx; font-size: 24rpx; color: #8899A6; }
+.ochg-col-before { flex: 1; font-size: 24rpx; color: #B8A9A0; text-align: center; }
+.ochg-col-after { flex: 1; font-size: 24rpx; color: var(--yy-primary); text-align: center; }
+
+.ochg-row { align-items: center; gap: 12rpx; padding: 16rpx 0; border-bottom: 1rpx solid rgba(0,0,0,0.04); }
+.ochg-r-label { width: 96rpx; font-size: 26rpx; color: #4A5568; }
+.ochg-r-before { flex: 1; align-items: center; gap: 8rpx; }
+.ochg-r-after { flex: 1; align-items: center; gap: 8rpx; }
+
+.ochg-bar { flex: 1; height: 16rpx; background: rgba(0,0,0,0.06); border-radius: 999rpx; overflow: hidden; }
+.ochg-fill { height: 100%; border-radius: 999rpx; }
+.f-before { background: rgba(184,169,160,0.5); }
+.f-after { background: linear-gradient(90deg, #72D8C4, #4AA8DE); }
+
+.ochg-num-before { width: 86rpx; text-align: center; font-size: 24rpx; color: #B8A9A0; }
+.ochg-num-after { width: 120rpx; text-align: center; font-size: 24rpx; color: #2E6B5E; font-weight: 700; }
+.ochg-delta { color: var(--yy-primary); font-weight: 700; }
+
+.ochg-note-text { font-size: 22rpx; color: #A0AAB5; }
+
+/* V0.8 首页简版小卡 */
+.ochg-compact { gap: 12rpx; }
+.ochg-c-mini { align-items: center; gap: 12rpx; }
+.ochg-c-label { width: 96rpx; font-size: 26rpx; color: #4A5568; }
+.ochg-c-delta { font-size: 14px; color: var(--yy-primary); font-weight: 700; }
+.ochg-link { color: var(--yy-primary); font-weight: 600; }

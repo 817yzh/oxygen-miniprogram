@@ -1,0 +1,61 @@
+<!-- 场景方案详情页(V0.7 五段式) -->
+<view class="page scene-detail" wx:if="{{scene}}">
+
+  <!-- 场景头部 -->
+  <view class="scene-hero center col">
+    <text class="scene-icon">{{scene.icon}}</text>
+    <text class="scene-title">{{scene.sceneName}}</text>
+    <text class="scene-sub aux">充氧宝专属方案 · 五步看懂</text>
+  </view>
+
+  <!-- ===== ① 痛点 ===== -->
+  <view class="s-card glass-card">
+    <text class="s-label">① 你可能遇到</text>
+    <text class="s-name">痛点</text>
+    <text class="s-desc">{{scene.suggestion}}</text>
+    <view class="s-tags" wx:if="{{audienceList.length > 0}}">
+      <view class="s-tag" wx:for="{{audienceList}}" wx:key="*this">适合：{{item}}</view>
+    </view>
+  </view>
+
+  <!-- ===== ② 原理解释 ===== -->
+  <view class="s-card glass-card">
+    <text class="s-label">② 为什么有帮助</text>
+    <text class="s-name">原理大白话</text>
+    <text class="s-desc">{{scene.productDesc}}。充氧宝用永磁体技术从空气中富集氧气，持续输出安全富氧空气，补充身体所需氧气。</text>
+  </view>
+
+  <!-- ===== ③ 推荐方案 ===== -->
+  <view class="s-card glass-card">
+    <text class="s-label">③ 推荐方案</text>
+    <text class="s-name">🛍 {{scene.productName}}</text>
+    <text class="s-desc mt_sm">{{scene.usage}}</text>
+    <view class="s-aroma row mt_sm">
+      <text class="s-aroma-icon">🌿</text>
+      <text class="s-desc">{{scene.sniffFormula}}</text>
+    </view>
+    <text class="s-desc aux mt_sm">{{scene.sniffDesc}}</text>
+  </view>
+
+  <!-- ===== ④ 数据背书 ===== -->
+  <view class="s-card glass-card" wx:if="{{evidenceList.length > 0}}">
+    <text class="s-label">④ 数据背书</text>
+    <view class="ev-list mt_sm">
+      <view class="ev-item" wx:for="{{evidenceList}}" wx:key="source">
+        <text class="ev-data">📊 {{item.data}}</text>
+        <text class="ev-source aux">—— {{item.source}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== ⑤ 行动 ===== -->
+  <view class="s-act glass-card">
+    <text class="s-label">⑤ 立即行动</text>
+    <view class="s-act-row row mt_sm">
+      <view class="s-act-btn s-act-rent flex-1 center" bindtap="onRent">租赁<br/>79/天</view>
+      <view class="s-act-btn s-act-buy flex-1 center" bindtap="onBuy">购买<br/>1680 元</view>
+    </view>
+    <text class="aux mt_sm" style="display:block;text-align:center">演示阶段 · 购买入口即将上线</text>
+  </view>
+
+</view>

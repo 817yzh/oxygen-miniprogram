@@ -1,0 +1,21 @@
+<!-- 氧系MBTI 引导页 · 极简治愈版 -->
+<view class="page mbti-home">
+
+  <!-- 深绿流光渐变氛围背景 -->
+  <view class="bg-flow"></view>
+
+  <!-- 顶部 Hero：放大 IP + 精致气泡 + 文案锚点 + 单按钮 -->
+  <view class="hero">
+    <view class="hero-ip">
+      <yy-ip action="detect" size="lg" bubble="让我看看你的氧气～" />
+    </view>
+
+    <view class="hero-title">
+      <text class="h1">测一测 · 你属于哪一种治愈频率？</text>
+      <text class="sub">每个人的氧气频率，舒服即是最高准则</text>
+    </view>
+
+    <button class="cta-btn" bindtap="goExplore">开启我的氧气之旅</button>
+  </view>
+
+</view>

@@ -1,0 +1,130 @@
+/**
+ * 氧氧宝 · 全局 Design System
+ * 视觉规范 V1.0
+ * 氧气感 × AI未来感 × 治愈陪伴 × 轻养成
+ */
+page {
+  /* ===== 核心色彩 ===== */
+  --yy-primary: #72D8C4;      /* 氧气绿 Oxygen Mint (主色) */
+  --yy-sky: #B8E8FF;          /* 天空氧蓝 Sky Oxygen */
+  --yy-bg: #F8FBFA;           /* 云雾白 Cloud White (浅雾白辅助背景) */
+  --yy-accent: #FF9F43;       /* 氧氧活力橙 */
+  --yy-vital: #A6E6C0;        /* 活力绿 Vital Green (强调)  */
+  --yy-text: #333333;         /* 深灰文字 */
+  --yy-text-sub: #8AA0A0;     /* 辅助灰绿 */
+  --yy-muted: #9BB0AC;        /* 更浅辅助色 (弱化/占位) */
+  --yy-white: #FFFFFF;
+
+  /* 渐变 */
+  --yy-grad-primary: linear-gradient(135deg, #72D8C4 0%, #B8E8FF 100%);
+  --yy-grad-morning: linear-gradient(180deg, #FFFFFF 0%, #EAFBF6 100%);
+
+  /* 圆角 (全局统一: 卡片24rpx/按钮40rpx 语义化) */
+  --yy-radius-card: 24px;
+  --yy-radius-card-lg: 32px;
+  --yy-radius-btn: 999px;
+
+  /* 阴影 (全局统一) */
+  --yy-shadow-card: 0 8px 32px rgba(114, 216, 196, 0.12);
+  --yy-shadow-float: 0 10px 30px rgba(114, 216, 196, 0.28);
+
+  background-color: var(--yy-bg);
+  color: var(--yy-text);
+  font-family: 'PingFang SC', 'HarmonyOS Sans SC', 'MiSans', '思源黑体', -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ===== 通用容器 ===== */
+.page {
+  min-height: 100vh;
+  padding: 24px 20px 60px;
+  box-sizing: border-box;
+  background: var(--yy-bg);
+}
+
+/* ===== 柔和玻璃卡片 ===== */
+.glass-card {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: var(--yy-radius-card);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: var(--yy-shadow-card);
+  padding: 22px;
+  box-sizing: border-box;
+}
+
+.glass-card--morning {
+  background: var(--yy-grad-morning);
+}
+
+/* ===== 胶囊按钮 ===== */
+.btn {
+  height: 48px;
+  border-radius: var(--yy-radius-btn);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 28px;
+  box-sizing: border-box;
+}
+.btn::after { border: none; }
+
+.btn--primary {
+  background: var(--yy-grad-primary);
+  color: #FFFFFF;
+  box-shadow: 0 6px 20px rgba(114, 216, 196, 0.4);
+}
+
+.btn--ghost {
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--yy-primary);
+  border: 1.5px solid var(--yy-primary);
+}
+
+.btn--accent {
+  background: linear-gradient(135deg, #FF9F43 0%, #FFC07A 100%);
+  color: #FFFFFF;
+  box-shadow: 0 6px 20px rgba(255, 159, 67, 0.35);
+}
+
+.btn[disabled] {
+  opacity: 0.5;
+}
+
+.btn--block { width: 100%; }
+
+/* ===== 文字层级 ===== */
+.h1 { font-size: 24px; font-weight: 700; }
+.h2 { font-size: 20px; font-weight: 700; }
+.body { font-size: 15px; }
+.body-sm { font-size: 14px; }
+.aux { font-size: 12px; color: var(--yy-text-sub); }
+
+.text-primary { color: var(--yy-primary); }
+.text-accent { color: var(--yy-accent); }
+.text-center { text-align: center; }
+
+/* ===== 布局工具 ===== */
+.row { display: flex; align-items: center; }
+.col { display: flex; flex-direction: column; }
+.gap-8 { gap: 8px; }
+.gap-12 { gap: 12px; }
+.gap-16 { gap: 16px; }
+.mt-8 { margin-top: 8px; }
+.mt-12 { margin-top: 12px; }
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
+.mb-16 { margin-bottom: 16px; }
+.center { display: flex; align-items: center; justify-content: center; }
+.flex-1 { flex: 1; }
+
+/* ===== 底部占位(转发/固定导航) ===== */
+.safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+
+/* ===== 滚动隐藏 ===== */
+.scroll-hide::-webkit-scrollbar { display: none; }

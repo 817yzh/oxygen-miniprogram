@@ -1,0 +1,88 @@
+<!-- 氧气档案页(健康画像) V0.8 -->
+<view class="page oprofile">
+
+  <!-- 陪伴 IP -->
+  <view class="op-hero center">
+    <yy-ip action="grow" size="md" bubble="这是你的氧气档案" />
+  </view>
+
+  <!-- 基础信息卡 ⭐新增 -->
+  <view class="base-card glass-card row" wx:if="{{basicInfo}}">
+    <view class="base-avatar center">
+      <image wx:if="{{basicInfo.avatar}}" src="{{basicInfo.avatar}}" mode="aspectFill" class="base-avatar-img" />
+      <text wx:else class="base-avatar-emoji">🫧</text>
+    </view>
+    <view class="flex-1 col" style="min-width:0">
+      <view class="row gap-4">
+        <text class="base-name">{{basicInfo.nickname}}</text>
+        <view class="base-tag" wx:if="{{basicInfo.age}}">{{basicInfo.age}}岁</view>
+        <view class="base-tag" wx:if="{{basicInfo.zodiac}}">{{basicInfo.zodiac}}</view>
+      </view>
+      <text class="base-days aux mt-4">氧气陪伴 · 第 {{checkinDays || 0}} 天</text>
+      <text class="base-growth aux mt-4">{{growthTap}}</text>
+    </view>
+  </view>
+
+  <!-- 我的氧气人格 -->
+  <view class="persona-card glass-card--morning glass-card center col mt-16" wx:if="{{personality}}">
+    <text class="op-icon">{{personality.icon}}</text>
+    <text class="h1 mt-8">{{personality.name}}</text>
+    <text class="body-sm mt-8" style="color:{{personality.color}}">
+      {{personality.tagsText}}
+    </text>
+    <text class="persona-desc aux mt-12">{{personality.desc}}</text>
+    <button class="btn btn--ghost btn--sm mt-16" bindtap="goMbti" wx:if="{{!personality.id}}">重新探索人格 →</button>
+  </view>
+
+  <!-- 我的能量标签 -->
+  <view class="section-title"><text class="h2">我的能量标签</text></view>
+  <view class="glass-card">
+    <view class="tag-item row" wx:for="{{energyTags}}" wx:key="label">
+      <text class="tag-label aux">{{item.label}}</text>
+      <text class="flex-1 tag-value">{{item.value}}</text>
+    </view>
+  </view>
+
+  <!-- 场景偏好 ⭐新增 -->
+  <view class="section-title" wx:if="{{scenePrefs.length > 0}}"><text class="h2">我的场景偏好</text></view>
+  <view class="scene-prefs row gap-8" wx:if="{{scenePrefs.length > 0}}">
+    <view class="scene-chip" wx:for="{{scenePrefs}}" wx:key="scene">
+      <text>{{item.scene}}</text>
+      <text class="aux scene-count">×{{item.count}}</text>
+    </view>
+  </view>
+
+  <!-- 7天状态趋势 ⭐新增 -->
+  <view class="section-title"><text class="h2">近7天状态</text></view>
+  <view class="trend-card glass-card" wx:if="{{trendHasData}}">
+    <scroll-view scroll-x class="trend-scroll" enable-flex>
+      <view class="trend-inner row gap-8">
+        <view class="trend-day center col" wx:for="{{trendText}}" wx:key="index" wx:for-index="idx" wx:for-item="t">
+          <text class="trend-energy">{{t.energy}}</text>
+          <text class="trend-label aux">{{t.label}}</text>
+          <text class="trend-date aux">{{t.day}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+  <view class="empty-card glass-card center" wx:else>
+    <text class="aux">还没有状态记录，<text class="trend-link" bindtap="goCheckin">去打卡</text> 生成第一份数据</text>
+  </view>
+
+  <!-- 最近状态(保留原功能) -->
+  <view class="section-title"><text class="h2">状态备注</text></view>
+  <view class="glass-card">
+    <text class="aux">持续记录一天的状态，氧氧会越来越懂你的氧气节奏 💚</text>
+  </view>
+
+  <!-- 健康声明入口 ⭐新增 -->
+  <view class="disc-card glass-card row mt-16" bindtap="goDisclaimer" hover-class="disc-hover">
+    <text class="disc-icon">📋</text>
+    <view class="flex-1 col">
+      <text class="h2" style="font-size:15px">健康与数据声明</text>
+      <text class="aux mt-2">了解数据用途与健康提示</text>
+    </view>
+    <text class="disc-arrow">→</text>
+  </view>
+
+</view>

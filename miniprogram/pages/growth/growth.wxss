@@ -1,0 +1,115 @@
+/* Page 8 · 成长中心 */
+.growth { max-width: 480px; margin: 0 auto; }
+.growth-hero { padding-top: 8px; }
+
+.level-card { }
+.level-badge {
+  font-size: 34px;
+  font-weight: 800;
+  color: var(--yy-primary);
+  text-shadow: 0 4px 12px rgba(114,216,196,0.4);
+}
+.level-name { font-size: 18px; font-weight: 700; }
+.oxy-state { font-size: 12px; color: var(--yy-accent); }
+.exp-bar {
+  width: 100%;
+  height: 14px;
+  border-radius: 999px;
+  background: rgba(184,232,255,0.4);
+  overflow: hidden;
+}
+.exp-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--yy-grad-primary);
+}
+
+/* 下一等级解锁提示 */
+.next-level-tip {
+  gap: 4px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255,159,67,0.12);
+  color: #e08120;
+  justify-content: center;
+}
+.next-arrow { color: #e08120; font-size: 14px; }
+
+/* 成长瞬间 */
+.moment-item {
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(184,232,255,0.3);
+  font-size: 13px;
+}
+.moment-item:last-child { border-bottom: none; }
+.moment-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--yy-accent);
+  margin-right: 12px;
+}
+
+.section-title { margin: 24px 4px 12px; }
+
+.exp-item { padding: 10px 0; }
+.exp-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--yy-primary);
+  margin-right: 12px;
+}
+
+.achieve-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.achieve-item { padding: 18px 8px; text-align: center; }
+.achieve-icon { font-size: 30px; }
+
+/* V0.5 成长轨迹时间线 */
+.timeline-card { padding-top: 14px; padding-bottom: 14px; }
+.timeline-item { position: relative; padding-bottom: 18px; align-items: flex-start; }
+.timeline-item:last-child { padding-bottom: 0; }
+.timeline-marker {
+  width: 34px; height: 34px; border-radius: 999px;
+  background: rgba(114,216,196,0.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0; margin-right: 12px;
+  z-index: 2;
+}
+.timeline-line {
+  position: absolute; left: 16px; top: 34px; bottom: -6px;
+  width: 2px; background: rgba(184,232,255,0.5);
+}
+.timeline-content { padding-top: 4px; }
+.timeline-text { font-size: 14px; color: #264653; font-weight: 600; }
+.timeline-date { font-size: 11px; }
+.latest { }
+
+/* V0.7 成就锁定态 */
+.achieve-item.locked { opacity: 0.5; filter: grayscale(0.7); background: rgba(255,255,255,0.4); }
+
+/* V0.7 等级奖励 */
+.reward-list { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+.reward-item {
+  background: rgba(255,255,255,0.8); border-radius: 14px; padding: 12px 14px;
+  align-items: center; gap: 12px;
+}
+.reward-lv {
+  width: 44px; height: 36px; border-radius: 10px;
+  background: linear-gradient(135deg,#72D8C4,#4A9E8E); color: #fff;
+  font-size: 14px; font-weight: 700; flex-shrink: 0;
+}
+.reward-check { font-size: 12px; color: #bbb; white-space: nowrap; }
+.reward-check.on { color: var(--yy-primary); font-weight: 600; }
+
+/* V0.7 成长值 */
+.growth-total { padding: 14px 0; }
+.growth-total-num { font-size: 40px; font-weight: 700; color: var(--yy-primary); }
+.growth-log { padding: 16px; }
+.log-item { padding: 8px 0; border-bottom: 1px dashed rgba(138,160,160,0.2); }
+.log-item:last-child { border-bottom: none; }
+.log-exp { color: var(--yy-primary); font-weight: 600; }

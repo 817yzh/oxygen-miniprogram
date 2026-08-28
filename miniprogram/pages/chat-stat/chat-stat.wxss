@@ -1,0 +1,28 @@
+.chat-stat { padding-bottom: 40px; }
+
+.cs-header { padding: 20px 18px; margin-bottom: 14px; }
+.cs-num { font-size: 28px; font-weight: 800; color: var(--yy-primary, #72D8C4); }
+.cs-dist { font-size: 15px; font-weight: 600; color: #264653; }
+.cs-senti {
+  margin-top: 12px;
+  padding: 10px;
+  border-radius: 12px;
+  background: rgba(114, 216, 196, 0.1);
+  color: #4A9E8E;
+  font-size: 13px;
+  text-align: center;
+}
+
+.cs-block { padding: 18px; margin-bottom: 14px; }
+.cs-title { font-size: 13px; font-weight: 700; color: #264653; display: block; margin-bottom: 10px; }
+.cs-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.cs-tag {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(114, 216, 196, 0.12);
+  color: #4A9E8E;
+  font-size: 12px;
+}
+.cs-count { color: #9BB7AE; font-size: 11px; margin-left: 2px; }
+
+.cs-empty { padding: 60px 0; text-align: center; }

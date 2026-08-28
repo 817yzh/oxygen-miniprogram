@@ -1,0 +1,473 @@
+/*
+ * pages/chat/chat.wxss
+ * V2.1 · 氧氧聊天页样式（陪伴主舞台 + 流动卡片 3层结构）
+ */
+
+page {
+  height: 100%;
+}
+
+.chat-page {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #F0FAF7;
+  overflow: hidden;
+}
+
+/* ========== 第一层：顶部陪伴主舞台 ========== */
+.main-stage {
+  position: relative;
+  width: 100%;
+  height: 420rpx;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #0A3D30;
+}
+
+.stage-ip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* 顶部渐变遮罩（导航栏区域融合） */
+.stage-top-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 120rpx;
+  background: linear-gradient(180deg, rgba(6, 40, 32, 0.6) 0%, transparent 100%);
+  z-index: 2;
+}
+
+/* 底部渐变过渡（融合到对话区） */
+.stage-bottom-mask {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 160rpx;
+  background: linear-gradient(0deg, #F0FAF7 0%, rgba(240, 250, 247, 0) 100%);
+  z-index: 2;
+}
+
+/* 数据胶囊 */
+.data-capsule {
+  position: absolute;
+  top: 140rpx;
+  padding: 10rpx 24rpx;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(20rpx);
+  border-radius: 24rpx;
+  border: 1rpx solid rgba(255, 255, 255, 0.25);
+  z-index: 3;
+}
+
+.capsule-left {
+  left: 24rpx;
+}
+
+.capsule-right {
+  right: 24rpx;
+}
+
+.capsule-text {
+  font-size: 22rpx;
+  color: rgba(255, 255, 255, 0.95);
+  letter-spacing: 1rpx;
+  white-space: nowrap;
+}
+
+/* ========== 第二层：中间灵动对话区 ========== */
+.chat-body {
+  flex: 1;
+  min-height: 0;
+}
+
+/* scroll-view 内部内容容器：消息从上往下紧凑排列，gap 统一间距 */
+.chat-content {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 24rpx;
+  padding: 24rpx 32rpx;
+}
+
+/* 底部卡片容器（小课堂+正念呼吸）：普通排列，不再靠底 */
+.chat-bottom-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+
+/* 氧氧记得你：极简悬浮入口 */
+.memory-mini {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 12rpx 20rpx;
+  background: rgba(114, 216, 196, 0.08);
+  border-radius: 16rpx;
+}
+
+.memory-mini-icon {
+  font-size: 24rpx;
+}
+
+.memory-mini-text {
+  flex: 1;
+  font-size: 22rpx;
+  color: #6B9E90;
+}
+
+.memory-mini-arrow {
+  font-size: 22rpx;
+  color: #72D8C4;
+}
+
+/* 消息行 */
+.msg-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12rpx;
+}
+
+.msg-row.user {
+  justify-content: flex-end;
+}
+
+.msg-avatar {
+  width: 56rpx;
+  height: 56rpx;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: rgba(114, 216, 196, 0.15);
+}
+
+/* 气泡 */
+.bubble {
+  max-width: 68%;
+  padding: 18rpx 24rpx;
+  border-radius: 20rpx;
+  font-size: 28rpx;
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+.bubble-oxygen {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1rpx solid rgba(114, 216, 196, 0.15);
+  border-top-left-radius: 6rpx;
+  color: #2D5A4D;
+  box-shadow: 0 2rpx 12rpx rgba(114, 216, 196, 0.08);
+}
+
+.bubble-user {
+  background: linear-gradient(135deg, #72D8C4 0%, #5BC9B3 100%);
+  color: #FFFFFF;
+  border-top-right-radius: 6rpx;
+  box-shadow: 0 4rpx 16rpx rgba(114, 216, 196, 0.3);
+}
+
+/* 小课堂卡片（融入对话流） */
+.course-card {
+  max-width: 75%;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20rpx;
+  border: 1rpx solid rgba(114, 216, 196, 0.2);
+  border-top-left-radius: 6rpx;
+  padding: 20rpx;
+  box-shadow: 0 4rpx 16rpx rgba(114, 216, 196, 0.1);
+}
+
+.course-head {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  margin-bottom: 12rpx;
+}
+
+.course-icon {
+  font-size: 28rpx;
+}
+
+.course-title {
+  font-size: 24rpx;
+  color: #2D6B5A;
+  font-weight: 600;
+}
+
+.course-content {
+  font-size: 26rpx;
+  color: #4A7A68;
+  line-height: 1.6;
+  margin-bottom: 16rpx;
+}
+
+.course-actions {
+  display: flex;
+  gap: 12rpx;
+}
+
+.course-btn {
+  flex: 1;
+  text-align: center;
+  padding: 10rpx 0;
+  background: rgba(114, 216, 196, 0.12);
+  border-radius: 12rpx;
+  font-size: 22rpx;
+  color: #2D6B5A;
+}
+
+.course-btn:active {
+  background: rgba(114, 216, 196, 0.25);
+}
+
+/* 正念呼吸卡片 */
+.breath-card {
+  max-width: 75%;
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 20rpx;
+  background: linear-gradient(135deg, rgba(114, 216, 196, 0.15) 0%, rgba(91, 201, 179, 0.1) 100%);
+  border-radius: 20rpx;
+  border: 1rpx solid rgba(114, 216, 196, 0.25);
+  border-top-left-radius: 6rpx;
+}
+
+.breath-icon {
+  font-size: 40rpx;
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 16rpx;
+  flex-shrink: 0;
+}
+
+.breath-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.breath-title {
+  font-size: 26rpx;
+  color: #2D6B5A;
+  font-weight: 600;
+}
+
+.breath-desc {
+  font-size: 22rpx;
+  color: #6B9E90;
+}
+
+.breath-go {
+  font-size: 24rpx;
+  color: #72D8C4;
+  flex-shrink: 0;
+}
+
+/* 记忆面板 */
+.memory-panel {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20rpx;
+  padding: 24rpx;
+  border: 1rpx solid rgba(114, 216, 196, 0.15);
+}
+
+.panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.panel-title {
+  font-size: 30rpx;
+  color: #2D6B5A;
+  font-weight: 600;
+}
+
+.panel-close {
+  font-size: 24rpx;
+  color: #8AB5A8;
+}
+
+.pref-field {
+  margin-bottom: 20rpx;
+}
+
+.pref-label {
+  font-size: 26rpx;
+  color: #3A7A68;
+  margin-bottom: 12rpx;
+  display: block;
+}
+
+.pref-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.pref-opt {
+  padding: 10rpx 24rpx;
+  background: rgba(114, 216, 196, 0.1);
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  color: #6B9E90;
+  border: 1rpx solid transparent;
+}
+
+.pref-opt.on {
+  background: rgba(114, 216, 196, 0.25);
+  color: #2D6B5A;
+  border-color: rgba(114, 216, 196, 0.4);
+}
+
+/* ========== 第三层：底部快捷栏 + 输入框 ========== */
+.bottom-area {
+  flex-shrink: 0;
+  background: #EBF8F5;
+  border-top: 1rpx solid rgba(114, 216, 196, 0.15);
+}
+
+.quick-bar {
+  white-space: nowrap;
+  padding: 16rpx 24rpx 12rpx;
+}
+
+.quick-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 12rpx 24rpx;
+  background: rgba(114, 216, 196, 0.1);
+  border-radius: 28rpx;
+  margin-right: 16rpx;
+  border: 1rpx solid rgba(114, 216, 196, 0.2);
+}
+
+.quick-tag:active {
+  transform: scale(0.95);
+  background: rgba(114, 216, 196, 0.2);
+}
+
+.tag-icon {
+  font-size: 28rpx;
+}
+
+.tag-text {
+  font-size: 24rpx;
+  color: #3A7A68;
+}
+
+/* 输入栏 */
+.input-bar {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 12rpx 24rpx 16rpx;
+}
+
+.voice-toggle {
+  width: 68rpx;
+  height: 68rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(114, 216, 196, 0.15);
+  border-radius: 50%;
+  font-size: 30rpx;
+  flex-shrink: 0;
+}
+
+.voice-toggle.voice-rec {
+  background: rgba(255, 100, 100, 0.2);
+}
+
+.chat-input {
+  flex: 1;
+  height: 68rpx;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 34rpx;
+  padding: 0 28rpx;
+  font-size: 28rpx;
+  color: #2D5A4D;
+  border: 1rpx solid rgba(114, 216, 196, 0.2);
+}
+
+.chat-input .ph {
+  color: #A8C5BC;
+}
+
+.send-btn {
+  height: 68rpx;
+  padding: 0 32rpx;
+  background: linear-gradient(135deg, #72D8C4 0%, #5BC9B3 100%);
+  color: #FFFFFF;
+  font-size: 28rpx;
+  border-radius: 34rpx;
+  border: none;
+  opacity: 0.5;
+  flex-shrink: 0;
+  line-height: 68rpx;
+}
+
+.send-btn.on {
+  opacity: 1;
+  box-shadow: 0 4rpx 16rpx rgba(114, 216, 196, 0.35);
+}
+
+/* ========== 冰爽微特效 ========== */
+.fx-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 100;
+  overflow: hidden;
+}
+
+.ice-cube {
+  position: absolute;
+  top: -40rpx;
+  width: 24rpx;
+  height: 24rpx;
+  background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(114,216,196,0.6) 100%);
+  border-radius: 6rpx;
+  animation: iceFall 2s ease-in forwards;
+}
+
+@keyframes iceFall {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+}
+
+/* 录音提示 */
+.record-tip {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.7);
+  color: #FFFFFF;
+  padding: 24rpx 40rpx;
+  border-radius: 16rpx;
+  font-size: 28rpx;
+  z-index: 200;
+}

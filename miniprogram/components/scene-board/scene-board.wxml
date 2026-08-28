@@ -1,0 +1,41 @@
+<!-- components/scene-board/scene-board.wxml · 今日氧气场景看板 -->
+<view class="sboard">
+  <!-- 板块标题 -->
+  <view class="sboard-head row">
+    <view class="flex-1">
+      <text class="aux" style="color:var(--yy-primary)">今日氧气场景</text>
+      <text class="h2 mt-2">你的氧气需求是什么？</text>
+    </view>
+  </view>
+
+  <!-- 场景卡片列表 -->
+  <view class="sboard-list col mt-12">
+    <view class="sboard-card glass-card"
+          wx:for="{{scenes}}" wx:key="key"
+          data-key="{{item.key}}"
+          hover-class="scene-hover"
+          bindtap="onTap">
+      <view class="sboard-top row">
+        <view class="sboard-icon center">{{item.icon}}</view>
+        <view class="flex-1 col" style="min-width:0">
+          <text class="sboard-title">{{item.title}}</text>
+          <text class="sboard-desc aux">{{item.desc}}</text>
+        </view>
+      </view>
+
+      <view class="sboard-oxygen row mt-8">
+        <text class="sboard-ox-label">氧需求指数</text>
+        <text class="sboard-stars">{{item.oxygenLevel}}</text>
+      </view>
+
+      <view class="sboard-rec row mt-8">
+        <text class="sboard-rec-ico">🧪</text>
+        <text class="sboard-rec-text">推荐：{{item.product}}</text>
+      </view>
+
+      <view class="sboard-action row mt-12">
+        <text class="sboard-action-text">{{item.action}}</text>
+      </view>
+    </view>
+  </view>
+</view>

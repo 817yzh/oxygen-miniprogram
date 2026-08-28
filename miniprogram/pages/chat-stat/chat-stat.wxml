@@ -1,0 +1,33 @@
+<!-- 聊天看板(V0.8) -->
+<view class="page chat-stat">
+
+  <!-- 顶部统计 -->
+  <view class="cs-header glass-card">
+    <view class="row gap-16">
+      <view class="flex-1 center col">
+        <text class="cs-num">{{total}}</text>
+        <text class="aux">聊天次数</text>
+      </view>
+      <view class="flex-1 center col">
+        <text class="cs-dist">{{recentDist}}</text>
+        <text class="aux">近7天情绪</text>
+      </view>
+    </view>
+    <view class="cs-senti" wx:if="{{sentimentSummary}}">{{sentimentSummary}}</view>
+  </view>
+
+  <!-- 高频关键词 -->
+  <view class="cs-block glass-card" wx:if="{{topKeywords.length > 0}}">
+    <text class="cs-title">🔑 高频关键词 TOP10</text>
+    <view class="cs-tags">
+      <view class="cs-tag" wx:for="{{topKeywords}}" wx:key="word">{{item.word}} <text class="cs-count">{{item.count}}</text></view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="cs-empty center col gap-8" wx:else>
+    <text class="aux">还没有聊天记录，去和氧氧说说话吧 💬</text>
+    <button class="btn btn--primary" bindtap="goChat">去聊天</button>
+  </view>
+
+</view>

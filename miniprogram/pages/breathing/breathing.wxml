@@ -1,0 +1,122 @@
+<!--
+  pages/breathing/breathing.wxml
+  V2.1 · 1分钟真吸氧沉浸页（修复版）
+  修复: 去掉自定义顶部(用原生导航栏) / IP用项目原图(防花屏) / 背景径向渐变(透亮)
+  三阶段: wakeup(3s设备唤醒) → breathing(57s, 4-7-8呼吸×3) → result(充氧报告卡)
+-->
+<view class="breathing-page">
+
+  <!-- ========== 阶段1：设备唤醒（0-3秒） ========== -->
+  <view class="stage-wakeup" wx:if="{{stage === 'wakeup'}}">
+    <view class="stage-center">
+      <!-- 呼吸光晕环 -->
+      <view class="glow-ring"></view>
+      <!-- IP底部柔和呼吸光晕 -->
+      <view class="ip-glow"></view>
+      <!-- IP：欢迎挥手（透明背景PNG） -->
+      <image class="stage-ip" src="{{ipImage}}" mode="aspectFit" />
+      <!-- 文案 -->
+      <view class="stage-info">
+        <text class="stage-main-text">蓝牙已连接，正在启动充氧模式</text>
+        <text class="stage-sub-text">请将设备贴近面部，准备深呼吸</text>
+        <!-- 三点波浪加载 -->
+        <view class="loading-dots">
+          <view class="dot"></view>
+          <view class="dot"></view>
+          <view class="dot"></view>
+        </view>
+      </view>
+    </view>
+    <view class="stage-footer">氧氧宝 · 智能硬件联动中</view>
+  </view>
+
+  <!-- ========== 阶段2：呼吸沉浸（3-60秒） ========== -->
+  <view class="stage-breathing" wx:if="{{stage === 'breathing'}}">
+    <view class="breath-ring-area">
+      <!-- 外圈光晕 -->
+      <view class="breath-ring-outer {{phaseClass}}"></view>
+      <!-- 主圆环 -->
+      <view class="breath-ring-main {{phaseClass}}">
+        <view class="breath-ring-inner">
+          <text class="breath-phase">{{phaseText}}</text>
+          <text class="breath-countdown">{{countdown}}</text>
+          <text class="breath-hint">{{phaseHint}}</text>
+        </view>
+      </view>
+      <!-- 水波粒子 -->
+      <view class="water-particle p1"></view>
+      <view class="water-particle p2"></view>
+      <view class="water-particle p3"></view>
+      <view class="water-particle p4"></view>
+      <view class="water-particle p5"></view>
+      <view class="water-particle p6"></view>
+    </view>
+    <!-- 总倒计时 -->
+    <view class="total-timer">
+      <text class="timer-label">剩余</text>
+      <text class="timer-value">{{totalCountdown}}s</text>
+    </view>
+    <!-- 硬件状态提示 -->
+    <view class="device-status">
+      <text class="device-dot"></text>
+      <text class="device-text">硬件出氧中 · 高浓度氧气持续释放</text>
+    </view>
+  </view>
+
+  <!-- ========== 阶段3：充氧报告卡（60秒结束） ========== -->
+  <view class="stage-result" wx:if="{{stage === 'result'}}">
+    <!-- 庆祝IP -->
+    <image class="result-ip" src="{{ipImage}}" mode="aspectFit" />
+    <view class="result-title">充氧完成！</view>
+    <view class="result-sub">氧氧为你记录了这次身体变化 🫧</view>
+
+    <!-- 核心对比卡片 -->
+    <view class="result-card">
+      <!-- 氧气指数 -->
+      <view class="result-main">
+        <text class="result-main-label">氧气指数</text>
+        <view class="result-main-compare">
+          <text class="result-before">{{beforeScore}}</text>
+          <text class="result-arrow">➔</text>
+          <text class="result-after">{{afterScore}}</text>
+        </view>
+        <view class="result-gain">+{{scoreGain}} 恢复充沛</view>
+      </view>
+
+      <view class="result-divider"></view>
+
+      <!-- 硬件实测数据 -->
+      <view class="result-hardware">
+        <view class="hw-item">
+          <text class="hw-icon">🫁</text>
+          <text class="hw-label">血氧饱和度</text>
+          <view class="hw-compare">
+            <text class="hw-before">{{beforeSpo2}}%</text>
+            <text class="hw-arrow">➔</text>
+            <text class="hw-after">{{afterSpo2}}%</text>
+          </view>
+        </view>
+        <view class="hw-item">
+          <text class="hw-icon">💓</text>
+          <text class="hw-label">实时心率</text>
+          <view class="hw-compare">
+            <text class="hw-before">{{beforeHr}} bpm</text>
+            <text class="hw-arrow">➔</text>
+            <text class="hw-after">{{afterHr}} bpm</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- IP鼓励语 -->
+    <view class="result-encourage">
+      <text>太棒啦！身体已被充分滋养，今天也是能量满满的一天~</text>
+    </view>
+
+    <!-- 返回按钮 -->
+    <view class="result-btn" bindtap="onFinish">
+      <text>收下充氧成果，返回首页</text>
+    </view>
+  </view>
+
+</view>

@@ -1,0 +1,189 @@
+/* 氧系MBTI 信息采集页 · 沉浸式动态问答版 */
+.mbti-form {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background: linear-gradient(175deg, #0E2B22 0%, #123B2F 50%, #1A4D40 100%);
+  padding: 28px 22px 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ===== 顶部：极细薄荷绿进度条 ===== */
+.progress-wrap {
+  padding: 0 4px;
+}
+.progress-track {
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.14);
+  overflow: hidden;
+}
+.progress-bar {
+  width: 33%;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #6FE0C6, #38C0A0);
+  box-shadow: 0 0 12px rgba(56,192,160,0.6);
+  animation: barGrow 1.2s ease-out;
+}
+@keyframes barGrow {
+  from { width: 0; }
+  to { width: 33%; }
+}
+.progress-tip {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  color: rgba(214,245,236,0.6);
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+/* ===== 题目氛围标题 ===== */
+.q-title {
+  margin-top: 34px;
+  text-align: center;
+}
+.q-kicker {
+  display: block;
+  font-size: 12px;
+  color: rgba(114,216,196,0.85);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+.q-h1 {
+  display: block;
+  margin-top: 10px;
+  font-size: 22px;
+  font-weight: 800;
+  color: #F2FBF7;
+}
+
+/* ===== 毛玻璃题目卡片（深色玻璃质感） ===== */
+.glass-card {
+  margin-top: 26px;
+  background: rgba(255,255,255,0.09);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border-radius: 24px;
+  border: 1px solid rgba(255,255,255,0.16);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+  padding: 24px 20px;
+  box-sizing: border-box;
+}
+
+/* 头像 */
+.avatar-upload { flex-direction: column; }
+.avatar-preview {
+  width: 88px;
+  height: 88px;
+  border-radius: 999px;
+  border: 2px solid rgba(255,255,255,0.35);
+}
+.avatar-placeholder {
+  width: 88px;
+  height: 88px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.14);
+  border: 1.5px dashed rgba(114,216,196,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.avatar-plus { font-size: 34px; color: rgba(114,216,196,0.9); font-weight: 300; }
+
+/* 表情感知 */
+.face-tip {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: rgba(114,216,196,0.12);
+  text-align: center;
+}
+.face-result {
+  font-size: 13px;
+  color: #D6F5EC;
+  line-height: 1.6;
+}
+
+/* 字段 */
+.field { margin-top: 20px; }
+.field-label {
+  font-size: 13px;
+  color: rgba(214,245,236,0.75);
+  display: block;
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+}
+.field-picker {
+  height: 50px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 16px;
+  padding: 0 16px;
+  line-height: 50px;
+  font-size: 15px;
+  color: #F2FBF7;
+  border: 1px solid rgba(255,255,255,0.14);
+}
+.field-picker.placeholder { color: rgba(214,245,236,0.45); }
+
+/* 性别：治愈系胶囊选项 */
+.gender-row { }
+.gender-pill {
+  flex: 1;
+  height: 48px;
+  border-radius: 24px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.16);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  color: rgba(214,245,236,0.85);
+  transition: all 0.25s ease;
+}
+.gender-pill.on {
+  background: linear-gradient(135deg, #6FE0C6 0%, #38C0A0 100%);
+  color: #FFFFFF;
+  font-weight: 700;
+  border-color: transparent;
+  box-shadow: 0 8px 22px rgba(56,192,160,0.45);
+}
+.pill-press { transform: scale(0.95); }
+
+/* ===== 底部：IP 陪伴 + 薄荷绿按钮（文档流，不遮挡内容） ===== */
+.footer {
+  margin-top: 34px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 24px;
+}
+.footer-ip {
+  margin-bottom: 6px;
+  animation: ipFloat 3.6s ease-in-out infinite;
+}
+@keyframes ipFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.cta-btn {
+  width: 100%;
+  max-width: 440px;
+  height: 54px;
+  line-height: 54px;
+  border-radius: 27px;
+  border: none;
+  padding: 0;
+  box-sizing: border-box;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #FFFFFF;
+  background: linear-gradient(135deg, #6FE0C6 0%, #38C0A0 60%, #2FA98C 100%);
+  box-shadow: 0 12px 34px rgba(56,192,160,0.45);
+}
+.cta-btn::after { border: none; }
+.cta-disabled { opacity: 0.55; }

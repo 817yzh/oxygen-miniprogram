@@ -1,0 +1,169 @@
+<!-- Page 7 · AI状态报告页 (V5.0 杂志手账重构 · 合并减法) -->
+<view class="report-container">
+
+  <!-- V0.8 成就通知横幅 -->
+  <view class="achieve-banner" wx:if="{{achievementBanner}}">
+    <text class="achieve-banner-icon">{{achievementBanner.icon}}</text>
+    <text class="achieve-banner-text">解锁新成就：{{achievementBanner.name}}</text>
+  </view>
+
+  <!-- ===== 顶部 Hero：今日氧气状态 (沉浸式大卡) ===== -->
+  <view class="hero-card">
+    <!-- 氛围光晕 -->
+    <view class="hero-glow"></view>
+    <!-- IP -->
+    <image wx:if="{{streak <= 1}}" class="hero-ip" src="https://cdn.jsdelivr.net/gh/817yzh/oxygen-images@main/ip-actions/celebrate.png" mode="aspectFit" />
+    <image wx:else class="hero-ip" src="https://cdn.jsdelivr.net/gh/817yzh/oxygen-images@main/ip-actions/encourage.png" mode="aspectFit" />
+
+    <text class="hero-kicker">✨ 今日氧气状态 ✨</text>
+    <text class="hero-state">{{state}}</text>
+    <text class="hero-desc">{{emotionLabel}} · {{keywords[0]}}</text>
+
+    <!-- 能量大数 -->
+    <view class="hero-energy">
+      <text class="hero-energy-val">{{matchScore}}<text class="hero-energy-unit">%</text></text>
+      <text class="hero-energy-label">能量值</text>
+    </view>
+    <view class="hero-progress">
+      <view class="hero-progress-inner" style="width:{{matchScore}}%"></view>
+    </view>
+    <text class="hero-sub">{{streak > 0 ? '已连续陪伴 ' + streak + ' 天' : ''}} · {{streakLine}}</text>
+
+    <!-- 能量偏低时的氧疗引导 -->
+    <view class="hero-guide" wx:if="{{oxygenGuide}}" bindtap="goOxygenGuide">
+      <view class="hero-guide-tag">{{oxygenGuide.sceneTag}}</view>
+      <text class="hero-guide-text">{{oxygenGuide.tip}}</text>
+      <text class="hero-guide-arrow">3分钟氧疗 →</text>
+    </view>
+  </view>
+
+  <!-- ===== 数据能量舱：成长记录 + 关键词 (聚合) ===== -->
+  <view class="energy-cabin">
+    <!-- 顶部：今日关键词 -->
+    <view class="cabin-keywords">
+      <text class="cabin-label">今日关键词</text>
+      <view class="cabin-tags">
+        <text class="cabin-tag {{item === keywords[0] ? 'on' : ''}}" wx:for="{{keywords}}" wx:key="*this">☁️ {{item}}</text>
+      </view>
+    </view>
+
+    <!-- 成长统计 3 宫格 -->
+    <view class="cabin-stats">
+      <view class="cabin-stat">
+        <text class="cabin-stat-val">🌱 {{statRecords}}</text>
+        <text class="cabin-stat-label">状态记录</text>
+      </view>
+      <view class="cabin-stat">
+        <text class="cabin-stat-val">💙 {{statEmotions}}</text>
+        <text class="cabin-stat-label">情绪关键词</text>
+      </view>
+      <view class="cabin-stat">
+        <text class="cabin-stat-val">⚡ {{statEnergy}}</text>
+        <text class="cabin-stat-label">氧气能量值</text>
+      </view>
+    </view>
+
+    <!-- 等级进度 -->
+    <view class="cabin-level">
+      <view class="cabin-level-head">
+        <text>Lv.{{level}} {{levelName}}</text>
+        <text bindtap="goGrowth" class="cabin-level-link">去成长中心 →</text>
+      </view>
+      <view class="cabin-level-track">
+        <view class="cabin-level-inner" style="width:{{levelProgress}}%"></view>
+        <image class="cabin-level-ip" src="https://cdn.jsdelivr.net/gh/817yzh/oxygen-images@main/oxy-ip.png" mode="aspectFit" />
+      </view>
+      <view class="cabin-level-foot">
+        <text>{{exp}}/{{expMax}} · 下一级 Lv.{{level + 1}} {{nextLevelName}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== 氧气解读 (简明) ===== -->
+  <view class="card">
+    <view class="card-title">氧气解读</view>
+    <view class="inter-content">{{advice}}</view>
+  </view>
+
+  <!-- ===== 今日能量恢复建议 ===== -->
+  <view class="card">
+    <view class="card-title">今日能量恢复建议</view>
+    <view class="advice-single">
+      <view class="icon-circle green-bg">🌿</view>
+      <view class="advice-text">{{suggestion}}</view>
+    </view>
+    <view class="product-hint aux mt-12" wx:if="{{productHint}}">{{productHint}}</view>
+    <view class="bottom-tip" wx:if="{{regulationTip}}">💡 {{regulationTip}}</view>
+  </view>
+
+  <!-- ===== 氧气能量指数(雷达) ===== -->
+  <view class="card" wx:if="{{indexes}}">
+    <view class="card-header">
+      <text class="card-title">氧气能量指数</text>
+      <text class="score-tip">满分100</text>
+    </view>
+    <radar-chart indexes="{{indexes}}" />
+  </view>
+
+  <!-- ===== 情绪趋势 ===== -->
+  <view class="card">
+    <view class="card-header">
+      <text class="card-title">情绪趋势</text>
+      <text class="score-tip">近7天</text>
+    </view>
+    <trend-chart wx:if="{{trendList.length > 0}}" history="{{trendList}}" />
+    <view class="aux center" wx:else style="padding:30px 0;text-align:center">记录几次打卡，就能看到你的情绪曲线啦 📈</view>
+  </view>
+
+  <!-- 情绪趋势总结 -->
+  <view class="card trend-summary-card" wx:if="{{trendSummaryShow}}">
+    <view class="sum-body">
+      <text class="sum-trend">{{trendTrendIcon}}</text>
+      <text class="sum-text">{{trendSummary}}</text>
+    </view>
+  </view>
+
+  <!-- ===== 氧氧想对你说 (手账气泡) ===== -->
+  <view class="speak-card">
+    <view class="speak-body">
+      <view class="chat-bubble">{{speakLine}}</view>
+      <image class="ip-img-large" src="https://cdn.jsdelivr.net/gh/817yzh/oxygen-images@main/ip-actions/companion.png" mode="aspectFit" />
+    </view>
+  </view>
+
+  <!-- V0.7 场景联动推荐 -->
+  <view class="card scene-rec-card" wx:if="{{sceneRecommend}}">
+    <view class="card-title">💡 氧氧推荐</view>
+    <view class="scene-rec-row">
+      <text class="scene-rec-icon">{{sceneRecommend.icon}}</text>
+      <text class="scene-rec-text">{{sceneRecommend.suggestion}}</text>
+    </view>
+    <button class="scene-rec-btn" bindtap="goToSceneDetail">查看方案详情 →</button>
+  </view>
+
+  <!-- V0.8 今日健康食谱 -->
+  <recipe-card wx:if="{{recipe}}" recipe="{{recipe}}" why="{{recipeWhy}}" />
+
+  <!-- V0.8 签约博主·真实案例 -->
+  <view class="card" wx:if="{{creators.length > 0}}">
+    <view class="card-title">🎬 相关真实案例</view>
+    <view class="creator-list">
+      <creator-card
+        wx:for="{{creators}}"
+        wx:key="id"
+        creator="{{item}}"
+        bind:creatortap="onCreatorTap"
+      />
+    </view>
+  </view>
+
+  <!-- ===== 底部吸底操作栏 ===== -->
+  <view class="report-actions">
+    <button class="ra-btn ra-btn--ghost" bindtap="goHome">🏠 回到首页</button>
+    <button class="ra-btn ra-btn--primary" bindtap="saveCard">🖼️ 保存状态卡</button>
+  </view>
+
+  <!-- 底部占位，避免吸底遮挡 -->
+  <view class="action-spacer"></view>
+
+</view>
