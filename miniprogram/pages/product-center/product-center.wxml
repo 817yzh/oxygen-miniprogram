@@ -53,23 +53,9 @@
 
   <!-- ========== 技术原理 ========== -->
   <block wx:if="{{activeTab==='tech'}}">
-    <!-- 原理视频卡片（16:9，微晶玻璃） -->
+    <!-- 技术原理图（静态图，避免大视频拖慢加载/体检超200K） -->
     <view class="tech-video-wrap">
-      <video
-        class="tech-video"
-        src="https://cdn.jsdelivr.net/gh/817yzh/oxygen-images@main/tech-principle.mp4"
-        controls="{{false}}"
-        enable-progress-gesture="false"
-        id="techVideo"
-        bindplay="onTechVideoPlay"
-        object-fit="cover"
-      ></video>
-      <view class="tech-cover {{techVideoPlaying?'tech-cover--hide':''}}" catchtap="playTechVideo">
-        <image class="tech-cover-img" src="https://cdn.jsdelivr.net/gh/817yzh/oxygen-images@main/workair-hero.png" mode="aspectFill" />
-        <view class="tech-play-btn">
-          <text class="tech-play-ico">▶</text>
-        </view>
-      </view>
+      <image class="tech-principle-img" src="https://cdn.jsdelivr.net/gh/817yzh/oxygen-images@main/workair-hero.png" mode="aspectFill" />
     </view>
 
     <!-- 发光流向线（3 步） -->

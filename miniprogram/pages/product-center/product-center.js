@@ -87,7 +87,6 @@ Page({
     activeTab: 'product', // product / tech / scene / faq
     overview: null,
     sceneBoard: [],   // V0.8 场景看板(自首页归位)
-    techVideoPlaying: false,
     scenarios: SCENARIOS,
     cardIndex: 0,
     curScenario: SCENARIOS[0],
@@ -215,18 +214,6 @@ Page({
     const id = e.currentTarget.dataset.id
     const cur = this.data.styles.find(s => s.id === id)
     if (cur) this.setData({ curStyle: cur })
-  },
-
-  // 原理视频播放（封面按钮点击 → 隐藏封面 + 原地播放）
-  playTechVideo() {
-    this.setData({ techVideoPlaying: true })
-    const vc = wx.createVideoContext('techVideo', this)
-    vc.play()
-  },
-
-  // 视频真正开始播放时确保封面隐藏
-  onTechVideoPlay() {
-    this.setData({ techVideoPlaying: true })
   },
 
   // 场景方案 → 详情

@@ -7,7 +7,7 @@ const app = getApp()
 const emotionEngine = require('../../../utils/emotionEngine')
 const faceApi = require('./faceApi')
 const stateEngine = require('./stateEngine')
-const { RECIPE_DB } = require('../../../mock/recipe-db.js')
+const { RECIPE_DB } = require('../mock/recipe-db.js')
 const { matchSceneByChat } = require('../../../mock/health-scene-db.js')
 
 /**
