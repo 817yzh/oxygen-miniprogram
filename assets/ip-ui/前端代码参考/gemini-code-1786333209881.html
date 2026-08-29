@@ -1,0 +1,376 @@
+<template>
+  <div class="report-container">
+    <!-- 顶部导航 -->
+    <div class="nav-bar">
+      <span class="back-btn">‹</span>
+      <span class="title">氧氧状态报告</span>
+      <span class="share-btn">🔗</span>
+    </div>
+
+    <!-- 1. 今日氧气状态 -->
+    <div class="card status-card">
+      <div class="status-left">
+        <div class="section-title">✨ 今日氧气状态 ✨</div>
+        <div class="status-type">平稳恢复型</div>
+        <div class="status-desc">正在恢复能量，慢慢充电中~</div>
+        
+        <div class="match-box">
+          <span class="match-label">匹配度</span>
+          <span class="match-val">86%</span>
+          <div class="progress-bar"><div class="progress-inner" style="width: 86%;"></div></div>
+        </div>
+        <div class="sub-tips">继续记录，让匹配度越来越高哦！</div>
+      </div>
+      <img class="ip-img-top" src="/static/images/ip/oxio-welcome.png" alt="氧氧" />
+    </div>
+
+    <!-- 2. 氧气能量指数（雷达图） -->
+    <div class="card radar-card">
+      <div class="card-header">
+        <span>氧气能量指数 ❓</span>
+        <span class="score-tip">满分100</span>
+      </div>
+      <!-- 渲染雷达图挂载点 -->
+      <div id="radarChart" class="chart-box"></div>
+    </div>
+
+    <!-- 3. 今日关键词 -->
+    <div class="card keywords-card">
+      <div class="card-title">今日关键词</div>
+      <div class="tags-group">
+        <span class="tag green">📖 高专注</span>
+        <span class="tag blue">☁️ 轻疲惫</span>
+        <span class="tag orange">🔥 压力积累</span>
+      </div>
+    </div>
+
+    <!-- 4. 氧气解读 -->
+    <div class="card interpretation-card">
+      <div class="card-title">氧气解读</div>
+      <div class="inter-content">
+        <p>氧氧看到，你最近一直在努力保持状态。</p>
+        <p>虽然你还在坚持，但身体和情绪可能需要一点缓冲时间。</p>
+        <p>你已经做得很好啦，别忘了也照顾一下自己哦~</p>
+      </div>
+      <img class="ip-img-small" src="/static/images/ip/oxio-encourage.png" alt="氧氧" />
+    </div>
+
+    <!-- 5. 今日能量恢复建议 -->
+    <div class="card advice-card">
+      <div class="card-title">今日能量恢复建议</div>
+      <div class="advice-grid">
+        <div class="advice-item">
+          <div class="icon-circle green-bg">🍃</div>
+          <div class="item-title">10分钟散步</div>
+          <div class="item-desc">去户外透透气 补充自然氧气</div>
+        </div>
+        <div class="advice-item">
+          <div class="icon-circle blue-bg">🫧</div>
+          <div class="item-title">深呼吸练习</div>
+          <div class="item-desc">4-7-8呼吸法 放松身心</div>
+        </div>
+        <div class="advice-item">
+          <div class="icon-circle purple-bg">🌙</div>
+          <div class="item-title">早点休息</div>
+          <div class="item-desc">保证7-8小时 睡眠时间</div>
+        </div>
+        <div class="advice-item">
+          <div class="icon-circle cyan-bg">🔋</div>
+          <div class="item-title">补充氧气环境</div>
+          <div class="item-desc">在高原/运动后 可使用充氧宝</div>
+        </div>
+      </div>
+      <div class="bottom-tip">
+        💡 小提示：你今天适合做一些安静的事，给大脑一次深度清理的机会~
+      </div>
+    </div>
+
+    <!-- 6. 成长记录 -->
+    <div class="card growth-card">
+      <div class="card-title">成长记录 ✨</div>
+      <div class="days-banner">
+        <div class="badge-icon">🛡️</div>
+        <div class="days-text">这已经是你陪伴氧氧的<br><span class="highlight-num">第 5 天</span></div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-val">🌱 5 次</div>
+          <div class="stat-label">状态记录</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val">💙 3 种</div>
+          <div class="stat-label">情绪关键词</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val">⚡ 120</div>
+          <div class="stat-label">氧气能量值</div>
+        </div>
+      </div>
+      <!-- 等级进度条 -->
+      <div class="level-box">
+        <div class="level-header">
+          <span>Lv.2 熟悉伙伴</span>
+          <span>Lv.3 氧气搭档</span>
+        </div>
+        <div class="level-progress">
+          <div class="level-inner" style="width: 50%;"></div>
+          <img class="level-ip" src="/static/images/ip/oxio-welcome.png" />
+        </div>
+        <div class="level-footer">
+          <span>280/500</span>
+          <span>250/600</span>
+          <span>280/500</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. 情绪趋势（折线图） -->
+    <div class="card trend-card">
+      <div class="card-header">
+        <span class="card-title">情绪趋势</span>
+        <select class="time-select"><option>7天</option></select>
+      </div>
+      <div id="lineChart" class="chart-box"></div>
+    </div>
+
+    <!-- 8. 氧氧想对你说 -->
+    <div class="card speak-card">
+      <div class="card-title">氧氧想对你说</div>
+      <div class="speak-body">
+        <div class="chat-bubble">
+          你每天都在努力生活，<br>
+          这本身就很了不起！<br>
+          氧氧会一直陪着你，<br>
+          一起慢慢变好~
+        </div>
+        <img class="ip-img-large" src="/static/images/ip/oxio-celebrate.png" alt="氧氧" />
+      </div>
+    </div>
+
+    <!-- 9. 保存与分享 -->
+    <div class="share-section">
+      <div class="section-title-sub">保存与分享</div>
+      <div class="share-grid">
+        <div class="share-btn-card">
+          <span class="share-icon">🖼️</span>
+          <div>
+            <div class="btn-main">保存到相册</div>
+            <div class="btn-sub">保存报告卡片</div>
+          </div>
+        </div>
+        <div class="share-btn-card">
+          <span class="share-icon">👥</span>
+          <div>
+            <div class="btn-main">分享给朋友</div>
+            <div class="btn-sub">一起传递氧气能量</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10. 底部长按钮 -->
+    <button class="primary-btn">完成，回到首页</button>
+  </div>
+</template>
+
+<script setup>
+import { onMounted } from 'vue';
+import * as echarts from 'echarts'; // npm install echarts
+
+onMounted(() => {
+  initRadarChart();
+  initLineChart();
+});
+
+// 初始化雷达图
+const initRadarChart = () => {
+  const chartDom = document.getElementById('radarChart');
+  const myChart = echarts.init(chartDom);
+  const option = {
+    radar: {
+      indicator: [
+        { name: '平静力 82', max: 100 },
+        { name: '活跃度 65', max: 100 },
+        { name: '思考量 76', max: 100 },
+        { name: '精力 60', max: 100 },
+        { name: '情绪稳定 88', max: 100 }
+      ],
+      splitNumber: 4,
+      axisName: { color: '#2B5B52', fontWeight: 'bold' },
+      splitArea: { areaStyle: { color: ['#F5FAF8', '#EAF5F1'] } },
+      axisLine: { lineStyle: { color: '#CBE5DD' } },
+      splitLine: { lineStyle: { color: '#CBE5DD' } }
+    },
+    series: [{
+      type: 'radar',
+      data: [{
+        value: [82, 65, 76, 60, 88],
+        areaStyle: { color: 'rgba(82, 204, 172, 0.4)' },
+        lineStyle: { color: '#38C0A0', width: 2 },
+        itemStyle: { color: '#38C0A0' }
+      }]
+    }]
+  };
+  myChart.setOption(option);
+};
+
+// 初始化情绪折线图
+const initLineChart = () => {
+  const chartDom = document.getElementById('lineChart');
+  const myChart = echarts.init(chartDom);
+  const option = {
+    grid: { top: 20, bottom: 30, left: 50, right: 20 },
+    xAxis: {
+      type: 'category',
+      data: ['8/4', '8/5', '8/6', '8/7', '8/8', '8/9', '今天'],
+      axisLine: { show: false },
+      axisTick: { show: false }
+    },
+    yAxis: {
+      type: 'category',
+      data: ['低落', '焦虑', '疲惫', '平稳', '开心'],
+      axisLine: { show: false },
+      splitLine: { lineStyle: { type: 'dashed', color: '#EAEAEA' } }
+    },
+    series: [{
+      data: ['疲惫', '疲惫', '平稳', '疲惫', '平稳', '平稳', '开心'],
+      type: 'line',
+      smooth: true,
+      symbolSize: 8,
+      lineStyle: { color: '#38C0A0', width: 3 },
+      itemStyle: { color: '#38C0A0' },
+      areaStyle: {
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          { offset: 0, color: 'rgba(56,192,160,0.3)' },
+          { offset: 1, color: 'rgba(56,192,160,0.0)' }
+        ])
+      }
+    }]
+  };
+  myChart.setOption(option);
+};
+</script>
+
+<style scoped>
+.report-container {
+  background-color: #E8F6F2;
+  padding: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* 通用卡片样式 */
+.card {
+  background: #FFFFFF;
+  border-radius: 20px;
+  padding: 18px;
+  margin-bottom: 14px;
+  box-shadow: 0 4px 12px rgba(40, 120, 100, 0.05);
+}
+
+.card-title {
+  font-weight: bold;
+  font-size: 16px;
+  color: #1F3833;
+  margin-bottom: 12px;
+}
+
+/* 状态卡片 */
+.status-card {
+  background: linear-gradient(135deg, #E0F5EE 0%, #FFFFFF 100%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.status-type {
+  font-size: 22px;
+  font-weight: bold;
+  color: #2BB696;
+  margin: 6px 0;
+}
+.match-val {
+  font-size: 24px;
+  font-weight: bold;
+  color: #2BB696;
+}
+.progress-bar {
+  height: 8px;
+  background: #E2F2EC;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.progress-inner {
+  height: 100%;
+  background: #2BB696;
+}
+.ip-img-top {
+  width: 100px;
+  height: 100px;
+}
+
+/* 放置图表容器 */
+.chart-box {
+  width: 100%;
+  height: 220px;
+}
+
+/* 关键词标签 */
+.tags-group {
+  display: flex;
+  gap: 10px;
+}
+.tag {
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+}
+.tag.green { background: #EDF8F4; color: #2E8A74; }
+.tag.blue { background: #EEF7FC; color: #3580A3; }
+.tag.orange { background: #FFF4EE; color: #D66838; }
+
+/* 恢复建议网格 */
+.advice-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.advice-item {
+  background: #F7FCFA;
+  border-radius: 14px;
+  padding: 12px;
+}
+.icon-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+.green-bg { background: #DFF4ED; }
+.blue-bg { background: #E1F2FB; }
+.purple-bg { background: #EBE8F9; }
+.cyan-bg { background: #DFF5F5; }
+
+.bottom-tip {
+  margin-top: 12px;
+  background: #FFFBEB;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  color: #8C6D23;
+}
+
+/* 按钮 */
+.primary-btn {
+  width: 100%;
+  height: 48px;
+  background: #3CC3A3;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 24px;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 16px;
+}
+</style>

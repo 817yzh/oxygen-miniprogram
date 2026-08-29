@@ -1,0 +1,675 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>充氧宝小程序 UI 设计图 V1</title>
+  <style>
+    :root {
+      --ink: #12313a;
+      --muted: #668089;
+      --line: #d8ece8;
+      --paper: #f7fffc;
+      --card: rgba(255,255,255,.86);
+      --cta: #35d6b8;
+      --blue: #5aa7ff;
+      --warm: #ffb84d;
+      --soft: #eafbf5;
+      --coral: #ff7f73;
+      --shadow: 0 20px 56px rgba(31, 125, 113, .16);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 14% 10%, rgba(53,214,184,.30), transparent 28%),
+        radial-gradient(circle at 84% 18%, rgba(255,184,77,.22), transparent 30%),
+        linear-gradient(135deg, #f3fffb 0%, #fffaf0 46%, #eef9ff 100%);
+      min-height: 100vh;
+      padding: 34px;
+    }
+
+    .board {
+      max-width: 1480px;
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      align-items: flex-end;
+      margin-bottom: 26px;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+    h1 {
+      font-size: 32px;
+      line-height: 1.15;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .sub {
+      margin-top: 10px;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .tone-card {
+      width: 360px;
+      border: 1px solid rgba(53,214,184,.24);
+      background: rgba(255,255,255,.72);
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .tone-title {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .swatches {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+
+    .swatch {
+      height: 34px;
+      border-radius: 999px;
+      border: 1px solid rgba(18,49,58,.08);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(260px, 1fr));
+      gap: 22px;
+      align-items: start;
+    }
+
+    .phone-wrap {
+      display: grid;
+      gap: 10px;
+    }
+
+    .caption {
+      font-size: 13px;
+      color: var(--muted);
+      padding-left: 8px;
+    }
+
+    .phone {
+      width: 100%;
+      min-width: 260px;
+      aspect-ratio: 390 / 844;
+      border-radius: 38px;
+      background: #f9fffc;
+      border: 10px solid #203a42;
+      overflow: hidden;
+      box-shadow: 0 34px 70px rgba(31,57,66,.24);
+      position: relative;
+    }
+
+    .screen {
+      height: 100%;
+      padding: 22px 18px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .screen:before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 18% 8%, rgba(53,214,184,.22), transparent 26%),
+        radial-gradient(circle at 92% 22%, rgba(255,184,77,.16), transparent 30%),
+        linear-gradient(180deg, #f7fffb 0%, #fff8eb 62%, #f0fbff 100%);
+      z-index: 0;
+    }
+
+    .screen > * { position: relative; z-index: 1; }
+
+    .status {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 700;
+      color: rgba(18,49,58,.72);
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hello strong {
+      display: block;
+      font-size: 22px;
+      line-height: 1.2;
+    }
+
+    .hello span {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #35d6b8, #5aa7ff);
+      border: 3px solid #fff;
+      box-shadow: 0 10px 22px rgba(53,214,184,.24);
+    }
+
+    .hero {
+      border-radius: 28px;
+      padding: 18px;
+      min-height: 210px;
+      background:
+        radial-gradient(circle at 72% 26%, rgba(90,167,255,.22), transparent 34%),
+        linear-gradient(145deg, rgba(255,255,255,.94), rgba(226,250,244,.84));
+      border: 1px solid rgba(53,214,184,.20);
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: 1fr 130px;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .hero h2 {
+      font-size: 24px;
+      line-height: 1.1;
+      font-weight: 800;
+    }
+
+    .hero p {
+      margin-top: 10px;
+      font-size: 12px;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+
+    .ip {
+      width: 122px;
+      height: 168px;
+      justify-self: end;
+      position: relative;
+      filter: drop-shadow(0 18px 24px rgba(53,125,184,.20));
+    }
+
+    .ip .pod {
+      position: absolute;
+      inset: 24px 12px 8px;
+      border-radius: 58px 58px 42px 42px;
+      background:
+        radial-gradient(circle at 34% 18%, rgba(255,255,255,.96), transparent 17%),
+        linear-gradient(160deg, #9eeaff 0%, #5aa7ff 46%, #346fe7 100%);
+      border: 4px solid rgba(255,255,255,.86);
+      box-shadow: inset 0 -18px 28px rgba(19,51,148,.22), inset 0 12px 22px rgba(255,255,255,.40);
+    }
+
+    .ip .core {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      left: 36px;
+      top: 72px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #f8fffd 0%, #35d6b8 50%, #18a88d 100%);
+      box-shadow: 0 0 30px rgba(53,214,184,.68);
+    }
+
+    .ip .ear {
+      position: absolute;
+      width: 30px;
+      height: 42px;
+      top: 10px;
+      border-radius: 18px 18px 8px 8px;
+      background: linear-gradient(160deg, #d6f9ff, #5aa7ff);
+      border: 3px solid rgba(255,255,255,.88);
+    }
+
+    .ip .ear.left { left: 23px; transform: rotate(-14deg); }
+    .ip .ear.right { right: 23px; transform: rotate(14deg); }
+
+    .ip .eye {
+      position: absolute;
+      width: 8px;
+      height: 12px;
+      top: 58px;
+      border-radius: 999px;
+      background: #15313f;
+    }
+
+    .ip .eye.left { left: 43px; }
+    .ip .eye.right { right: 43px; }
+
+    .ip .smile {
+      position: absolute;
+      width: 28px;
+      height: 13px;
+      left: 47px;
+      top: 80px;
+      border-bottom: 3px solid rgba(21,49,63,.82);
+      border-radius: 0 0 28px 28px;
+    }
+
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(53,214,184,.24);
+      border: 1px solid rgba(255,255,255,.72);
+    }
+
+    .bubble.b1 { width: 15px; height: 15px; right: 4px; top: 36px; }
+    .bubble.b2 { width: 10px; height: 10px; left: 8px; top: 78px; }
+
+    .primary {
+      height: 48px;
+      border-radius: 999px;
+      border: 0;
+      background: var(--cta);
+      color: #063129;
+      font-size: 15px;
+      font-weight: 800;
+      box-shadow: 0 12px 24px rgba(53,214,184,.30);
+    }
+
+    .panel {
+      border-radius: 20px;
+      border: 1px solid rgba(53,214,184,.18);
+      background: var(--card);
+      box-shadow: 0 14px 34px rgba(31,125,113,.10);
+      padding: 14px;
+    }
+
+    .panel h3 {
+      font-size: 16px;
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+
+    .chips, .nav, .moods {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .chip {
+      border-radius: 999px;
+      padding: 7px 10px;
+      background: #effaf6;
+      color: #2e6871;
+      font-size: 11px;
+      font-weight: 700;
+      border: 1px solid rgba(53,214,184,.18);
+      white-space: nowrap;
+    }
+
+    .score {
+      font-size: 48px;
+      line-height: 1;
+      font-weight: 850;
+      color: #1aa990;
+    }
+
+    .mini-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .mini {
+      border-radius: 16px;
+      padding: 10px;
+      min-height: 68px;
+      background: #fff;
+      border: 1px solid rgba(18,49,58,.08);
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .mini strong {
+      display: block;
+      color: var(--ink);
+      font-size: 17px;
+      margin-top: 6px;
+    }
+
+    .mood {
+      flex: 1;
+      aspect-ratio: 1;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+      background: #fff;
+      border: 1px solid rgba(18,49,58,.08);
+      box-shadow: 0 10px 18px rgba(31,125,113,.08);
+    }
+
+    .text-area {
+      min-height: 98px;
+      border-radius: 18px;
+      border: 1px solid rgba(53,214,184,.22);
+      background: #fff;
+      padding: 13px;
+      color: #8aa0a6;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .breath {
+      height: 220px;
+      border-radius: 110px;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle, rgba(53,214,184,.32) 0 28%, rgba(90,167,255,.18) 29% 48%, rgba(255,255,255,.72) 49% 100%);
+      border: 1px solid rgba(53,214,184,.22);
+      position: relative;
+    }
+
+    .breath span {
+      font-size: 28px;
+      font-weight: 850;
+      color: #168a78;
+    }
+
+    .progress {
+      height: 10px;
+      border-radius: 999px;
+      background: #e6f3ef;
+      overflow: hidden;
+    }
+
+    .progress i {
+      display: block;
+      height: 100%;
+      width: 64%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--cta), var(--blue));
+    }
+
+    .bars {
+      height: 122px;
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      align-items: end;
+      padding-top: 8px;
+    }
+
+    .bar {
+      border-radius: 999px 999px 8px 8px;
+      background: linear-gradient(180deg, var(--cta), #c8f6ec);
+      min-height: 28px;
+    }
+
+    .badges {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .badge {
+      aspect-ratio: 1;
+      border-radius: 18px;
+      background: #fff;
+      border: 1px solid rgba(18,49,58,.08);
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+    }
+
+    .nav {
+      margin-top: auto;
+      padding: 10px;
+      border-radius: 24px;
+      background: rgba(255,255,255,.82);
+      border: 1px solid rgba(53,214,184,.16);
+      justify-content: space-around;
+      box-shadow: 0 -10px 30px rgba(31,125,113,.10);
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .nav b { color: #129f88; }
+
+    .note {
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .note .panel {
+      min-height: 128px;
+      box-shadow: none;
+      background: rgba(255,255,255,.68);
+    }
+
+    .note p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    @media (max-width: 1180px) {
+      .grid { grid-template-columns: repeat(2, minmax(260px, 1fr)); }
+      header { align-items: flex-start; flex-direction: column; }
+      .tone-card { width: min(100%, 420px); }
+      .note { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 680px) {
+      body { padding: 18px; }
+      .grid { grid-template-columns: 1fr; }
+      h1 { font-size: 25px; }
+      .phone { max-width: 390px; margin: 0 auto; }
+    }
+  </style>
+</head>
+<body>
+  <main class="board">
+    <header>
+      <div>
+        <h1>充氧宝小程序 UI 设计图 V1</h1>
+        <p class="sub">本版把网页端被反馈“不好看”的深色冷调先撤掉，改成清透浅底、氧感薄荷绿、暖黄和少量蓝色点缀。终版 IP 采用“蓝色能量舱 / 氧芯”占位，等 IP 形象设计组发正式源文件后直接替换。</p>
+      </div>
+      <aside class="tone-card">
+        <p class="tone-title">新版色调方向：清透氧感，不做大面积深蓝黑</p>
+        <div class="swatches">
+          <i class="swatch" style="background:#f7fffc"></i>
+          <i class="swatch" style="background:#35d6b8"></i>
+          <i class="swatch" style="background:#5aa7ff"></i>
+          <i class="swatch" style="background:#ffb84d"></i>
+          <i class="swatch" style="background:#ff7f73"></i>
+        </div>
+      </aside>
+    </header>
+
+    <section class="grid">
+      <article class="phone-wrap">
+        <div class="phone">
+          <div class="screen">
+            <div class="status"><span>9:41</span><span>OPC</span></div>
+            <div class="topbar">
+              <div class="hello">
+                <strong>今天先充一口氧</strong>
+                <span>氧宝正在陪你保持轻松节奏</span>
+              </div>
+              <div class="avatar"></div>
+            </div>
+            <div class="hero">
+              <div>
+                <div class="chips"><span class="chip">今日氧值</span><span class="chip">氧涌</span></div>
+                <h2 style="margin-top:14px">72</h2>
+                <p>状态不错，适合做一个 30 秒的情绪打卡，把今天的氧感留住。</p>
+                <button class="primary" style="width:126px;margin-top:16px">开始打卡</button>
+              </div>
+              <div class="ip">
+                <i class="ear left"></i><i class="ear right"></i><i class="pod"></i><i class="core"></i>
+                <i class="eye left"></i><i class="eye right"></i><i class="smile"></i><i class="bubble b1"></i><i class="bubble b2"></i>
+              </div>
+            </div>
+            <div class="mini-row">
+              <div class="mini">连续打卡<strong>6 天</strong></div>
+              <div class="mini">本周趋势<strong>+12</strong></div>
+              <div class="mini">成长阶段<strong>清透</strong></div>
+            </div>
+            <div class="panel">
+              <h3>今日推荐</h3>
+              <div class="chips"><span class="chip">呼吸氧舱 1 分钟</span><span class="chip">白噪音</span></div>
+            </div>
+            <div class="nav"><b>首页</b><span>打卡</span><span>调节</span><span>成长</span><span>我的</span></div>
+          </div>
+        </div>
+        <p class="caption">首页：浅底氧感 + 终版 IP 主舞台，减少压迫感</p>
+      </article>
+
+      <article class="phone-wrap">
+        <div class="phone">
+          <div class="screen">
+            <div class="status"><span>9:41</span><span>打卡</span></div>
+            <div class="topbar">
+              <div class="hello">
+                <strong>现在的你更像哪一种？</strong>
+                <span>选择表情，氧宝同步变化</span>
+              </div>
+            </div>
+            <div class="panel">
+              <h3>心情选择</h3>
+              <div class="moods">
+                <div class="mood">🙂</div>
+                <div class="mood" style="border-color:rgba(53,214,184,.55);background:#effaf6">😌</div>
+                <div class="mood">😐</div>
+                <div class="mood">😟</div>
+                <div class="mood">😴</div>
+              </div>
+            </div>
+            <div class="text-area">写一句今天的感受，比如：今天有点累，但完成了一件小事。</div>
+            <div class="hero" style="min-height:190px;grid-template-columns:1fr 116px">
+              <div>
+                <span class="chip">生成结果</span>
+                <h2 style="margin-top:12px;font-size:22px">今日你是氧谧</h2>
+                <p>适合慢下来，给自己一个稳定的呼吸节奏。</p>
+              </div>
+              <div class="ip" style="transform:scale(.86);transform-origin:right center">
+                <i class="ear left"></i><i class="ear right"></i><i class="pod"></i><i class="core"></i>
+                <i class="eye left"></i><i class="eye right"></i><i class="smile"></i><i class="bubble b1"></i><i class="bubble b2"></i>
+              </div>
+            </div>
+            <button class="primary">保存今日氧值</button>
+            <div class="nav"><span>首页</span><b>打卡</b><span>调节</span><span>成长</span><span>我的</span></div>
+          </div>
+        </div>
+        <p class="caption">打卡：人格结果卡 + IP 陪伴，不再只有跳转入口</p>
+      </article>
+
+      <article class="phone-wrap">
+        <div class="phone">
+          <div class="screen">
+            <div class="status"><span>9:41</span><span>调节</span></div>
+            <div class="topbar">
+              <div class="hello">
+                <strong>呼吸氧舱</strong>
+                <span>4-4-6 节奏，完成后回流复测</span>
+              </div>
+            </div>
+            <div class="breath"><span>吸气</span></div>
+            <div class="panel">
+              <h3>氧宝陪你一起慢下来</h3>
+              <p style="font-size:13px;color:var(--muted);line-height:1.6">气泡按呼吸节奏扩张，完成后氧值 +3 并提示是否复测。</p>
+              <div class="progress" style="margin-top:12px"><i></i></div>
+            </div>
+            <div class="mini-row">
+              <div class="mini">声音疗愈<strong>海风</strong></div>
+              <div class="mini">小游戏<strong>涂鸦</strong></div>
+              <div class="mini">树洞<strong>倾诉</strong></div>
+            </div>
+            <button class="primary">继续 38 秒</button>
+            <div class="nav"><span>首页</span><span>打卡</span><b>调节</b><span>成长</span><span>我的</span></div>
+          </div>
+        </div>
+        <p class="caption">调节：呼吸视觉更轻，避免医疗仪表感</p>
+      </article>
+
+      <article class="phone-wrap">
+        <div class="phone">
+          <div class="screen">
+            <div class="status"><span>9:41</span><span>成长</span></div>
+            <div class="topbar">
+              <div class="hello">
+                <strong>这一周氧气更稳了</strong>
+                <span>氧人格、趋势和徽章在这里沉淀</span>
+              </div>
+            </div>
+            <div class="panel">
+              <h3>本周氧值</h3>
+              <div class="bars">
+                <i class="bar" style="height:52%"></i>
+                <i class="bar" style="height:68%"></i>
+                <i class="bar" style="height:48%"></i>
+                <i class="bar" style="height:78%"></i>
+                <i class="bar" style="height:62%"></i>
+                <i class="bar" style="height:86%"></i>
+                <i class="bar" style="height:74%;background:linear-gradient(180deg,#ffb84d,#35d6b8)"></i>
+              </div>
+            </div>
+            <div class="hero" style="min-height:160px;grid-template-columns:1fr 96px">
+              <div>
+                <span class="chip">我的人格档案</span>
+                <h2 style="font-size:24px;margin-top:10px">氧涌</h2>
+                <p>行动充氧型，本周最常出现的状态。</p>
+              </div>
+              <div class="score">72</div>
+            </div>
+            <div class="badges">
+              <div class="badge">🌿</div>
+              <div class="badge">💧</div>
+              <div class="badge">☀</div>
+              <div class="badge">✨</div>
+            </div>
+            <button class="primary">生成分享卡</button>
+            <div class="nav"><span>首页</span><span>打卡</span><span>调节</span><b>成长</b><span>我的</span></div>
+          </div>
+        </div>
+        <p class="caption">成长：氧人格沉淀 + 分享裂变入口</p>
+      </article>
+    </section>
+
+    <section class="note">
+      <div class="panel">
+        <h3>网页端处理</h3>
+        <p>当前网页版不继续按 V4 深色方向推进，后续重出一版“清透氧感浅底”方案。大面积背景改浅，IP 做第一视觉，深色只作为局部对比。</p>
+      </div>
+      <div class="panel">
+        <h3>IP 资产依赖</h3>
+        <p>本设计图里的 IP 是位置、体量和风格占位。最终版源文件需由 IP 形象设计组同步给前端助理，再替换到小程序和网页主舞台。</p>
+      </div>
+      <div class="panel">
+        <h3>仍保留的红线</h3>
+        <p>主 CTA 继续固定 #35D6B8；8 态色仍用于人格/状态识别；不做 8 套主题页；情绪健康定位和非医疗边界继续保留。</p>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

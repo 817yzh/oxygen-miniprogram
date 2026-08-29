@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>充氧宝小程序核心页面预览</title>
+    <style>
+      :root {
+        --page-bg: #f8f1e7;
+        --surface: #fffdf9;
+        --surface-strong: #ffffff;
+        --text-primary: #3f332b;
+        --text-secondary: #806f62;
+        --accent: #1f7a6d;
+        --border: rgba(115, 88, 69, 0.14);
+        --shadow: 0 8px 18px rgba(115, 88, 69, 0.12);
+        --oxygen-ring-fill: rgba(121, 184, 168, 0.22);
+        --oxygen-ring-glow: rgba(121, 184, 168, 0.3);
+        --ip-ground-shadow: 0 11px 22px rgba(115, 88, 69, 0.14);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: #efe5d8;
+        color: var(--text-primary);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      .sheet {
+        display: grid;
+        grid-template-columns: repeat(4, 375px);
+        gap: 28px;
+        width: max-content;
+        padding: 28px;
+      }
+
+      .capture-single {
+        grid-template-columns: 375px;
+        padding: 0;
+      }
+
+      .phone {
+        overflow: hidden;
+        width: 375px;
+        height: 812px;
+        border: 1px solid rgba(63, 51, 43, 0.12);
+        border-radius: 28px;
+        background: var(--page-bg);
+        box-shadow: 0 18px 40px rgba(63, 51, 43, 0.16);
+      }
+
+      .status {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 42px;
+        padding: 0 24px;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .status-icons {
+        letter-spacing: 2px;
+      }
+
+      .page {
+        display: flex;
+        min-height: 770px;
+        flex-direction: column;
+        gap: 14px;
+        padding: 20px 16px 24px;
+      }
+
+      .card {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--surface);
+        box-shadow: var(--shadow);
+      }
+
+      .section-title {
+        color: var(--text-primary);
+        font-size: 17px;
+        font-weight: 700;
+      }
+
+      .muted {
+        color: var(--text-secondary);
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .primary-button,
+      .secondary-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 46px;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      .primary-button {
+        background: var(--accent);
+        color: #fff;
+      }
+
+      .secondary-button {
+        border: 1px solid var(--border);
+        background: var(--surface-strong);
+        color: var(--accent);
+      }
+
+      .oxy-ring {
+        position: absolute;
+        width: 76%;
+        height: 76%;
+        border-radius: 999px;
+        background: var(--oxygen-ring-fill);
+        box-shadow: 0 0 25px var(--oxygen-ring-glow);
+      }
+
+      .hero {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding-top: 8px;
+      }
+
+      .hero-copy {
+        display: flex;
+        min-width: 0;
+        flex: 1;
+        flex-direction: column;
+      }
+
+      .eyebrow {
+        color: var(--accent);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .hero-title {
+        margin-top: 5px;
+        font-size: 24px;
+        font-weight: 800;
+      }
+
+      .hero-subtitle {
+        margin-top: 6px;
+        color: var(--text-secondary);
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .companion,
+      .feedback-visual,
+      .guide-visual {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .companion {
+        width: 110px;
+        height: 110px;
+        flex: 0 0 110px;
+      }
+
+      .companion img {
+        position: relative;
+        z-index: 1;
+        width: 90px;
+        height: 90px;
+        object-fit: contain;
+        filter: drop-shadow(var(--ip-ground-shadow));
+      }
+
+      .quick-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .quick-item {
+        display: flex;
+        min-height: 80px;
+        flex-direction: column;
+        justify-content: center;
+        padding: 13px;
+      }
+
+      .quick-value {
+        font-size: 19px;
+        font-weight: 800;
+      }
+
+      .quick-label {
+        margin-top: 7px;
+        color: var(--text-secondary);
+        font-size: 13px;
+      }
+
+      .panel,
+      .intro,
+      .feedback,
+      .timer,
+      .profile-head,
+      .growth,
+      .asset-note {
+        padding: 14px;
+      }
+
+      .panel-head,
+      .record-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .empty-state,
+      .feedback,
+      .guide,
+      .timer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 9px;
+      }
+
+      .empty-image {
+        width: 100%;
+        height: 150px;
+        object-fit: contain;
+      }
+
+      .empty-text,
+      .feedback-copy,
+      .growth-copy,
+      .asset-status {
+        color: var(--text-secondary);
+        font-size: 13px;
+        line-height: 1.5;
+        text-align: center;
+      }
+
+      .intro {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+      }
+
+      .intro img {
+        width: 120px;
+        height: 75px;
+        flex: 0 0 120px;
+        object-fit: contain;
+        filter: drop-shadow(var(--ip-ground-shadow));
+      }
+
+      .intro-copy {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .mood-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 9px;
+      }
+
+      .mood-chip {
+        display: flex;
+        min-height: 68px;
+        flex-direction: column;
+        justify-content: center;
+        padding: 11px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--surface);
+      }
+
+      .mood-chip.active {
+        border-color: var(--accent);
+        background: var(--surface-strong);
+      }
+
+      .mood-label {
+        font-size: 16px;
+        font-weight: 800;
+      }
+
+      .mood-tone {
+        margin-top: 6px;
+        color: var(--text-secondary);
+        font-size: 12px;
+        line-height: 1.35;
+      }
+
+      .note-input {
+        min-height: 90px;
+        padding: 12px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--surface-strong);
+        color: var(--text-secondary);
+        font-size: 14px;
+        line-height: 1.45;
+      }
+
+      .feedback-visual {
+        width: 120px;
+        height: 120px;
+      }
+
+      .feedback-visual img {
+        position: relative;
+        z-index: 1;
+        width: 95px;
+        height: 95px;
+        object-fit: contain;
+        filter: drop-shadow(var(--ip-ground-shadow));
+      }
+
+      .feedback-title {
+        font-size: 17px;
+        font-weight: 800;
+      }
+
+      .guide {
+        padding-top: 12px;
+      }
+
+      .guide-visual {
+        width: 260px;
+        height: 260px;
+      }
+
+      .guide-visual .oxy-ring {
+        width: 82%;
+        height: 82%;
+      }
+
+      .guide-visual img {
+        position: relative;
+        z-index: 1;
+        width: 165px;
+        height: 165px;
+        object-fit: contain;
+        filter: drop-shadow(var(--ip-ground-shadow));
+      }
+
+      .phase {
+        font-size: 24px;
+        font-weight: 800;
+      }
+
+      .timer-value {
+        color: var(--accent);
+        font-size: 28px;
+        font-weight: 800;
+      }
+
+      .profile-head {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .avatar {
+        width: 74px;
+        height: 74px;
+        flex: 0 0 74px;
+        object-fit: contain;
+      }
+
+      .profile-copy,
+      .growth,
+      .asset-note {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .name {
+        font-size: 18px;
+        font-weight: 800;
+      }
+
+      .progress-track {
+        width: 100%;
+        height: 9px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: rgba(115, 88, 69, 0.12);
+      }
+
+      .progress-fill {
+        width: 36%;
+        height: 100%;
+        border-radius: 999px;
+        background: var(--accent);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="sheet">
+      <section class="phone" data-page="home">
+        <div class="status"><span>09:41</span><span class="status-icons">5G ▰</span></div>
+        <div class="page">
+          <div class="hero">
+            <div class="hero-copy">
+              <span class="eyebrow">今日陪伴</span>
+              <span class="hero-title">氧氧在这里</span>
+              <span class="hero-subtitle">今天还没有记录，先从一个轻松的感受确认开始。</span>
+            </div>
+            <div class="companion">
+              <div class="oxy-ring"></div>
+              <img src="../miniprogram/assets/images/ip/popup_avatar_oxy_l1_v1_alpha.png" alt="" />
+            </div>
+          </div>
+          <div class="quick-grid">
+            <div class="quick-item card"><span class="quick-value">未记录</span><span class="quick-label">记录情绪</span></div>
+            <div class="quick-item card"><span class="quick-value">3 分钟</span><span class="quick-label">呼吸调节</span></div>
+          </div>
+          <div class="panel card">
+            <div class="panel-head"><span class="section-title">今日概览</span><span class="muted">0 条记录</span></div>
+            <div class="empty-state">
+              <img class="empty-image" src="../miniprogram/assets/images/ip/empty_mood_oxy_l1_v1_alpha.png" alt="" />
+              <div class="empty-text">还没有记录，先和氧氧确认一下现在的感受。</div>
+              <div class="secondary-button">开始记录</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="phone" data-page="mood">
+        <div class="status"><span>09:41</span><span class="status-icons">5G ▰</span></div>
+        <div class="page">
+          <div class="intro card">
+            <img src="../miniprogram/assets/images/ip/feedback_mood_oxy_l1_v1_alpha.png" alt="" />
+            <div class="intro-copy">
+              <span class="section-title">现在感觉怎么样</span>
+              <span class="muted">选择一个最接近的状态，氧氧会先记下来。</span>
+            </div>
+          </div>
+          <div class="mood-grid">
+            <div class="mood-chip active"><span class="mood-label">平静</span><span class="mood-tone">呼吸比较顺，身体松一点</span></div>
+            <div class="mood-chip"><span class="mood-label">低落</span><span class="mood-tone">有点没力气，需要被接住</span></div>
+            <div class="mood-chip"><span class="mood-label">紧绷</span><span class="mood-tone">事情很多，脑子停不下来</span></div>
+            <div class="mood-chip"><span class="mood-label">开心</span><span class="mood-tone">能量充足，想继续保持</span></div>
+          </div>
+          <div class="note-input">可选：写一句现在发生了什么</div>
+          <div class="primary-button">保存记录</div>
+          <div class="feedback card">
+            <div class="feedback-visual">
+              <div class="oxy-ring"></div>
+              <img src="../miniprogram/assets/images/ip/sticker_celebrate_oxy_l1_v1_alpha.png" alt="" />
+            </div>
+            <span class="feedback-title">已记录</span>
+            <span class="feedback-copy">氧氧已经记下了这个状态，慢慢来就可以。</span>
+            <div class="secondary-button">做一次呼吸调节</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="phone" data-page="breathing">
+        <div class="status"><span>09:41</span><span class="status-icons">5G ▰</span></div>
+        <div class="page">
+          <div class="guide">
+            <div class="guide-visual">
+              <div class="oxy-ring"></div>
+              <img src="../miniprogram/assets/images/ip/breathing_guide_oxy_l1_v1_alpha.png" alt="" />
+            </div>
+            <span class="phase">吸气</span>
+            <span class="muted">跟着氧环，吸气 4 秒，呼气 5 秒。</span>
+          </div>
+          <div class="timer card">
+            <span class="timer-value">03:00</span>
+            <span class="muted">3 分钟轻调节</span>
+          </div>
+          <div class="primary-button">开始</div>
+          <div class="secondary-button">重置</div>
+        </div>
+      </section>
+
+      <section class="phone" data-page="profile">
+        <div class="status"><span>09:41</span><span class="status-icons">5G ▰</span></div>
+        <div class="page">
+          <div class="profile-head card">
+            <img class="avatar" src="../miniprogram/assets/images/ip/icon_oxy_l1_v1_512_alpha.png" alt="" />
+            <div class="profile-copy">
+              <span class="name">氧氧 · L1 初遇</span>
+              <span class="muted">成长能量 36%</span>
+            </div>
+          </div>
+          <div class="growth card">
+            <div class="panel-head"><span class="section-title">成长墙</span><span class="muted">首版仅展示 L1</span></div>
+            <div class="progress-track"><div class="progress-fill"></div></div>
+            <span class="growth-copy">持续记录后，后续可解锁 L2-L4 形态。</span>
+          </div>
+          <div class="asset-note card">
+            <span class="section-title">首版素材</span>
+            <span class="muted">已接入 P0 + P1：图标、启动页、弹窗头像、默认/庆祝/安慰表情、情绪反馈、呼吸引导。</span>
+            <span class="asset-status">暗色模式已使用深暖中性 token，透明素材保持原色叠加。</span>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script>
+      const page = new URLSearchParams(window.location.search).get("page");
+      if (page) {
+        document.querySelector(".sheet").classList.add("capture-single");
+        document.querySelectorAll(".phone").forEach((phone) => {
+          if (phone.dataset.page !== page) {
+            phone.remove();
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

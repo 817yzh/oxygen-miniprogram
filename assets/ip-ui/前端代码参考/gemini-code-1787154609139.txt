@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>氧氧宝 V0.8 - 全页面 UI 交互原型与设计规范</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            oxygen: {
+              main: '#BDEAD7',
+              sub: '#A6E6C0',
+              bg: '#F6FFF8',
+              peach: '#FFF7EC',
+              cyan: '#8FD3C7',
+              dark: '#214E34',
+              text: '#2C3E35',
+            }
+          },
+          borderRadius: {
+            '4xl': '32px',
+            '5xl': '40px',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap');
+    
+    body {
+      font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #ECEFEF;
+      color: #2C3E35;
+    }
+
+    /* Custom Scrollbar */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Phone Mockup Frame */
+    .phone-frame {
+      width: 375px;
+      height: 780px;
+      border-radius: 44px;
+      box-shadow: 0 20px 50px rgba(33, 78, 52, 0.12), 0 2px 10px rgba(0, 0, 0, 0.08);
+      border: 8px solid #FFFFFF;
+      background: #FAFCFA;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .card-shadow {
+      box-shadow: 0 6px 20px rgba(189, 234, 215, 0.35);
+    }
+
+    .card-shadow-sm {
+      box-shadow: 0 4px 12px rgba(166, 230, 192, 0.25);
+    }
+
+    /* Radar Triangle Canvas simulation */
+    .triangle-radar {
+      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    }
+
+    /* Tab Switch Transition */
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.25s ease-in-out forwards;
+    }
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- ================= 顶栏控制中心 ================= -->
+  <header class="bg-white/90 backdrop-blur border-b border-emerald-100 sticky top-0 z-50 px-6 py-4 shadow-sm">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="flex items-center gap-3">
+        <!-- SVG Logo IP -->
+        <div class="w-10 h-10 rounded-2xl bg-[#BDEAD7] flex items-center justify-center shadow-inner text-emerald-800">
+          <svg class="w-7 h-7" viewBox="0 0 100 100" fill="currentColor">
+            <path d="M50 15 C30 45, 20 60, 20 75 A30 30 0 0 0 80 75 C80 60, 70 45, 50 15 Z" fill="#A6E6C0"/>
+            <circle cx="40" cy="65" r="4" fill="#214E34"/>
+            <circle cx="60" cy="65" r="4" fill="#214E34"/>
+            <path d="M43 75 Q50 80 57 75" stroke="#214E34" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <ellipse cx="33" cy="70" rx="3" ry="2" fill="#FF87EC" opacity="0.6"/>
+            <ellipse cx="67" cy="70" rx="3" ry="2" fill="#FF87EC" opacity="0.6"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+            氧氧宝 <span class="text-xs bg-[#BDEAD7] text-[#214E34] px-2 py-0.5 rounded-full font-medium">V0.8 全页面 UI</span>
+          </h1>
+          <p class="text-xs text-gray-500">每日给自己一点氧气，轻松呼吸每一天</p>
+        </div>
+      </div>
+
+      <!-- Mode View Switcher -->
+      <div class="flex items-center gap-2 bg-gray-100 p-1.5 rounded-2xl text-xs font-semibold text-gray-600">
+        <button onclick="switchView('interactive')" id="btn-interactive" class="px-4 py-2 rounded-xl bg-white text-emerald-800 shadow-sm transition-all">
+          📱 手机端交互体验
+        </button>
+        <button onclick="switchView('panorama')" id="btn-panorama" class="px-4 py-2 rounded-xl hover:text-emerald-700 transition-all">
+          📑 五大主页面平铺
+        </button>
+        <button onclick="switchView('subpages')" id="btn-subpages" class="px-4 py-2 rounded-xl hover:text-emerald-700 transition-all">
+          🧩 关键子页面与组件
+        </button>
+        <button onclick="switchView('designsystem')" id="btn-designsystem" class="px-4 py-2 rounded-xl hover:text-emerald-700 transition-all">
+          🎨 视觉风格规范
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= 主内容容器 ================= -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-6">
+
+    <!-- VIEW 1: 📱 手机交互原型 (Interactive Live Demo) -->
+    <section id="view-interactive" class="flex flex-col lg:flex-row items-center lg:items-start justify-center gap-8 py-4">
+      
+      <!-- 左侧控制提示 -->
+      <div class="max-w-xs space-y-4 text-center lg:text-left">
+        <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-2xl">
+          <h3 class="font-bold text-emerald-900 text-sm mb-1">💡 提示：点击底部导航栏切换</h3>
+          <p class="text-xs text-emerald-700 leading-relaxed">
+            右侧手机容器支持完整滑动与多页面点击体验。点击底部5个Tab（首页、氧氧、氧气探索、充氧宝、我的）可实时切换视图。
+          </p>
+        </div>
+
+        <!-- 页面快捷选择按钮 -->
+        <div class="space-y-2">
+          <div class="text-xs font-bold text-gray-400 uppercase tracking-wider">快速定位页面</div>
+          <div class="grid grid-cols-1 gap-2 text-xs">
+            <button onclick="setPhonePage('home')" class="p-2.5 bg-white border border-gray-200 rounded-xl text-left hover:border-emerald-400 flex justify-between items-center">
+              <span>1. 首页 Home</span> <span class="text-gray-400">→</span>
+            </button>
+            <button onclick="setPhonePage('chat')" class="p-2.5 bg-white border border-gray-200 rounded-xl text-left hover:border-emerald-400 flex justify-between items-center">
+              <span>2. 氧氧 (聊天) Chat</span> <span class="text-gray-400">→</span>
+            </button>
+            <button onclick="setPhonePage('explore')" class="p-2.5 bg-white border border-gray-200 rounded-xl text-left hover:border-emerald-400 flex justify-between items-center">
+              <span>3. 氧气探索 Oxygen Lab</span> <span class="text-gray-400">→</span>
+            </button>
+            <button onclick="setPhonePage('product')" class="p-2.5 bg-white border border-gray-200 rounded-xl text-left hover:border-emerald-400 flex justify-between items-center">
+              <span>4. 充氧宝 (产品) Product</span> <span class="text-gray-400">→</span>
+            </button>
+            <button onclick="setPhonePage('profile')" class="p-2.5 bg-white border border-gray-200 rounded-xl text-left hover:border-emerald-400 flex justify-between items-center">
+              <span>5. 我的 (个人) Profile</span> <span class="text-gray-400">→</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 📱 手机外壳容器 -->
+      <div class="phone-frame flex flex-col justify-between shadow-2xl">
+        
+        <!-- 顶部 iOS 状态栏 -->
+        <div class="px-6 pt-3 pb-1 flex justify-between items-center text-xs text-gray-800 font-semibold z-30 bg-transparent">
+          <span>9:41</span>
+          <!-- Dynamic Island Notch -->
+          <div class="w-20 h-4 bg-black rounded-full"></div>
+          <div class="flex items-center gap-1.5 text-[10px]">
+            <i class="fa-solid fa-signal"></i>
+            <i class="fa-solid fa-wifi"></i>
+            <i class="fa-solid fa-battery-full text-xs"></i>
+          </div>
+        </div>
+
+        <!-- 页面 Scroll 内容区 -->
+        <div class="flex-1 overflow-y-auto no-scrollbar relative">
+
+          <!-- PAGE 1: 首页 HOME -->
+          <div id="phone-page-home" class="tab-content active p-4 space-y-4">
+            
+            <!-- Welcome Header Card -->
+            <div class="p-4 rounded-3xl bg-gradient-to-br from-[#E2F7EC] via-[#F6FFF8] to-[#FFF7EC] card-shadow relative overflow-hidden">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h2 class="text-base font-bold text-gray-800">下午好，涵涵 🌿</h2>
+                  <p class="text-xs text-gray-500 mt-0.5">今天也记得给自己一点氧气噢~</p>
+                </div>
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" class="w-10 h-10 rounded-full border-2 border-white shadow-sm object-cover" alt="Avatar">
+              </div>
+
+              <!-- IP Dialogue Bubble -->
+              <div class="mt-3 p-2.5 bg-white/90 backdrop-blur rounded-2xl flex items-center gap-2.5 border border-emerald-100">
+                <div class="w-8 h-8 rounded-full bg-[#BDEAD7] flex-shrink-0 flex items-center justify-center text-sm shadow-inner">💧</div>
+                <div class="text-[11px] text-emerald-900 leading-snug">
+                  <span class="font-bold">你的氧气状态：</span>我都看在眼里呢~ 记得好好照顾自己！
+                </div>
+              </div>
+            </div>
+
+            <!-- 今日氧气地图 -->
+            <div class="bg-white rounded-3xl p-4 card-shadow">
+              <div class="flex justify-between items-center mb-2">
+                <span class="text-xs font-bold text-gray-800 flex items-center gap-1.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-[#A6E6C0]"></span> 今日氧气地图
+                </span>
+                <i class="fa-regular fa-circle-question text-gray-400 text-xs cursor-pointer"></i>
+              </div>
+
+              <!-- Radial Meter Dashboard -->
+              <div class="flex justify-center items-center py-2 relative">
+                <div class="w-32 h-32 rounded-full border-8 border-[#F6FFF8] border-t-[#A6E6C0] border-r-[#BDEAD7] flex flex-col items-center justify-center shadow-inner relative">
+                  <span class="text-[10px] text-gray-400 font-medium">综合状态</span>
+                  <span class="text-3xl font-black text-emerald-950">86</span>
+                  <span class="text-[10px] bg-[#E2F7EC] text-[#214E34] px-2 py-0.5 rounded-full font-bold mt-0.5">良好</span>
+                </div>
+              </div>
+
+              <!-- 4 Sub Metrics Grid -->
+              <div class="grid grid-cols-2 gap-2 text-center text-xs pt-2 border-t border-gray-100">
+                <div class="bg-[#F6FFF8] p-2 rounded-xl border border-emerald-50">
+                  <div class="text-gray-400 text-[10px]">情绪能量</div>
+                  <div class="font-bold text-emerald-900 text-sm">82</div>
+                </div>
+                <div class="bg-[#F6FFF8] p-2 rounded-xl border border-emerald-50">
+                  <div class="text-gray-400 text-[10px]">视觉疲劳度</div>
+                  <div class="font-bold text-emerald-900 text-sm">76</div>
+                </div>
+                <div class="bg-[#F6FFF8] p-2 rounded-xl border border-emerald-50">
+                  <div class="text-gray-400 text-[10px]">脑力加载</div>
+                  <div class="font-bold text-emerald-900 text-sm">85</div>
+                </div>
+                <div class="bg-[#F6FFF8] p-2 rounded-xl border border-emerald-50">
+                  <div class="text-gray-400 text-[10px]">嗅觉状态</div>
+                  <div class="font-bold text-emerald-900 text-sm">70</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 今日建议 -->
+            <div class="bg-white rounded-3xl p-4 card-shadow">
+              <div class="flex justify-between items-center mb-1">
+                <span class="text-xs font-bold text-gray-800">今日建议 💡</span>
+              </div>
+              <p class="text-xs text-gray-500 leading-relaxed mb-3">
+                检测到脑力消耗较高，推荐为你提神 <span class="text-emerald-700 font-bold">脑力恢复方案</span>
+              </p>
+              <button onclick="setPhonePage('product')" class="w-full py-2.5 bg-[#A6E6C0] text-[#214E34] font-bold text-xs rounded-2xl shadow-sm hover:opacity-95 active:scale-[0.98] transition flex items-center justify-center gap-1">
+                <span>查看方案</span>
+                <i class="fa-solid fa-arrow-right text-[10px]"></i>
+              </button>
+            </div>
+
+            <!-- 氧气变化 (与昨日相比) -->
+            <div class="bg-white rounded-3xl p-4 card-shadow">
+              <div class="flex justify-between items-center mb-2">
+                <span class="text-xs font-bold text-gray-800">氧气变化 (与昨日相比)</span>
+              </div>
+              <div class="grid grid-cols-3 gap-2 text-center">
+                <div class="p-2 rounded-2xl bg-[#F6FFF8] border border-emerald-50">
+                  <div class="text-[10px] text-gray-400">疲劳度</div>
+                  <div class="text-xs font-bold text-emerald-600 mt-0.5">↓ 20%</div>
+                </div>
+                <div class="p-2 rounded-2xl bg-[#F6FFF8] border border-emerald-50">
+                  <div class="text-[10px] text-gray-400">专注度</div>
+                  <div class="text-xs font-bold text-emerald-600 mt-0.5">↑ 15%</div>
+                </div>
+                <div class="p-2 rounded-2xl bg-[#F6FFF8] border border-emerald-50">
+                  <div class="text-[10px] text-gray-400">活力值</div>
+                  <div class="text-xs font-bold text-emerald-600 mt-0.5">↑ 18%</div>
+                </div>
+              </div>
+              <a href="#" class="block text-center text-[10px] text-emerald-700 font-bold mt-3 hover:underline">查看完整报告 →</a>
+            </div>
+
+            <!-- Quick Entry Grid Cards -->
+            <div class="grid grid-cols-2 gap-3 pb-16">
+              <div onclick="setPhonePage('explore')" class="p-3.5 bg-gradient-to-r from-[#E2F7EC] to-white rounded-2xl card-shadow border border-emerald-100 flex items-center justify-between cursor-pointer hover:scale-[1.02] transition">
+                <div>
+                  <div class="text-xs font-bold text-gray-800">发现你的</div>
+                  <div class="text-xs font-bold text-emerald-700">氧气人格</div>
+                </div>
+                <div class="w-8 h-8 rounded-full bg-[#BDEAD7] flex items-center justify-center text-sm">🧘</div>
+              </div>
+
+              <div onclick="setPhonePage('chat')" class="p-3.5 bg-gradient-to-r from-[#E2F7EC] to-white rounded-2xl card-shadow border border-emerald-100 flex items-center justify-between cursor-pointer hover:scale-[1.02] transition">
+                <div>
+                  <div class="text-xs font-bold text-gray-800">和氧氧聊聊</div>
+                  <div class="text-xs font-bold text-emerald-700">你的状态</div>
+                </div>
+                <div class="w-8 h-8 rounded-full bg-[#A6E6C0] flex items-center justify-center text-sm">💬</div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- PAGE 2: 氧氧 (聊天) CHAT -->
+          <div id="phone-page-chat" class="tab-content p-4 space-y-4">
+            
+            <!-- Chat Header Info -->
+            <div class="text-center py-2">
+              <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-[#E2F7EC] rounded-full text-xs font-bold text-[#214E34]">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>氧氧陪伴中</span>
+              </div>
+              <p class="text-[10px] text-gray-400 mt-1">你的专属氧气助手</p>
+            </div>
+
+            <!-- IP Floating Character & Greeting -->
+            <div class="bg-gradient-to-b from-[#E2F7EC] to-[#F6FFF8] rounded-3xl p-4 text-center card-shadow relative">
+              <div class="w-20 h-20 mx-auto rounded-full bg-white flex items-center justify-center shadow-md relative my-1">
+                <!-- Mascot Illustration -->
+                <svg class="w-14 h-14" viewBox="0 0 100 100" fill="currentColor">
+                  <path d="M50 15 C30 45, 20 60, 20 75 A30 30 0 0 0 80 75 C80 60, 70 45, 50 15 Z" fill="#A6E6C0"/>
+                  <circle cx="40" cy="65" r="4" fill="#214E34"/>
+                  <circle cx="60" cy="65" r="4" fill="#214E34"/>
+                  <path d="M42 75 Q50 82 58 75" stroke="#214E34" stroke-width="3" fill="none"/>
+                  <ellipse cx="32" cy="71" rx="4" ry="2.5" fill="#FF87EC" opacity="0.7"/>
+                  <ellipse cx="68" cy="71" rx="4" ry="2.5" fill="#FF87EC" opacity="0.7"/>
+                </svg>
+              </div>
+
+              <div class="mt-2 text-xs font-bold text-gray-800">下午好，涵涵 🌿</div>
+              <p class="text-[11px] text-gray-500 mt-0.5">今天想和氧氧聊点什么呢？</p>
+            </div>
+
+            <!-- Quick Entry Tags (快捷入口) -->
+            <div class="grid grid-cols-3 gap-2">
+              <div class="p-2.5 bg-white rounded-2xl card-shadow-sm text-center cursor-pointer hover:bg-emerald-50 transition border border-emerald-50">
+                <div class="text-base mb-1">🧘</div>
+                <div class="text-[11px] font-bold text-gray-800">我的状态</div>
+                <div class="text-[9px] text-gray-400">专属服务</div>
+              </div>
+              <div class="p-2.5 bg-white rounded-2xl card-shadow-sm text-center cursor-pointer hover:bg-emerald-50 transition border border-emerald-50">
+                <div class="text-base mb-1">🌿</div>
+                <div class="text-[11px] font-bold text-gray-800">追踪氧方案</div>
+                <div class="text-[9px] text-gray-400">场景推荐</div>
+              </div>
+              <div class="p-2.5 bg-white rounded-2xl card-shadow-sm text-center cursor-pointer hover:bg-emerald-50 transition border border-emerald-50">
+                <div class="text-base mb-1">🎒</div>
+                <div class="text-[11px] font-bold text-gray-800">了解充氧宝</div>
+                <div class="text-[9px] text-gray-400">产品问答</div>
+              </div>
+            </div>
+
+            <!-- 氧氧记忆 -->
+            <div class="bg-white rounded-3xl p-4 card-shadow space-y-2">
+              <div class="flex justify-between items-center text-xs font-bold text-gray-800">
+                <span class="flex items-center gap-1"><i class="fa-solid fa-brain text-emerald-500"></i> 氧氧记忆</span>
+                <span class="text-[10px] text-[#214E34] bg-[#E2F7EC] px-2 py-0.5 rounded-full font-medium">已开启</span>
+              </div>
+              <p class="text-[11px] text-gray-500 leading-snug">
+                记住的好：<br/>
+                <span class="text-gray-700 font-medium">26岁 | 经常加班 | 稍微便秘 | 父母50+ | 每年去高原1-2次</span>
+              </p>
+              <div class="text-right">
+                <a href="#" class="text-[10px] text-emerald-700 font-bold hover:underline">管理偏好 ></a>
+              </div>
+            </div>
+
+            <!-- Active Conversation Bubble -->
+            <div class="space-y-3 pt-2">
+              <!-- AI Bubble -->
+              <div class="flex items-start gap-2">
+                <div class="w-7 h-7 rounded-full bg-[#BDEAD7] flex items-center justify-center text-xs flex-shrink-0">💧</div>
+                <div class="bg-white p-3 rounded-2xl rounded-tl-none card-shadow-sm max-w-[80%] text-xs text-gray-700 leading-relaxed">
+                  最近工作辛苦啦，记得适当放松噢~ 氧气山谷帮您推荐合理的氧气方案 🍃
+                </div>
+              </div>
+
+              <!-- Quick response pill bar -->
+              <div class="flex gap-2 overflow-x-auto no-scrollbar py-1 text-[11px]">
+                <button onclick="sendChatMessage('我很好')" class="px-3 py-1 bg-white border border-emerald-200 rounded-full text-emerald-800 flex-shrink-0 hover:bg-emerald-50">🌱 我很好</button>
+                <button onclick="sendChatMessage('挺不错')" class="px-3 py-1 bg-white border border-emerald-200 rounded-full text-emerald-800 flex-shrink-0 hover:bg-emerald-50">✨ 挺不错</button>
+                <button onclick="sendChatMessage('头晕')" class="px-3 py-1 bg-white border border-emerald-200 rounded-full text-emerald-800 flex-shrink-0 hover:bg-emerald-50">💫 头晕</button>
+                <button onclick="sendChatMessage('退出')" class="px-3 py-1 bg-white border border-emerald-200 rounded-full text-emerald-800 flex-shrink-0 hover:bg-emerald-50">🚪 退出</button>
+              </div>
+            </div>
+
+            <!-- Chat Input Area -->
+            <div class="pt-4 pb-16">
+              <div class="bg-white rounded-full p-1.5 pl-4 flex items-center justify-between border border-emerald-200 shadow-sm">
+                <input id="chat-input-field" type="text" placeholder="输入仍想说的对话..." class="w-full text-xs outline-none bg-transparent text-gray-700">
+                <button onclick="handleChatSubmit()" class="w-8 h-8 rounded-full bg-[#A6E6C0] text-[#214E34] flex items-center justify-center flex-shrink-0 hover:bg-[#8FD3C7] transition">
+                  <i class="fa-solid fa-arrow-up text-xs"></i>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- PAGE 3: 氧气探索 OXYGEN LAB -->
+          <div id="phone-page-explore" class="tab-content p-4 space-y-4">
+            
+            <!-- Page Title -->
+            <div class="text-left pt-1">
+              <h2 class="text-base font-black text-gray-800">探索你的氧气世界</h2>
+              <p class="text-xs text-gray-500 mt-0.5">发现更好的自己</p>
+            </div>
+
+            <!-- Card 1: MBTI Oxygen Persona -->
+            <div class="bg-gradient-to-r from-[#E2F7EC] to-[#F6FFF8] rounded-3xl p-4 card-shadow border border-emerald-100">
+              <div class="flex justify-between items-center mb-2">
+                <div>
+                  <h3 class="text-xs font-bold text-gray-800">发现你的氧气人格</h3>
+                  <p class="text-[10px] text-gray-500 mt-0.5">基于MBTI与氧气能量的旋转结合</p>
+                </div>
+                <i class="fa-solid fa-angle-right text-gray-400 text-xs"></i>
+              </div>
+
+              <!-- Persona Avatars Row -->
+              <div class="flex justify-around items-center pt-3 border-t border-emerald-100/60">
+                <div class="text-center">
+                  <div class="w-10 h-10 rounded-full bg-[#BDEAD7] flex items-center justify-center text-base mx-auto">🌱</div>
+                  <div class="text-[9px] font-bold text-gray-700 mt-1">INTP</div>
+                </div>
+                <div class="text-center">
+                  <div class="w-10 h-10 rounded-full bg-[#FFF7EC] flex items-center justify-center text-base mx-auto">🔥</div>
+                  <div class="text-[9px] font-bold text-gray-700 mt-1">ENFP</div>
+                </div>
+                <div class="text-center">
+                  <div class="w-10 h-10 rounded-full bg-[#8FD3C7] flex items-center justify-center text-base mx-auto">🛡️</div>
+                  <div class="text-[9px] font-bold text-gray-700 mt-1">ESTJ</div>
+                </div>
+                <div class="text-center">
+                  <div class="w-10 h-10 rounded-full bg-[#A6E6C0] flex items-center justify-center text-base mx-auto">💧</div>
+                  <div class="text-[9px] font-bold text-gray-700 mt-1">INFJ</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 2: 含氧感自测 -->
+            <div class="bg-white rounded-3xl p-4 card-shadow flex justify-between items-center cursor-pointer hover:border-emerald-300 border border-transparent transition">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-[#E2F7EC] text-emerald-800 flex items-center justify-center text-base">📋</div>
+                <div>
+                  <div class="text-xs font-bold text-gray-800">含氧感自测</div>
+                  <div class="text-[10px] text-gray-400 mt-0.5">10道题了解你的氧气饥饿水平</div>
+                </div>
+              </div>
+              <i class="fa-solid fa-chevron-right text-gray-300 text-xs"></i>
+            </div>
+
+            <!-- Card 3: 场景模拟器 -->
+            <div class="bg-white rounded-3xl p-4 card-shadow flex justify-between items-center cursor-pointer hover:border-emerald-300 border border-transparent transition">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-[#FFF7EC] text-amber-700 flex items-center justify-center text-base">🏔️</div>
+                <div>
+                  <div class="text-xs font-bold text-gray-800">场景模拟器</div>
+                  <div class="text-[10px] text-gray-400 mt-0.5">预测不同场景下的氧气需求</div>
+                </div>
+              </div>
+              <i class="fa-solid fa-chevron-right text-gray-300 text-xs"></i>
+            </div>
+
+            <!-- 我的氧气码 (Triangle Radar Section) -->
+            <div class="bg-white rounded-3xl p-4 card-shadow space-y-3">
+              <div class="flex justify-between items-center text-xs font-bold text-gray-800">
+                <span>我的氧气码 ⓘ</span>
+              </div>
+
+              <!-- Triangle Canvas/Graph Simulation -->
+              <div class="relative w-40 h-36 mx-auto my-2 flex items-center justify-center">
+                <!-- Triangle Overlay -->
+                <div class="absolute inset-0 bg-[#E2F7EC]/60 triangle-radar border-2 border-[#A6E6C0]"></div>
+                <!-- Center Score -->
+                <div class="relative z-10 text-center">
+                  <div class="text-[10px] text-gray-500">脑力负荷</div>
+                  <div class="text-lg font-black text-gray-800">72</div>
+                  <div class="text-xs font-bold text-emerald-800 mt-1">66</div>
+                  <div class="text-[9px] text-emerald-600 bg-white/80 px-1.5 py-0.5 rounded-full">中等风阻</div>
+                </div>
+                <!-- Labels surrounding triangle -->
+                <span class="absolute -top-2 left-1/2 -translate-x-1/2 text-[9px] text-gray-400">脑力 72</span>
+                <span class="absolute -bottom-1 left-0 text-[9px] text-gray-400">视觉疲劳 68</span>
+                <span class="absolute -bottom-1 right-0 text-[9px] text-gray-400">嗅觉钝感 59</span>
+              </div>
+
+              <button class="w-full py-2 bg-[#F6FFF8] text-emerald-800 font-bold text-xs rounded-2xl border border-emerald-200 hover:bg-[#E2F7EC] transition">
+                重新检测
+              </button>
+            </div>
+
+            <!-- Bottom Banner Link -->
+            <div class="p-3 bg-[#E2F7EC] rounded-2xl text-center pb-16">
+              <a href="#" class="text-xs font-bold text-[#214E34] hover:underline flex items-center justify-center gap-1">
+                <span>了解缺氧科普，提升含氧量</span>
+                <i class="fa-solid fa-arrow-right text-[10px]"></i>
+              </a>
+            </div>
+
+          </div>
+
+          <!-- PAGE 4: 充氧宝 (产品) PRODUCT -->
+          <div id="phone-page-product" class="tab-content p-4 space-y-4">
+            
+            <!-- Product Title -->
+            <div class="text-left pt-1">
+              <h2 class="text-base font-black text-gray-800">Work Air 充氧宝</h2>
+              <p class="text-xs text-gray-500 mt-0.5">给你随时随地的氧气能量</p>
+            </div>
+
+            <!-- Hero Product Rendering (CSS/SVG 3D Device) -->
+            <div class="bg-gradient-to-b from-[#E2F7EC] via-white to-[#F6FFF8] rounded-3xl p-6 text-center card-shadow relative overflow-hidden">
+              <div class="w-28 h-40 mx-auto bg-gradient-to-tr from-gray-100 via-white to-gray-200 rounded-3xl border-4 border-white shadow-xl flex flex-col items-center justify-between py-3 relative">
+                <!-- Device Nozzle -->
+                <div class="w-8 h-3 bg-emerald-400 rounded-full shadow-inner"></div>
+                <!-- Status LED Light -->
+                <div class="w-3 h-3 rounded-full bg-emerald-500 animate-ping"></div>
+                <!-- Brand Logo -->
+                <div class="text-[8px] font-bold text-gray-400 tracking-widest uppercase">WORK AIR</div>
+              </div>
+
+              <div class="text-xs font-bold text-gray-800 mt-4">Work Air 便携便携充氧机</div>
+            </div>
+
+            <!-- 4 Specs Grid -->
+            <div class="grid grid-cols-4 gap-1.5 text-center">
+              <div class="p-2 bg-white rounded-2xl card-shadow-sm border border-emerald-50">
+                <div class="text-xs font-black text-gray-800">320g</div>
+                <div class="text-[9px] text-gray-400 mt-0.5">重量</div>
+              </div>
+              <div class="p-2 bg-white rounded-2xl card-shadow-sm border border-emerald-50">
+                <div class="text-xs font-black text-gray-800">3.5h</div>
+                <div class="text-[9px] text-gray-400 mt-0.5">续航</div>
+              </div>
+              <div class="p-2 bg-white rounded-2xl card-shadow-sm border border-emerald-50">
+                <div class="text-xs font-black text-gray-800">5-6L</div>
+                <div class="text-[9px] text-gray-400 mt-0.5">喷出浓度</div>
+              </div>
+              <div class="p-2 bg-white rounded-2xl card-shadow-sm border border-emerald-50">
+                <div class="text-xs font-black text-gray-800">0耗材</div>
+                <div class="text-[9px] text-gray-400 mt-0.5">永续制氧</div>
+              </div>
+            </div>
+
+            <!-- Icon Features Row -->
+            <div class="flex justify-around items-center py-2 text-center text-[10px] text-gray-600">
+              <div class="space-y-1"><i class="fa-solid fa-circle-info text-emerald-600 text-sm"></i><div>为什么需要充氧</div></div>
+              <div class="space-y-1"><i class="fa-solid fa-cube text-emerald-600 text-sm"></i><div>产品型号</div></div>
+              <div class="space-y-1"><i class="fa-solid fa-microchip text-emerald-600 text-sm"></i><div>技术原理</div></div>
+              <div class="space-y-1"><i class="fa-solid fa-award text-emerald-600 text-sm"></i><div>认证环节</div></div>
+            </div>
+
+            <!-- 四大场景方案 -->
+            <div class="space-y-2">
+              <div class="flex justify-between items-center text-xs font-bold text-gray-800">
+                <span>四大场景方案</span>
+                <span class="text-[10px] text-gray-400">查看更多 ></span>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2">
+                <!-- Card 1 -->
+                <div class="bg-white rounded-2xl p-2.5 card-shadow-sm border border-emerald-50 space-y-1">
+                  <div class="h-16 rounded-xl bg-gradient-to-r from-blue-400 to-indigo-500 flex items-center justify-center text-white text-lg font-bold">💻</div>
+                  <div class="text-xs font-bold text-gray-800">高屏守护</div>
+                  <div class="text-[9px] text-gray-400">程序员、白领专享</div>
+                </div>
+                <!-- Card 2 -->
+                <div class="bg-white rounded-2xl p-2.5 card-shadow-sm border border-emerald-50 space-y-1">
+                  <div class="h-16 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 flex items-center justify-center text-white text-lg font-bold">📚</div>
+                  <div class="text-xs font-bold text-gray-800">考力增料</div>
+                  <div class="text-[9px] text-gray-400">考研备考、提神充能</div>
+                </div>
+                <!-- Card 3 -->
+                <div class="bg-white rounded-2xl p-2.5 card-shadow-sm border border-emerald-50 space-y-1">
+                  <div class="h-16 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-500 flex items-center justify-center text-white text-lg font-bold">🏃</div>
+                  <div class="text-xs font-bold text-gray-800">运动恢复</div>
+                  <div class="text-[9px] text-gray-400">提升耐力、快速恢复</div>
+                </div>
+                <!-- Card 4 -->
+                <div class="bg-white rounded-2xl p-2.5 card-shadow-sm border border-emerald-50 space-y-1">
+                  <div class="h-16 rounded-xl bg-gradient-to-r from-[#BDEAD7] to-[#8FD3C7] flex items-center justify-center text-emerald-900 text-lg font-bold">👵</div>
+                  <div class="text-xs font-bold text-gray-800">银发守护</div>
+                  <div class="text-[9px] text-gray-400">安心护航、健脑健康</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ Dropdowns -->
+            <div class="bg-white rounded-3xl p-4 card-shadow space-y-2 pb-16">
+              <div class="text-xs font-bold text-gray-800">常见问题 FAQ</div>
+              <div class="p-2.5 bg-gray-50 rounded-2xl text-xs flex justify-between items-center text-gray-700">
+                <span>预览与原理</span>
+                <i class="fa-solid fa-chevron-down text-gray-400 text-[10px]"></i>
+              </div>
+              <div class="p-2.5 bg-gray-50 rounded-2xl text-xs flex justify-between items-center text-gray-700">
+                <span>购买 1690 含包</span>
+                <i class="fa-solid fa-chevron-down text-gray-400 text-[10px]"></i>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- PAGE 5: 我的 (个人) PROFILE -->
+          <div id="phone-page-profile" class="tab-content p-4 space-y-4">
+            
+            <!-- Top Icons -->
+            <div class="flex justify-end gap-3 text-gray-600 text-sm">
+              <i class="fa-regular fa-bell cursor-pointer"></i>
+              <i class="fa-solid fa-gear cursor-pointer"></i>
+            </div>
+
+            <!-- User Info Card -->
+            <div class="flex items-center gap-3">
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80" class="w-14 h-14 rounded-full border-2 border-white card-shadow object-cover" alt="User Avatar">
+              <div>
+                <h2 class="text-base font-bold text-gray-800">涵涵 🌿</h2>
+                <p class="text-xs text-gray-400 mt-0.5">氧气陪伴的第 28 天</p>
+              </div>
+            </div>
+
+            <!-- Persona Banner -->
+            <div class="p-3.5 bg-gradient-to-r from-[#E2F7EC] via-[#F6FFF8] to-[#FFF7EC] rounded-3xl card-shadow flex justify-between items-center border border-emerald-100">
+              <div>
+                <div class="text-[10px] text-emerald-800 font-bold">我的氧气人格</div>
+                <div class="text-xs font-black text-gray-800 mt-0.5">氧气探索家 INTP</div>
+              </div>
+              <a href="#" class="text-[10px] text-[#214E34] bg-white px-2.5 py-1 rounded-full font-bold shadow-sm">去查看 ></a>
+            </div>
+
+            <!-- 4 Grid Details (我的氧气档案) -->
+            <div class="bg-white rounded-3xl p-3.5 card-shadow space-y-2">
+              <div class="text-xs font-bold text-gray-800">我的氧气档案</div>
+              <div class="grid grid-cols-4 gap-2 text-center text-xs pt-1">
+                <div class="p-2 bg-[#F6FFF8] rounded-2xl">
+                  <div class="text-gray-400 text-[9px]">双鱼座</div>
+                  <div class="font-bold text-emerald-900 mt-0.5 text-[11px]">水瓶座</div>
+                </div>
+                <div class="p-2 bg-[#F6FFF8] rounded-2xl">
+                  <div class="text-gray-400 text-[9px]">五行</div>
+                  <div class="font-bold text-emerald-900 mt-0.5 text-[11px]">水木</div>
+                </div>
+                <div class="p-2 bg-[#F6FFF8] rounded-2xl">
+                  <div class="text-gray-400 text-[9px]">隐藏标签</div>
+                  <div class="font-bold text-emerald-900 mt-0.5 text-[11px]">思考型</div>
+                </div>
+                <div class="p-2 bg-[#F6FFF8] rounded-2xl">
+                  <div class="text-gray-400 text-[9px]">最近状况</div>
+                  <div class="font-bold text-emerald-900 mt-0.5 text-[11px]">良好</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 成长中心 Level Card -->
+            <div class="bg-white rounded-3xl p-3.5 card-shadow space-y-2">
+              <div class="flex justify-between items-center text-xs">
+                <span class="font-bold text-gray-800">成长中心</span>
+                <span class="text-emerald-700 font-bold">Lv.3 氧气守护者</span>
+              </div>
+              <!-- Progress Bar -->
+              <div class="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-[#BDEAD7] to-[#A6E6C0] w-[62%]"></div>
+              </div>
+              <div class="text-[9px] text-gray-400 text-right">1250 / 2000</div>
+            </div>
+
+            <!-- Menu Item List -->
+            <div class="bg-white rounded-3xl card-shadow overflow-hidden text-xs divide-y divide-gray-50 pb-16">
+              <div class="p-3.5 flex justify-between items-center hover:bg-gray-50 cursor-pointer">
+                <span class="flex items-center gap-2"><i class="fa-regular fa-bookmark text-emerald-600"></i> 我的记录</span>
+                <i class="fa-solid fa-angle-right text-gray-300"></i>
+              </div>
+              <div class="p-3.5 flex justify-between items-center hover:bg-gray-50 cursor-pointer">
+                <span class="flex items-center gap-2"><i class="fa-regular fa-[#214E34] fa-smile text-emerald-600"></i> 情绪日志</span>
+                <i class="fa-solid fa-angle-right text-gray-300"></i>
+              </div>
+              <div class="p-3.5 flex justify-between items-center hover:bg-gray-50 cursor-pointer">
+                <span class="flex items-center gap-2"><i class="fa-regular fa-comments text-emerald-600"></i> 聊天记录</span>
+                <i class="fa-solid fa-angle-right text-gray-300"></i>
+              </div>
+              <div class="p-3.5 flex justify-between items-center hover:bg-gray-50 cursor-pointer">
+                <span class="flex items-center gap-2"><i class="fa-solid fa-trophy text-amber-500"></i> 我的成就</span>
+                <span class="text-[10px] text-amber-600 font-medium">12个成就待解锁 ></span>
+              </div>
+              <div class="p-3.5 flex justify-between items-center hover:bg-gray-50 cursor-pointer">
+                <span class="flex items-center gap-2"><i class="fa-solid fa-brain text-emerald-600"></i> 氧气记忆</span>
+                <span class="text-[10px] text-emerald-600">已开启 ></span>
+              </div>
+              <div class="p-3.5 flex justify-between items-center hover:bg-gray-50 cursor-pointer">
+                <span class="flex items-center gap-2"><i class="fa-solid fa-shield-halved text-gray-400"></i> 隐私设置</span>
+                <i class="fa-solid fa-angle-right text-gray-300"></i>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- 底部 iOS 5-Tab 导航栏 -->
+        <div class="absolute bottom-0 left-0 right-0 h-16 bg-white/95 backdrop-blur border-t border-emerald-100 px-2 flex justify-around items-center text-[10px] z-30">
+          
+          <button onclick="setPhonePage('home')" id="tab-home" class="flex flex-col items-center text-[#214E34] font-bold">
+            <i class="fa-solid fa-house text-base"></i>
+            <span>首页</span>
+          </button>
+
+          <button onclick="setPhonePage('chat')" id="tab-chat" class="flex flex-col items-center text-gray-400 hover:text-emerald-700">
+            <i class="fa-solid fa-comment-dots text-base"></i>
+            <span>氧氧</span>
+          </button>
+
+          <button onclick="setPhonePage('explore')" id="tab-explore" class="flex flex-col items-center text-gray-400 hover:text-emerald-700">
+            <i class="fa-solid fa-compass text-base"></i>
+            <span>氧气探索</span>
+          </button>
+
+          <button onclick="setPhonePage('product')" id="tab-product" class="flex flex-col items-center text-gray-400 hover:text-emerald-700">
+            <i class="fa-solid fa-bag-shopping text-base"></i>
+            <span>充氧宝</span>
+          </button>
+
+          <button onclick="setPhonePage('profile')" id="tab-profile" class="flex flex-col items-center text-gray-400 hover:text-emerald-700">
+            <i class="fa-solid fa-user text-base"></i>
+            <span>我的</span>
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- VIEW 2: 📑 五大主页面平铺 (Panorama Grid View) -->
+    <section id="view-panorama" class="hidden space-y-6">
+      <div class="text-center mb-6">
+        <h2 class="text-2xl font-black text-gray-800">氧氧宝 V0.8 五大核心主页面全景</h2>
+        <p class="text-xs text-gray-500 mt-1">按顺序呈现在设计稿第一行中的 5 个 App 主界面</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 justify-items-center">
+        <!-- Mini Phone Preview 1 -->
+        <div class="w-full bg-white rounded-3xl p-4 card-shadow border border-emerald-100 space-y-3">
+          <div class="text-xs font-bold text-center text-emerald-900 bg-emerald-50 py-1 rounded-xl">1. 首页 Home</div>
+          <div class="text-xs space-y-2">
+            <div class="p-2.5 bg-[#E2F7EC] rounded-2xl font-bold text-gray-800">下午好，涵涵 🌿</div>
+            <div class="p-3 bg-white rounded-2xl border text-center">
+              <div class="text-xl font-bold">86</div>
+              <div class="text-[10px] text-emerald-700">今日氧气地图 (良好)</div>
+            </div>
+            <div class="p-2 bg-emerald-50 rounded-xl text-[10px] text-gray-600">今日建议：脑力恢复方案</div>
+          </div>
+        </div>
+
+        <!-- Mini Phone Preview 2 -->
+        <div class="w-full bg-white rounded-3xl p-4 card-shadow border border-emerald-100 space-y-3">
+          <div class="text-xs font-bold text-center text-emerald-900 bg-emerald-50 py-1 rounded-xl">2. 氧氧 (聊天) Chat</div>
+          <div class="text-xs space-y-2 text-center">
+            <div class="w-12 h-12 rounded-full bg-[#BDEAD7] mx-auto flex items-center justify-center text-xl">💧</div>
+            <div class="font-bold text-gray-800">氧氧陪伴中</div>
+            <div class="p-2 bg-gray-50 rounded-xl text-[10px] text-left">记住的好：26岁 | 经常加班 | 高原...</div>
+          </div>
+        </div>
+
+        <!-- Mini Phone Preview 3 -->
+        <div class="w-full bg-white rounded-3xl p-4 card-shadow border border-emerald-100 space-y-3">
+          <div class="text-xs font-bold text-center text-emerald-900 bg-emerald-50 py-1 rounded-xl">3. 氧气探索 Oxygen Lab</div>
+          <div class="text-xs space-y-2">
+            <div class="p-2.5 bg-[#FFF7EC] rounded-2xl font-bold">发现你的氧气人格</div>
+            <div class="p-2.5 bg-white border rounded-2xl text-[10px]">含氧感自测 (10题)</div>
+            <div class="p-2 bg-emerald-50 rounded-xl text-[10px] text-center">我的氧气码：66 (中等风阻)</div>
+          </div>
+        </div>
+
+        <!-- Mini Phone Preview 4 -->
+        <div class="w-full bg-white rounded-3xl p-4 card-shadow border border-emerald-100 space-y-3">
+          <div class="text-xs font-bold text-center text-emerald-900 bg-emerald-50 py-1 rounded-xl">4. 充氧宝 (产品) Product</div>
+          <div class="text-xs space-y-2 text-center">
+            <div class="p-3 bg-gray-100 rounded-2xl font-bold">Work Air 充氧宝</div>
+            <div class="grid grid-cols-2 gap-1 text-[9px]">
+              <div class="bg-emerald-50 p-1 rounded">320g 重量</div>
+              <div class="bg-emerald-50 p-1 rounded">3.5h 续航</div>
+            </div>
+            <div class="p-2 bg-white border rounded-xl text-[10px] text-left">四大场景方案：高屏守护、考力增料...</div>
+          </div>
+        </div>
+
+        <!-- Mini Phone Preview 5 -->
+        <div class="w-full bg-white rounded-3xl p-4 card-shadow border border-emerald-100 space-y-3">
+          <div class="text-xs font-bold text-center text-emerald-900 bg-emerald-50 py-1 rounded-xl">5. 我的 (个人) Profile</div>
+          <div class="text-xs space-y-2">
+            <div class="p-2.5 bg-gradient-to-r from-[#E2F7EC] to-white rounded-2xl font-bold">涵涵 · 氧气陪伴 28 天</div>
+            <div class="p-2 bg-white border rounded-xl text-[10px]">Lv.3 氧气守护者 (1250/2000)</div>
+            <div class="p-2 bg-gray-50 rounded-xl text-[10px] space-y-1">
+              <div>• 情绪日志</div>
+              <div>• 我的成就 (12个待解锁)</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- VIEW 3: 🧩 关键子页面与核心组件 (Sub-pages & Component Showcase) -->
+    <section id="view-subpages" class="hidden space-y-8">
+      <div>
+        <h2 class="text-xl font-bold text-gray-800">关键子页面与核心组件展示</h2>
+        <p class="text-xs text-gray-500 mt-1">对应图片底部的“核心组件展示”与“关键子页面展示”</p>
+      </div>
+
+      <!-- Grid of Subpages -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <!-- Component Card 1: MBTI 流程 - 信息采集页 -->
+        <div class="bg-white p-5 rounded-3xl card-shadow space-y-3 border border-emerald-50">
+          <div class="text-xs font-bold text-emerald-900 bg-emerald-50 px-3 py-1 rounded-full inline-block">MBTI 流程 - 信息采集页</div>
+          <div class="space-y-2 text-xs">
+            <div class="font-black text-gray-800 text-sm">简单拍密 <span class="text-gray-400 font-normal">让我们更了解你</span></div>
+            <div class="p-2 bg-gray-50 rounded-xl">
+              <span class="text-gray-400 text-[10px]">年龄</span>
+              <div class="font-bold">26 岁</div>
+            </div>
+            <div class="p-2 bg-gray-50 rounded-xl">
+              <span class="text-gray-400 text-[9px]">性别</span>
+              <div class="font-bold text-emerald-700">♀ 女</div>
+            </div>
+            <div class="p-2 bg-gray-50 rounded-xl">
+              <span class="text-gray-400 text-[9px]">生日</span>
+              <div class="font-bold">1998-05-20</div>
+            </div>
+            <button class="w-full py-2 bg-[#A6E6C0] text-[#214E34] font-bold rounded-xl">下一页</button>
+          </div>
+        </div>
+
+        <!-- Component Card 2: 含氧感自测 - 题目页 -->
+        <div class="bg-white p-5 rounded-3xl card-shadow space-y-3 border border-emerald-50">
+          <div class="text-xs font-bold text-emerald-900 bg-emerald-50 px-3 py-1 rounded-full inline-block">含氧感自测 - 题目页</div>
+          <div class="space-y-2 text-xs">
+            <div class="flex justify-between text-[10px] text-gray-400 font-bold">
+              <span>含氧感自测</span>
+              <span>2 / 10</span>
+            </div>
+            <div class="font-bold text-gray-800">最近一周，你是否频繁感到头晕或注意力不集中？</div>
+            <div class="space-y-1.5 pt-1 text-[11px]">
+              <div class="p-2 bg-gray-50 rounded-xl border border-gray-200">几乎没有</div>
+              <div class="p-2 bg-gray-50 rounded-xl border border-gray-200">偶尔有</div>
+              <div class="p-2 bg-[#E2F7EC] rounded-xl border border-emerald-300 font-bold text-emerald-900">频繁有 ✓</div>
+              <div class="p-2 bg-gray-50 rounded-xl border border-gray-200">几乎每天都有</div>
+            </div>
+            <button class="w-full py-2 bg-[#A6E6C0] text-[#214E34] font-bold rounded-xl">下一题</button>
+          </div>
+        </div>
+
+        <!-- Component Card 3: 场景详情页 -->
+        <div class="bg-white p-5 rounded-3xl card-shadow space-y-3 border border-emerald-50">
+          <div class="text-xs font-bold text-emerald-900 bg-emerald-50 px-3 py-1 rounded-full inline-block">场景详情页 (五步看懂)</div>
+          <div class="space-y-2 text-xs">
+            <div class="font-bold text-gray-800">高屏守护方案</div>
+            <div class="flex justify-around text-center text-[10px] py-1 bg-emerald-50 rounded-xl font-bold">
+              <span class="text-emerald-800">1. 痛点</span>
+              <span>2</span>
+              <span>3</span>
+              <span>4</span>
+              <span>5</span>
+            </div>
+            <div class="text-[11px] text-gray-600 leading-relaxed bg-gray-50 p-2.5 rounded-xl">
+              <strong>痛点：</strong> 高频头晕、气喘、脑脑疲差。在高强度电脑屏幕前，缺氧、欠氧、精力下降明显。
+            </div>
+            <button class="w-full py-2 bg-[#A6E6C0] text-[#214E34] font-bold rounded-xl">下一步</button>
+          </div>
+        </div>
+
+        <!-- Component Card 4: 报告页 -->
+        <div class="bg-white p-5 rounded-3xl card-shadow space-y-3 border border-emerald-50">
+          <div class="text-xs font-bold text-emerald-900 bg-emerald-50 px-3 py-1 rounded-full inline-block">报告页</div>
+          <div class="space-y-2 text-xs text-center">
+            <div class="font-bold text-gray-800">今日状态报告</div>
+            <div class="w-16 h-16 rounded-full bg-[#F6FFF8] border-4 border-[#A6E6C0] mx-auto flex flex-col items-center justify-center">
+              <span class="text-lg font-black">86</span>
+              <span class="text-[8px] text-emerald-700">良好</span>
+            </div>
+            <div class="text-[10px] text-gray-500">情绪趋势 (7天)</div>
+            <div class="h-10 bg-gray-50 rounded-xl flex items-end justify-between px-2 py-1">
+              <div class="w-2 h-4 bg-emerald-300 rounded-t"></div>
+              <div class="w-2 h-6 bg-emerald-400 rounded-t"></div>
+              <div class="w-2 h-8 bg-emerald-500 rounded-t"></div>
+              <div class="w-2 h-5 bg-emerald-300 rounded-t"></div>
+              <div class="w-2 h-7 bg-emerald-600 rounded-t"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- VIEW 4: 🎨 视觉风格规范 (Design System Tokens & IP Showcase) -->
+    <section id="view-designsystem" class="hidden space-y-8">
+      <div>
+        <h2 class="text-xl font-bold text-gray-800">视觉风格规范 (Design System)</h2>
+        <p class="text-xs text-gray-500 mt-1">色彩规范、圆角规范、图标风格与 IP 形象设计</p>
+      </div>
+
+      <!-- Color Palette Cards -->
+      <div class="bg-white p-6 rounded-3xl card-shadow space-y-4">
+        <h3 class="text-sm font-bold text-gray-800">色彩规范 Palette</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-4">
+          <div class="p-3 rounded-2xl bg-[#BDEAD7] text-[#214E34] space-y-2 card-shadow-sm">
+            <div class="text-xs font-bold">主色调</div>
+            <div class="text-[10px] font-mono">#BDEAD7</div>
+          </div>
+          <div class="p-3 rounded-2xl bg-[#A6E6C0] text-[#214E34] space-y-2 card-shadow-sm">
+            <div class="text-xs font-bold">点缀绿</div>
+            <div class="text-[10px] font-mono">#A6E6C0</div>
+          </div>
+          <div class="p-3 rounded-2xl bg-[#F6FFF8] text-gray-700 space-y-2 border border-gray-200">
+            <div class="text-xs font-bold">浅底色</div>
+            <div class="text-[10px] font-mono">#F6FFF8</div>
+          </div>
+          <div class="p-3 rounded-2xl bg-[#FFF7EC] text-amber-900 space-y-2 card-shadow-sm">
+            <div class="text-xs font-bold">暖杏色</div>
+            <div class="text-[10px] font-mono">#FFF7EC</div>
+          </div>
+          <div class="p-3 rounded-2xl bg-[#8FD3C7] text-teal-900 space-y-2 card-shadow-sm">
+            <div class="text-xs font-bold">青气色</div>
+            <div class="text-[10px] font-mono">#8FD3C7</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Radius Specs -->
+      <div class="bg-white p-6 rounded-3xl card-shadow space-y-4">
+        <h3 class="text-sm font-bold text-gray-800">圆角规范 Border Radius</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center text-xs">
+          <div class="p-4 bg-emerald-50 rounded-[24px] border border-emerald-200">
+            <div class="font-bold text-emerald-900">24px (24r)</div>
+            <div class="text-[10px] text-gray-500 mt-1">主卡片 / 容器</div>
+          </div>
+          <div class="p-4 bg-emerald-50 rounded-[16px] border border-emerald-200">
+            <div class="font-bold text-emerald-900">16px (16r)</div>
+            <div class="text-[10px] text-gray-500 mt-1">次级卡片 / 按钮</div>
+          </div>
+          <div class="p-4 bg-emerald-50 rounded-[12px] border border-emerald-200">
+            <div class="font-bold text-emerald-900">12px (12r)</div>
+            <div class="text-[10px] text-gray-500 mt-1">输入框 / 标签</div>
+          </div>
+          <div class="p-4 bg-emerald-50 rounded-[8px] border border-emerald-200">
+            <div class="font-bold text-emerald-900">8px (8r)</div>
+            <div class="text-[10px] text-gray-500 mt-1">微型徽章</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- IP Expressions Showcase -->
+      <div class="bg-white p-6 rounded-3xl card-shadow space-y-4">
+        <h3 class="text-sm font-bold text-gray-800">IP 形象 - 氧氧 (Oxygen Drop)</h3>
+        <div class="grid grid-cols-3 gap-6 text-center">
+          <!-- Emotion 1 -->
+          <div class="p-4 bg-[#F6FFF8] rounded-2xl border border-emerald-100">
+            <div class="w-16 h-16 mx-auto bg-[#BDEAD7] rounded-full flex items-center justify-center text-2xl shadow-inner">😊</div>
+            <div class="text-xs font-bold text-gray-800 mt-2">开心</div>
+          </div>
+          <!-- Emotion 2 -->
+          <div class="p-4 bg-[#F6FFF8] rounded-2xl border border-emerald-100">
+            <div class="w-16 h-16 mx-auto bg-[#A6E6C0] rounded-full flex items-center justify-center text-2xl shadow-inner">🤔</div>
+            <div class="text-xs font-bold text-gray-800 mt-2">思考</div>
+          </div>
+          <!-- Emotion 3 -->
+          <div class="p-4 bg-[#F6FFF8] rounded-2xl border border-emerald-100">
+            <div class="w-16 h-16 mx-auto bg-[#8FD3C7] rounded-full flex items-center justify-center text-2xl shadow-inner">🥱</div>
+            <div class="text-xs font-bold text-gray-800 mt-2">打哈欠</div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ================= JS 控制逻辑 ================= -->
+  <script>
+    // View Switcher Logic
+    function switchView(viewName) {
+      const views = ['interactive', 'panorama', 'subpages', 'designsystem'];
+      views.forEach(v => {
+        const el = document.getElementById(`view-${v}`);
+        const btn = document.getElementById(`btn-${v}`);
+        if (v === viewName) {
+          el.classList.remove('hidden');
+          btn.classList.add('bg-white', 'text-emerald-800', 'shadow-sm');
+          btn.classList.remove('hover:text-emerald-700');
+        } else {
+          el.classList.add('hidden');
+          btn.classList.remove('bg-white', 'text-emerald-800', 'shadow-sm');
+          btn.classList.add('hover:text-emerald-700');
+        }
+      });
+    }
+
+    // Phone Prototype Tab Switcher
+    function setPhonePage(pageName) {
+      const pages = ['home', 'chat', 'explore', 'product', 'profile'];
+      pages.forEach(p => {
+        const pageEl = document.getElementById(`phone-page-${p}`);
+        const tabEl = document.getElementById(`tab-${p}`);
+        
+        if (p === pageName) {
+          pageEl.classList.add('active');
+          if (tabEl) {
+            tabEl.className = 'flex flex-col items-center text-[#214E34] font-bold';
+          }
+        } else {
+          pageEl.classList.remove('active');
+          if (tabEl) {
+            tabEl.className = 'flex flex-col items-center text-gray-400 hover:text-emerald-700';
+          }
+        }
+      });
+    }
+
+    // Interactive Chat Messaging Logic
+    function handleChatSubmit() {
+      const field = document.getElementById('chat-input-field');
+      const val = field.value.trim();
+      if (val) {
+        sendChatMessage(val);
+        field.value = '';
+      }
+    }
+
+    function sendChatMessage(msg) {
+      const container = document.querySelector('#phone-page-chat .space-y-3');
+      
+      // Add User Message
+      const userBubble = document.createElement('div');
+      userBubble.className = 'flex items-start justify-end gap-2';
+      userBubble.innerHTML = `
+        <div class="bg-[#A6E6C0] p-3 rounded-2xl rounded-tr-none card-shadow-sm max-w-[80%] text-xs text-[#214E34] font-medium leading-relaxed">
+          ${msg}
+        </div>
+        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" class="w-7 h-7 rounded-full object-cover flex-shrink-0">
+      `;
+      container.appendChild(userBubble);
+
+      // AI Response after slight delay
+      setTimeout(() => {
+        const aiBubble = document.createElement('div');
+        aiBubble.className = 'flex items-start gap-2';
+        aiBubble.innerHTML = `
+          <div class="w-7 h-7 rounded-full bg-[#BDEAD7] flex items-center justify-center text-xs flex-shrink-0">💧</div>
+          <div class="bg-white p-3 rounded-2xl rounded-tl-none card-shadow-sm max-w-[80%] text-xs text-gray-700 leading-relaxed">
+            收到啦！针对“${msg}”，氧氧建议你深呼吸3次，保持身心通畅哦 🍃
+          </div>
+        `;
+        container.appendChild(aiBubble);
+        
+        // Scroll to bottom
+        const parent = document.querySelector('#view-interactive .phone-frame .flex-1');
+        parent.scrollTop = parent.scrollHeight;
+      }, 600);
+    }
+  </script>
+</body>
+</html>
+```eof
+
+已经为你构建了完整的 **“氧氧宝 V0.8”** 交互原型网页！
+
+### 包含的版块与核心功能：
+1. **📱 手机端交互原型**：
+   - 可以在右侧模拟 iPhone 窗口中无缝滑动，并通过点击底部 **5 个导航 Tab**（首页 Home、氧氧 Chat、氧气探索 Oxygen Lab、充氧宝 Product、我的 Profile）实时切换不同界面。
+   - 在“氧氧 (聊天)”界面中，你可以直接输入文字与氧氧 AI 进行互动体验。
+2. **📑 五大主界面全景平铺**：
+   - 一览原设计图中第一排呈现的所有 5 个核心界面。
+3. **🧩 关键子页面与组件**：
+   - 展示底部的 MBTI 信息采集页、含氧感自测题目页、场景详情页（五步看懂）以及每日健康报告页。
+4. **🎨 视觉风格规范**：
+   - 精准复刻设计图中的 5 大核心配色（`#BDEAD7`, `#A6E6C0`, `#F6FFF8`, `#FFF7EC`, `#8FD3C7`）、24r/16r/12r/8r 圆角规范以及“氧氧”IP 形象的多表情展示。
+
+你可以直接保存并用浏览器打开体验！

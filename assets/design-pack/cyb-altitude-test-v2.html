@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>充氧宝 · AI 高原适应力测评</title>
+<style>
+:root{
+  --bg:#060b1a; --bg2:#0a1230; --card:#0e1838; --card2:#121f47;
+  --line:rgba(88,140,255,.18); --line2:rgba(88,140,255,.35);
+  --cyan:#38e1ff; --blue:#4f8cff; --violet:#8b7bff; --gold:#ffcf6b;
+  --txt:#e8efff; --sub:#8fa3d0; --dim:#5b6c99;
+  --good:#3ddc97; --warn:#ffcf6b; --bad:#ff7b7b;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:"PingFang SC","HarmonyOS Sans SC","Microsoft YaHei",system-ui,sans-serif;
+  background:var(--bg); color:var(--txt); min-height:100vh; overflow-x:hidden;
+}
+body::before{
+  content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(900px 500px at 85% -10%, rgba(79,140,255,.16), transparent 60%),
+    radial-gradient(700px 500px at -10% 30%, rgba(139,123,255,.12), transparent 60%),
+    radial-gradient(800px 600px at 50% 110%, rgba(56,225,255,.10), transparent 60%);
+}
+.grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+  background-image:linear-gradient(rgba(88,140,255,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(88,140,255,.05) 1px,transparent 1px);
+  background-size:44px 44px;
+  mask-image:radial-gradient(ellipse at 50% 30%,#000 30%,transparent 75%);}
+.app{position:relative;z-index:1;max-width:460px;margin:0 auto;min-height:100vh;
+  padding:0 18px 40px;display:flex;flex-direction:column}
+.screen{display:none;flex-direction:column;flex:1;animation:fadeUp .45s ease both}
+.screen.active{display:flex}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* ---------- top bar ---------- */
+.topbar{display:flex;align-items:center;gap:10px;padding:18px 0 6px}
+.logo{width:36px;height:36px;border-radius:11px;flex:none;
+  background:linear-gradient(135deg,#1b3a8f,#0c1c4e);border:1px solid var(--line2);
+  display:flex;align-items:center;justify-content:center}
+.logo svg{width:20px;height:20px}
+.topbar .name{font-size:15px;font-weight:600;letter-spacing:.5px}
+.topbar .sub{font-size:10px;color:var(--sub);letter-spacing:2px;text-transform:uppercase}
+.back{margin-left:auto;font-size:12px;color:var(--sub);border:1px solid var(--line);
+  padding:6px 12px;border-radius:99px;cursor:pointer;background:rgba(14,24,56,.6)}
+.back:active{transform:scale(.95)}
+
+/* ---------- home ---------- */
+.hero{padding:34px 4px 8px;text-align:left}
+.tag{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--cyan);
+  border:1px solid rgba(56,225,255,.35);border-radius:99px;padding:5px 12px;
+  background:rgba(56,225,255,.07);letter-spacing:1px}
+.tag .dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);
+  box-shadow:0 0 8px var(--cyan);animation:blink 1.6s infinite}
+@keyframes blink{50%{opacity:.35}}
+.hero h1{font-size:32px;line-height:1.28;margin:16px 0 10px;font-weight:700;
+  background:linear-gradient(120deg,#fff 20%,#9fc2ff 60%,#38e1ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{font-size:13.5px;color:var(--sub);line-height:1.8}
+.hero-metrics{display:flex;gap:10px;margin:22px 0}
+.hm{flex:1;background:linear-gradient(160deg,var(--card),rgba(14,24,56,.5));
+  border:1px solid var(--line);border-radius:14px;padding:12px 10px;text-align:center}
+.hm b{display:block;font-size:19px;color:var(--cyan);font-weight:700}
+.hm span{font-size:10px;color:var(--sub)}
+.btn{display:block;width:100%;border:none;cursor:pointer;border-radius:16px;
+  padding:16px;font-size:16px;font-weight:600;letter-spacing:2px;color:#04122b;
+  background:linear-gradient(120deg,#38e1ff,#4f8cff);box-shadow:0 8px 30px rgba(56,150,255,.35);
+  transition:transform .15s}
+.btn:active{transform:scale(.97)}
+.btn.ghost{background:transparent;color:var(--sub);border:1px solid var(--line);
+  box-shadow:none;font-weight:400;font-size:13px;padding:12px;letter-spacing:1px}
+.home-note{margin-top:14px;font-size:11px;color:var(--dim);text-align:center;line-height:1.7}
+.flow-hint{display:flex;justify-content:space-between;margin:26px 4px 18px;position:relative}
+.flow-hint::before{content:"";position:absolute;left:8%;right:8%;top:14px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--line2),transparent)}
+.fh{position:relative;text-align:center;width:25%}
+.fh i{display:flex;width:28px;height:28px;margin:0 auto 6px;border-radius:50%;
+  background:var(--card2);border:1px solid var(--line2);color:var(--cyan);
+  font-style:normal;font-size:12px;align-items:center;justify-content:center}
+.fh span{font-size:10px;color:var(--sub)}
+
+/* ---------- capture ---------- */
+.sec-title{font-size:19px;font-weight:700;margin:20px 0 4px}
+.sec-desc{font-size:12px;color:var(--sub);margin-bottom:16px;line-height:1.7}
+.cam-wrap{position:relative;border-radius:20px;overflow:hidden;border:1px solid var(--line2);
+  background:#040817;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center}
+.cam-wrap video,.cam-wrap img.shot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cam-empty{text-align:center;color:var(--dim);padding:20px}
+.cam-empty svg{width:54px;height:54px;margin-bottom:10px;opacity:.6}
+.cam-empty p{font-size:12px;line-height:1.8}
+.face-frame{position:absolute;inset:0;pointer-events:none;display:flex;align-items:center;justify-content:center}
+.face-frame .oval{width:58%;aspect-ratio:3/4;border:2px dashed rgba(56,225,255,.55);
+  border-radius:50%;box-shadow:0 0 40px rgba(56,225,255,.12) inset}
+.face-frame .corner{position:absolute;width:22px;height:22px;border:2px solid var(--cyan)}
+.c-tl{top:14px;left:14px;border-right:none;border-bottom:none;border-radius:6px 0 0 0}
+.c-tr{top:14px;right:14px;border-left:none;border-bottom:none;border-radius:0 6px 0 0}
+.c-bl{bottom:14px;left:14px;border-right:none;border-top:none;border-radius:0 0 0 6px}
+.c-br{bottom:14px;right:14px;border-left:none;border-top:none;border-radius:0 0 6px 0}
+.cam-actions{display:flex;gap:10px;margin-top:16px}
+.cam-actions .btn{flex:1;font-size:14px;padding:14px;letter-spacing:1px}
+.cam-actions .btn.ghost{flex:.6}
+
+/* ---------- profile ---------- */
+.q-block{margin-bottom:22px}
+.q-label{font-size:13px;color:var(--txt);font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.q-label em{font-style:normal;font-size:10px;color:var(--cyan);border:1px solid rgba(56,225,255,.4);
+  padding:2px 8px;border-radius:99px;font-weight:400}
+.mbti-row{display:flex;gap:8px;margin-bottom:8px}
+.mbti-opt{flex:1;background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:11px 6px;text-align:center;cursor:pointer;transition:all .2s}
+.mbti-opt b{display:block;font-size:16px;color:var(--sub);font-weight:700}
+.mbti-opt span{font-size:10px;color:var(--dim)}
+.mbti-opt.on{border-color:var(--cyan);background:rgba(56,225,255,.08);
+  box-shadow:0 0 16px rgba(56,225,255,.15)}
+.mbti-opt.on b{color:var(--cyan)}
+.chip-row{display:flex;gap:8px;flex-wrap:wrap}
+.chip{background:var(--card);border:1px solid var(--line);border-radius:99px;
+  padding:9px 16px;font-size:12.5px;color:var(--sub);cursor:pointer;transition:all .2s}
+.chip.on{border-color:var(--cyan);color:var(--cyan);background:rgba(56,225,255,.08)}
+input[type=date]{width:100%;background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:13px 14px;color:var(--txt);font-size:14px;outline:none;color-scheme:dark}
+input[type=date]:focus{border-color:var(--cyan)}
+
+/* ---------- analyzing ---------- */
+.ana-photo{position:relative;width:200px;height:260px;margin:26px auto 8px;border-radius:18px;
+  overflow:hidden;border:1px solid var(--line2)}
+.ana-photo img{width:100%;height:100%;object-fit:cover;filter:saturate(.9) brightness(.85)}
+.scan-line{position:absolute;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);
+  box-shadow:0 0 18px 4px rgba(56,225,255,.5);animation:scan 2.2s ease-in-out infinite}
+@keyframes scan{0%{top:2%}50%{top:96%}100%{top:2%}}
+.ana-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(56,225,255,.12) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(56,225,255,.12) 1px,transparent 1px);background-size:22px 22px}
+.ana-dot{position:absolute;width:6px;height:6px;border-radius:50%;background:var(--cyan);
+  box-shadow:0 0 10px var(--cyan);animation:blink 1.2s infinite}
+.ana-status{text-align:center;margin-top:22px}
+.ana-status .step-txt{font-size:13.5px;color:var(--cyan);min-height:22px;letter-spacing:.5px}
+.ana-bar{width:72%;height:4px;background:rgba(88,140,255,.15);border-radius:99px;margin:14px auto;overflow:hidden}
+.ana-bar i{display:block;height:100%;width:0;border-radius:99px;
+  background:linear-gradient(90deg,var(--blue),var(--cyan));transition:width .3s}
+.ana-pct{text-align:center;font-size:11px;color:var(--dim);letter-spacing:2px}
+
+/* ---------- report ---------- */
+.rpt-head{background:linear-gradient(160deg,#122457,#0a1436);border:1px solid var(--line2);
+  border-radius:20px;padding:18px;margin-top:18px;position:relative;overflow:hidden}
+.rpt-head::after{content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;
+  border-radius:50%;background:radial-gradient(circle,rgba(56,225,255,.18),transparent 70%)}
+.rpt-no{font-size:10px;color:var(--dim);letter-spacing:1.5px}
+.rpt-head h2{font-size:21px;margin:6px 0 4px;letter-spacing:1px}
+.rpt-head .date{font-size:11px;color:var(--sub)}
+.rpt-head .avatar{position:absolute;right:16px;top:16px;width:52px;height:52px;border-radius:14px;
+  object-fit:cover;border:1px solid var(--line2);z-index:1}
+.block{background:linear-gradient(160deg,var(--card),rgba(12,20,48,.6));border:1px solid var(--line);
+  border-radius:18px;padding:16px;margin-top:14px}
+.block-t{font-size:14.5px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.block-t::before{content:"";width:4px;height:14px;border-radius:2px;
+  background:linear-gradient(180deg,var(--cyan),var(--blue))}
+.block-t .en{margin-left:auto;font-size:9px;color:var(--dim);letter-spacing:2px;font-weight:400}
+.summary-txt{font-size:12.5px;color:#c4d2f2;line-height:2;text-align:justify}
+.gauge-wrap{display:flex;align-items:center;gap:14px}
+.gauge-box{position:relative;width:150px;height:110px;flex:none}
+.gauge-box canvas{position:absolute;inset:0}
+.gauge-num{position:absolute;left:0;right:0;top:44px;text-align:center}
+.gauge-num b{font-size:34px;font-weight:800;color:var(--cyan);text-shadow:0 0 20px rgba(56,225,255,.4)}
+.gauge-num span{display:block;font-size:9.5px;color:var(--sub);letter-spacing:1px}
+.tier-tag{flex:1}
+.tier-tag .tt{font-size:16px;font-weight:700;color:var(--gold);margin-bottom:6px}
+.tier-tag .td{font-size:11.5px;color:var(--sub);line-height:1.8}
+.metric-row{display:flex;gap:8px;margin-top:14px}
+.metric{flex:1;background:rgba(6,12,32,.6);border:1px solid var(--line);border-radius:12px;
+  padding:10px 6px;text-align:center}
+.metric b{display:block;font-size:17px;color:#fff}
+.metric b i{font-style:normal;font-size:10px;color:var(--sub)}
+.metric span{font-size:9.5px;color:var(--dim)}
+.metric .ok{color:var(--good);font-size:9px}
+.wave-box{margin-top:12px;background:rgba(6,12,32,.6);border:1px solid var(--line);
+  border-radius:12px;padding:10px}
+.wave-box .wl{font-size:10px;color:var(--sub);display:flex;justify-content:space-between;margin-bottom:4px}
+.wave-box canvas{width:100%;height:44px;display:block}
+.donut-wrap{display:flex;align-items:center;gap:16px}
+.donut-wrap canvas{width:130px;height:130px;flex:none}
+.legend{flex:1;display:flex;flex-direction:column;gap:7px}
+.lg{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--sub)}
+.lg i{width:9px;height:9px;border-radius:3px;flex:none}
+.lg b{margin-left:auto;color:var(--txt);font-weight:600}
+.factor-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.ftag{font-size:11px;color:#bcd0ff;border:1px solid var(--line2);border-radius:8px;
+  padding:6px 10px;background:rgba(18,31,71,.5)}
+.ftag b{color:var(--cyan)}
+.wuxing{display:flex;flex-direction:column;gap:9px}
+.wx{display:flex;align-items:center;gap:10px;font-size:11.5px}
+.wx .n{width:44px;color:var(--sub)}
+.wx .bar{flex:1;height:8px;background:rgba(88,140,255,.12);border-radius:99px;overflow:hidden}
+.wx .bar i{display:block;height:100%;border-radius:99px}
+.wx .v{width:34px;text-align:right;color:var(--txt);font-size:11px}
+.dest-card{display:flex;gap:12px;align-items:center;background:rgba(6,12,32,.55);
+  border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px}
+.dest-card .rank{width:30px;height:30px;flex:none;border-radius:9px;display:flex;align-items:center;
+  justify-content:center;font-size:13px;font-weight:800;color:#04122b;
+  background:linear-gradient(135deg,var(--cyan),var(--blue))}
+.dest-card .info{flex:1;min-width:0}
+.dest-card .info b{font-size:14px}
+.dest-card .info .alt{font-size:10px;color:var(--gold);margin-left:6px}
+.dest-card .info p{font-size:10.5px;color:var(--sub);margin-top:3px;line-height:1.6}
+.dest-card .match{text-align:right;flex:none}
+.dest-card .match b{font-size:16px;color:var(--cyan)}
+.dest-card .match span{display:block;font-size:9px;color:var(--dim)}
+.sport-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sport{background:rgba(6,12,32,.55);border:1px solid var(--line);border-radius:14px;padding:12px}
+.sport .ic{width:34px;height:34px;border-radius:10px;background:rgba(56,225,255,.1);
+  border:1px solid rgba(56,225,255,.3);display:flex;align-items:center;justify-content:center;margin-bottom:8px}
+.sport .ic svg{width:18px;height:18px}
+.sport b{font-size:13px;display:block}
+.sport .lv{font-size:9.5px;color:var(--gold);margin:3px 0}
+.sport p{font-size:10px;color:var(--sub);line-height:1.6}
+.advice{counter-reset:adv;display:flex;flex-direction:column;gap:10px}
+.advice li{list-style:none;position:relative;padding-left:34px;font-size:12px;color:#c4d2f2;line-height:1.8}
+.advice li::before{counter-increment:adv;content:counter(adv);position:absolute;left:0;top:2px;
+  width:22px;height:22px;border-radius:7px;background:rgba(56,225,255,.1);border:1px solid rgba(56,225,255,.35);
+  color:var(--cyan);font-size:11px;display:flex;align-items:center;justify-content:center}
+.disclaimer{margin-top:16px;padding:12px 14px;border:1px dashed rgba(255,207,107,.4);border-radius:12px;
+  font-size:10.5px;color:#c9b287;line-height:1.8;background:rgba(255,207,107,.05)}
+.rpt-actions{display:flex;gap:10px;margin-top:18px}
+.rpt-actions .btn{flex:1;font-size:13.5px;padding:14px;letter-spacing:1px}
+.rpt-actions .btn.ghost{flex:.75}
+
+/* ---------- checkin ---------- */
+.ck-card{background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line2);
+  border-radius:22px;padding:26px 20px;margin-top:22px;text-align:center}
+.ck-card h3{font-size:17px;margin-bottom:6px}
+.ck-card .sub2{font-size:11.5px;color:var(--sub);margin-bottom:20px}
+.oxy-face{width:96px;height:96px;margin:0 auto 16px;border-radius:50%;position:relative;
+  background:radial-gradient(circle at 35% 30%,#2a4a9f,#0c1a44);border:2px solid var(--line2);
+  display:flex;align-items:center;justify-content:center;box-shadow:0 0 40px rgba(56,150,255,.25)}
+.oxy-face::after{content:"";position:absolute;inset:-8px;border-radius:50%;
+  border:1px dashed rgba(56,225,255,.35);animation:spin 12s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.oxy-face .eyes{display:flex;gap:16px}
+.oxy-face .eyes i{width:9px;height:12px;border-radius:50%;background:var(--cyan);animation:blink 3s infinite}
+.slider-row{display:flex;gap:8px;justify-content:center;margin:18px 0}
+.mood-b{width:52px;height:52px;border-radius:14px;background:rgba(6,12,32,.6);border:1px solid var(--line);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;transition:all .2s}
+.mood-b svg{width:20px;height:20px}
+.mood-b span{font-size:9px;color:var(--dim)}
+.mood-b.on{border-color:var(--cyan);background:rgba(56,225,255,.1)}
+.mood-b.on span{color:var(--cyan)}
+.ck-result{margin-top:16px;font-size:13px;color:var(--cyan);min-height:20px}
+.footer-brand{margin-top:auto;padding-top:30px;text-align:center;font-size:10px;color:var(--dim);letter-spacing:2px}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="app">
+
+  <!-- top bar -->
+  <div class="topbar">
+    <div class="logo">
+      <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#38e1ff" stroke-width="1.6"/><circle cx="12" cy="12" r="3.5" fill="#38e1ff" opacity=".9"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="#4f8cff" stroke-width="1.4" stroke-linecap="round"/></svg>
+    </div>
+    <div>
+      <div class="name">充氧宝</div>
+      <div class="sub">CHONGYANGBAO LAB</div>
+    </div>
+    <div class="back" id="backBtn" style="display:none">‹ 返回</div>
+  </div>
+
+  <!-- ========== HOME ========== -->
+  <div class="screen active" id="s-home">
+    <div class="hero">
+      <div class="tag"><span class="dot"></span>AI 多模态趣味测评 · V2</div>
+      <h1>一张自拍<br>测出你的高原适应力</h1>
+      <p>上传照片或现场拍照，结合你的 MBTI 人格、生辰八字与当下情绪状态，AI 将生成专属《高原适应力分析报告》，并为你推荐真正适合的旅行地与运动方式。</p>
+    </div>
+    <div class="hero-metrics">
+      <div class="hm"><b>4</b><span>维度建模</span></div>
+      <div class="hm"><b>12+</b><span>分析指标</span></div>
+      <div class="hm"><b>60s</b><span>出报告</span></div>
+    </div>
+    <div class="flow-hint">
+      <div class="fh"><i>1</i><span>拍照测脸</span></div>
+      <div class="fh"><i>2</i><span>档案录入</span></div>
+      <div class="fh"><i>3</i><span>AI 分析</span></div>
+      <div class="fh"><i>4</i><span>专属报告</span></div>
+    </div>
+    <button class="btn" onclick="go('s-capture')">开始测评</button>
+    <div class="home-note">本测评为趣味互动内容，结果不构成任何医疗建议<br>照片仅在本地分析，不会上传服务器</div>
+  </div>
+
+  <!-- ========== CAPTURE ========== -->
+  <div class="screen" id="s-capture">
+    <div class="sec-title">拍摄 / 上传照片</div>
+    <div class="sec-desc">正对镜头、光线充足，AI 将分析面部气色、精神状态与微循环特征（模拟演示）。</div>
+    <div class="cam-wrap" id="camWrap">
+      <div class="cam-empty" id="camEmpty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#5b6c99" stroke-width="1.4"><path d="M4 8h3l2-3h6l2 3h3v11H4z" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.5"/></svg>
+        <p>点击下方按钮开启摄像头<br>或从相册选择一张照片</p>
+      </div>
+      <video id="camVideo" autoplay playsinline style="display:none"></video>
+      <img class="shot" id="shotImg" style="display:none" alt="">
+      <div class="face-frame" id="faceFrame" style="display:none">
+        <div class="oval"></div>
+        <i class="corner c-tl"></i><i class="corner c-tr"></i><i class="corner c-bl"></i><i class="corner c-br"></i>
+      </div>
+    </div>
+    <div class="cam-actions" id="capBtns1">
+      <button class="btn ghost" onclick="pickFile()">相册选择</button>
+      <button class="btn" onclick="openCamera()">开启摄像头</button>
+    </div>
+    <div class="cam-actions" id="capBtns2" style="display:none">
+      <button class="btn ghost" onclick="resetCapture()">重拍</button>
+      <button class="btn" onclick="confirmPhoto()">确认照片</button>
+    </div>
+    <div class="cam-actions" id="capBtns3" style="display:none">
+      <button class="btn ghost" onclick="stopCamera();resetCapture()">取消</button>
+      <button class="btn" onclick="takeShot()">拍照</button>
+    </div>
+    <input type="file" id="fileInput" accept="image/*" style="display:none">
+  </div>
+
+  <!-- ========== PROFILE ========== -->
+  <div class="screen" id="s-profile">
+    <div class="sec-title">完善你的测评档案</div>
+    <div class="sec-desc">三项信息将交叉建模，让推荐更贴合真实的你。</div>
+
+    <div class="q-block">
+      <div class="q-label">MBTI 人格倾向 <em>点选两侧倾向</em></div>
+      <div class="mbti-row" data-dim="0">
+        <div class="mbti-opt" data-v="E"><b>E</b><span>外向</span></div>
+        <div class="mbti-opt" data-v="I"><b>I</b><span>内向</span></div>
+      </div>
+      <div class="mbti-row" data-dim="1">
+        <div class="mbti-opt" data-v="S"><b>S</b><span>实感</span></div>
+        <div class="mbti-opt" data-v="N"><b>N</b><span>直觉</span></div>
+      </div>
+      <div class="mbti-row" data-dim="2">
+        <div class="mbti-opt" data-v="T"><b>T</b><span>思考</span></div>
+        <div class="mbti-opt" data-v="F"><b>F</b><span>情感</span></div>
+      </div>
+      <div class="mbti-row" data-dim="3">
+        <div class="mbti-opt" data-v="J"><b>J</b><span>判断</span></div>
+        <div class="mbti-opt" data-v="P"><b>P</b><span>感知</span></div>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">出生日期 <em>生辰八字排盘</em></div>
+      <input type="date" id="birthInput" min="1950-01-01" max="2015-12-31">
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">最近一周睡眠质量</div>
+      <div class="chip-row" data-q="sleep">
+        <div class="chip" data-v="good">睡得不错</div>
+        <div class="chip" data-v="mid">一般般</div>
+        <div class="chip" data-v="bad">不太好</div>
+      </div>
+    </div>
+    <div class="q-block">
+      <div class="q-label">最近的压力感</div>
+      <div class="chip-row" data-q="stress">
+        <div class="chip" data-v="low">轻松</div>
+        <div class="chip" data-v="mid">适中</div>
+        <div class="chip" data-v="high">紧绷</div>
+      </div>
+    </div>
+    <div class="q-block">
+      <div class="q-label">此刻的心情底色</div>
+      <div class="chip-row" data-q="mood">
+        <div class="chip" data-v="calm">平静</div>
+        <div class="chip" data-v="excited">兴奋</div>
+        <div class="chip" data-v="anxious">焦虑</div>
+        <div class="chip" data-v="tired">疲惫</div>
+      </div>
+    </div>
+
+    <button class="btn" id="analyzeBtn" onclick="startAnalyze()" style="opacity:.45;pointer-events:none">开始 AI 分析</button>
+    <div class="home-note" id="profileHint">完成上方所有选项后进入分析</div>
+  </div>
+
+  <!-- ========== ANALYZING ========== -->
+  <div class="screen" id="s-analyzing">
+    <div class="ana-photo">
+      <img id="anaImg" alt="">
+      <div class="ana-grid"></div>
+      <div class="scan-line"></div>
+      <i class="ana-dot" style="left:30%;top:26%"></i>
+      <i class="ana-dot" style="left:68%;top:26%;animation-delay:.3s"></i>
+      <i class="ana-dot" style="left:49%;top:44%;animation-delay:.6s"></i>
+      <i class="ana-dot" style="left:38%;top:66%;animation-delay:.15s"></i>
+      <i class="ana-dot" style="left:62%;top:66%;animation-delay:.45s"></i>
+    </div>
+    <div class="ana-status">
+      <div class="step-txt" id="anaStep">正在建立面部特征点…</div>
+      <div class="ana-bar"><i id="anaBar"></i></div>
+      <div class="ana-pct" id="anaPct">0%</div>
+    </div>
+  </div>
+
+  <!-- ========== REPORT ========== -->
+  <div class="screen" id="s-report">
+    <div class="rpt-head">
+      <div class="rpt-no" id="rptNo">NO. CYB-2026-000000</div>
+      <h2>高原适应力分析报告</h2>
+      <div class="date" id="rptDate">2026-07-25 · 充氧宝 AI 实验室</div>
+      <img class="avatar" id="rptAvatar" alt="">
+    </div>
+
+    <div class="block">
+      <div class="block-t">基础解析 <span class="en">OVERVIEW</span></div>
+      <div class="summary-txt" id="rptSummary"></div>
+    </div>
+
+    <div class="block">
+      <div class="block-t">高原适应核心指标 <span class="en">CORE METRICS</span></div>
+      <div class="gauge-wrap">
+        <div class="gauge-box">
+          <canvas id="gaugeCv" width="300" height="220"></canvas>
+          <div class="gauge-num"><b id="gScore">0</b><span>高原适应指数</span></div>
+        </div>
+        <div class="tier-tag">
+          <div class="tt" id="tierName">—</div>
+          <div class="td" id="tierDesc">—</div>
+        </div>
+      </div>
+      <div class="metric-row">
+        <div class="metric"><b id="mSpo2">—</b><span>模拟血氧</span><div class="ok">参考区间 95-99</div></div>
+        <div class="metric"><b id="mHr">—</b><span>静息心率</span><div class="ok">参考区间 60-100</div></div>
+        <div class="metric"><b id="mCpf">—</b><span>心肺耐力评级</span><div class="ok" id="mCpfOk">—</div></div>
+      </div>
+      <div class="wave-box">
+        <div class="wl"><span>心率变异性波形（模拟）</span><span id="hrvTag">HRV 正常</span></div>
+        <canvas id="wave1" width="640" height="88"></canvas>
+      </div>
+      <div class="wave-box">
+        <div class="wl"><span>呼吸节律波形（模拟）</span><span id="brTag">节律平稳</span></div>
+        <canvas id="wave2" width="640" height="88"></canvas>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-t">情绪指标分布 <span class="en">EMOTION</span></div>
+      <div class="donut-wrap">
+        <canvas id="donutCv" width="260" height="260"></canvas>
+        <div class="legend" id="donutLegend"></div>
+      </div>
+      <div class="summary-txt" id="emoSummary" style="margin-top:12px"></div>
+    </div>
+
+    <div class="block">
+      <div class="block-t">人格与命理因子 <span class="en">PROFILE</span></div>
+      <div class="factor-tags" id="factorTags"></div>
+      <div class="wuxing" id="wuxingBars"></div>
+    </div>
+
+    <div class="block">
+      <div class="block-t">为你推荐的目的地 <span class="en">DESTINATIONS</span></div>
+      <div id="destList"></div>
+    </div>
+
+    <div class="block">
+      <div class="block-t">为你推荐的运动方式 <span class="en">SPORTS</span></div>
+      <div class="sport-grid" id="sportList"></div>
+    </div>
+
+    <div class="block">
+      <div class="block-t">总结与建议 <span class="en">ADVICE</span></div>
+      <div class="summary-txt" id="finalSummary" style="margin-bottom:12px"></div>
+      <ol class="advice" id="adviceList"></ol>
+    </div>
+
+    <div class="disclaimer">本报告为充氧宝趣味测评内容，所有生理指标均为模拟演示数据，不构成医疗诊断或健康建议。前往高原地区前请做好充分准备，如有基础疾病请咨询专业医生。</div>
+
+    <div class="rpt-actions">
+      <button class="btn ghost" onclick="shareCard(this)">生成分享卡片</button>
+      <button class="btn" onclick="go('s-checkin')">带着报告去充氧打卡</button>
+    </div>
+  </div>
+
+  <!-- ========== CHECKIN ========== -->
+  <div class="screen" id="s-checkin">
+    <div class="ck-card">
+      <h3>今日充氧打卡</h3>
+      <div class="sub2">测评完成 · 记录今天的状态，开启你的适应计划</div>
+      <div class="oxy-face"><div class="eyes"><i></i><i></i></div></div>
+      <div class="slider-row" id="moodRow">
+        <div class="mood-b" data-v="90">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3ddc97" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M8 13s1.5 2.5 4 2.5 4-2.5 4-2.5" stroke-linecap="round"/><circle cx="9" cy="10" r=".8" fill="#3ddc97"/><circle cx="15" cy="10" r=".8" fill="#3ddc97"/></svg>
+          <span>满氧</span>
+        </div>
+        <div class="mood-b" data-v="70">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#38e1ff" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M8 14h8" stroke-linecap="round"/><circle cx="9" cy="10" r=".8" fill="#38e1ff"/><circle cx="15" cy="10" r=".8" fill="#38e1ff"/></svg>
+          <span>平稳</span>
+        </div>
+        <div class="mood-b" data-v="50">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#ffcf6b" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M8 15s1.5-1.5 4-1.5 4 1.5 4 1.5" stroke-linecap="round"/><circle cx="9" cy="10" r=".8" fill="#ffcf6b"/><circle cx="15" cy="10" r=".8" fill="#ffcf6b"/></svg>
+          <span>微缺氧</span>
+        </div>
+        <div class="mood-b" data-v="32">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#ff7b7b" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M8 16s1.5-2 4-2 4 2 4 2" stroke-linecap="round"/><path d="M8.5 9.5l2 2M10.5 9.5l-2 2M13.5 9.5l2 2M15.5 9.5l-2 2" stroke-linecap="round"/></svg>
+          <span>缺氧</span>
+        </div>
+      </div>
+      <button class="btn" onclick="doCheckin()" id="ckBtn" style="opacity:.45;pointer-events:none">完成打卡</button>
+      <div class="ck-result" id="ckResult"></div>
+    </div>
+    <button class="btn ghost" style="margin-top:14px" onclick="restart()">返回首页</button>
+  </div>
+
+  <div class="footer-brand">CHONGYANGBAO · 给自己充充氧</div>
+</div>
+
+<script>
+/* =============== state =============== */
+const S = {
+  photoDataUrl:null, photoName:'', photoSize:0,
+  mbti:[null,null,null,null], birth:'', sleep:'', stress:'', mood:'',
+  stream:null, ckMood:null, report:null
+};
+const $ = id => document.getElementById(id);
+
+/* =============== nav =============== */
+const ORDER = ['s-home','s-capture','s-profile','s-analyzing','s-report','s-checkin'];
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo(0,0);
+  const idx = ORDER.indexOf(id);
+  $('backBtn').style.display = (idx>0 && id!=='s-analyzing') ? 'block':'none';
+  if(id!=='s-capture') stopCamera();
+}
+$('backBtn').onclick = ()=>{
+  const cur = ORDER.find(id=>$(id).classList.contains('active'));
+  go(ORDER[Math.max(0, ORDER.indexOf(cur)-1)]);
+};
+function restart(){
+  Object.assign(S,{photoDataUrl:null,photoName:'',photoSize:0,mbti:[null,null,null,null],birth:'',sleep:'',stress:'',mood:'',ckMood:null,report:null});
+  resetCapture();
+  document.querySelectorAll('.mbti-opt.on,.chip.on,.mood-b.on').forEach(e=>e.classList.remove('on'));
+  $('birthInput').value=''; $('ckResult').textContent='';
+  refreshAnalyzeBtn(); refreshCkBtn();
+  go('s-home');
+}
+
+/* =============== capture =============== */
+function pickFile(){ $('fileInput').click(); }
+$('fileInput').addEventListener('change', e=>{
+  const f = e.target.files[0]; if(!f) return;
+  S.photoName = f.name; S.photoSize = f.size;
+  const r = new FileReader();
+  r.onload = ev => showShot(ev.target.result);
+  r.readAsDataURL(f);
+});
+async function openCamera(){
+  try{
+    S.stream = await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:false});
+    $('camVideo').srcObject = S.stream;
+    $('camEmpty').style.display='none'; $('shotImg').style.display='none';
+    $('camVideo').style.display='block'; $('faceFrame').style.display='flex';
+    $('capBtns1').style.display='none'; $('capBtns3').style.display='flex'; $('capBtns2').style.display='none';
+  }catch(err){
+    // fallback: file picker with camera hint
+    pickFile();
+  }
+}
+function stopCamera(){
+  if(S.stream){ S.stream.getTracks().forEach(t=>t.stop()); S.stream=null; }
+  $('camVideo').style.display='none';
+}
+function takeShot(){
+  const v = $('camVideo');
+  const c = document.createElement('canvas');
+  c.width = v.videoWidth||480; c.height = v.videoHeight||640;
+  c.getContext('2d').drawImage(v,0,0,c.width,c.height);
+  const url = c.toDataURL('image/jpeg',.85);
+  S.photoName = 'camera-'+Date.now()+'.jpg'; S.photoSize = url.length;
+  stopCamera();
+  showShot(url);
+}
+function showShot(url){
+  S.photoDataUrl = url;
+  $('camEmpty').style.display='none'; $('camVideo').style.display='none';
+  $('shotImg').src = url; $('shotImg').style.display='block'; $('faceFrame').style.display='flex';
+  $('capBtns1').style.display='none'; $('capBtns3').style.display='none'; $('capBtns2').style.display='flex';
+}
+function resetCapture(){
+  stopCamera();
+  S.photoDataUrl = null;
+  $('shotImg').style.display='none'; $('camEmpty').style.display='block'; $('faceFrame').style.display='none';
+  $('capBtns1').style.display='flex'; $('capBtns2').style.display='none'; $('capBtns3').style.display='none';
+  $('fileInput').value='';
+}
+function confirmPhoto(){ if(S.photoDataUrl) go('s-profile'); }
+
+/* =============== profile inputs =============== */
+document.querySelectorAll('.mbti-row').forEach(row=>{
+  row.querySelectorAll('.mbti-opt').forEach(opt=>{
+    opt.onclick = ()=>{
+      row.querySelectorAll('.mbti-opt').forEach(o=>o.classList.remove('on'));
+      opt.classList.add('on');
+      S.mbti[+row.dataset.dim] = opt.dataset.v;
+      refreshAnalyzeBtn();
+    };
+  });
+});
+document.querySelectorAll('.chip-row').forEach(row=>{
+  row.querySelectorAll('.chip').forEach(ch=>{
+    ch.onclick = ()=>{
+      row.querySelectorAll('.chip').forEach(o=>o.classList.remove('on'));
+      ch.classList.add('on');
+      S[row.dataset.q] = ch.dataset.v;
+      refreshAnalyzeBtn();
+    };
+  });
+});
+$('birthInput').addEventListener('change', e=>{ S.birth = e.target.value; refreshAnalyzeBtn(); });
+function refreshAnalyzeBtn(){
+  const ok = S.mbti.every(Boolean) && S.birth && S.sleep && S.stress && S.mood;
+  $('analyzeBtn').style.opacity = ok?1:.45;
+  $('analyzeBtn').style.pointerEvents = ok?'auto':'none';
+  $('profileHint').textContent = ok ? '档案已就绪，可以开始分析' : '完成上方所有选项后进入分析';
+}
+
+/* =============== deterministic pseudo engine =============== */
+function hashStr(s){let h=1779033703^s.length;for(let i=0;i<s.length;i++){h=Math.imul(h^s.charCodeAt(i),3432918353);h=h<<13|h>>>19}return h>>>0}
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+
+/* 真实日柱推算：1949-10-01 为甲子日 */
+const STEMS='甲乙丙丁戊己庚辛壬癸', BRANCHES='子丑寅卯辰巳午未申酉戌亥';
+const STEM_ELEM={甲:'木',乙:'木',丙:'火',丁:'火',戊:'土',己:'土',庚:'金',辛:'金',壬:'水',癸:'水'};
+const ZODIAC=['鼠','牛','虎','兔','龙','蛇','马','羊','猴','鸡','狗','猪'];
+function dayPillar(dateStr){
+  const d = new Date(dateStr+'T12:00:00');
+  const base = new Date('1949-10-01T12:00:00');
+  const days = Math.round((d-base)/86400000);
+  const idx = ((days%60)+60)%60;
+  const stem = STEMS[idx%10], branch = BRANCHES[idx%12];
+  return {gz:stem+branch, elem:STEM_ELEM[stem], stem};
+}
+
+/* =============== analysis =============== */
+const ANA_STEPS = [
+  '正在建立面部特征点…','面部气色与微循环分析中…','血氧饱和度模拟估算中…',
+  '生辰八字排盘 · 日主推演…','MBTI 人格因子匹配中…','情绪基线建模中…',
+  '目的地与运动偏好计算中…','报告生成中…'
+];
+function startAnalyze(){
+  go('s-analyzing');
+  $('anaImg').src = S.photoDataUrl;
+  let p = 0, step = 0;
+  $('anaStep').textContent = ANA_STEPS[0];
+  const timer = setInterval(()=>{
+    p += 2 + Math.random()*4;
+    if(p>=100){ p=100; clearInterval(timer); setTimeout(buildReport, 350); }
+    const si = Math.min(ANA_STEPS.length-1, Math.floor(p/100*ANA_STEPS.length));
+    if(si!==step){ step=si; $('anaStep').textContent = ANA_STEPS[step]; }
+    $('anaBar').style.width = p+'%';
+    $('anaPct').textContent = Math.floor(p)+'%';
+  }, 90);
+}
+
+function buildReport(){
+  const seed = hashStr(S.mbti.join('')+S.birth+S.sleep+S.stress+S.mood+S.photoName+S.photoSize);
+  const rnd = mulberry32(seed);
+  const mbti = S.mbti.join('');
+  const pillar = dayPillar(S.birth);
+  const by = +S.birth.slice(0,4);
+  const zodiac = ZODIAC[((by-4)%12+12)%12];
+
+  /* --- score --- */
+  let score = 58;
+  score += {good:12,mid:4,bad:-9}[S.sleep];
+  score += {low:10,mid:3,high:-8}[S.stress];
+  score += {calm:6,excited:4,anxious:-6,tired:-4}[S.mood];
+  score += {木:1,火:4,土:3,金:2,水:0}[pillar.elem];
+  if(S.mbti[0]==='E') score += 2;
+  if(S.mbti[1]==='S') score += 3;
+  if(S.mbti[3]==='J') score += 2;
+  score += Math.round(rnd()*14-7);
+  score = Math.max(28, Math.min(98, score));
+
+  const tier = score>=75 ? 0 : score>=55 ? 1 : 2;
+  const TIERS = [
+    {name:'高原适应力 · 优', desc:'你的身体底子与心理状态都处于上佳区间，对低氧环境的耐受预期较高，可以规划真正的进藏级行程。'},
+    {name:'循序渐进型', desc:'具备中等海拔适应能力，建议从 2000-3000 米的过渡型高原起步，给身体 2-3 天适应窗口再向上。'},
+    {name:'低海拔更友好', desc:'当前状态更适合低海拔目的地。先通过规律运动提升心肺储备，高原计划可以放进下半年的清单。'}
+  ];
+
+  /* --- metrics --- */
+  const spo2 = Math.round((94 + rnd()*5)*10)/10;
+  const hr = Math.round(62 + rnd()*20 + (S.stress==='high'?8:0) + (S.sleep==='bad'?6:0));
+  const cpf = score>=75?'A':score>=62?'B+':score>=50?'B':'C+';
+
+  /* --- emotions donut --- */
+  const base = {平静:34,愉悦:22,专注:16,焦虑:12,疲惫:9,期待:7};
+  if(S.mood==='anxious'){base.焦虑+=20;base.平静-=12}
+  if(S.mood==='tired'){base.疲惫+=20;base.愉悦-=10}
+  if(S.mood==='excited'){base.期待+=14;base.愉悦+=8;base.平静-=10}
+  if(S.mood==='calm'){base.平静+=16;base.焦虑-=6}
+  if(S.stress==='high'){base.焦虑+=10;base.专注-=6}
+  if(S.sleep==='bad'){base.疲惫+=8}
+  const emos = Object.entries(base).map(([k,v])=>[k,Math.max(2,Math.round(v+rnd()*6-3))]);
+  const tot = emos.reduce((a,[,v])=>a+v,0);
+  emos.forEach(e=>e[1]=Math.round(e[1]/tot*1000)/10);
+
+  /* --- wuxing bars (seeded distribution centered on day-master element) --- */
+  const ELEMS=['木','火','土','金','水'];
+  const wx = ELEMS.map(e=>{
+    let v = 12 + rnd()*14;
+    if(e===pillar.elem) v += 26;
+    return [e, Math.min(48, Math.round(v))];
+  });
+
+  /* --- destinations --- */
+  const DESTS = [
+    [ // tier 0
+      {n:'稻城亚丁', alt:'4100m', why:'心肺储备充足，三神山徒步线对你来说是挑战更是享受'},
+      {n:'拉萨 · 羊卓雍措', alt:'4441m', why:'高耐受体质 + 稳定情绪基线，适合作为进藏首站'},
+      {n:'青海湖环线', alt:'3200m', why:'开阔湖境与你的能量场匹配，骑行环湖正当时'},
+      {n:'香格里拉', alt:'3280m', why:'松赞林寺的安静与梅里雪山的壮阔，都很衬你'}
+    ],
+    [ // tier 1
+      {n:'大理 · 苍山洱海', alt:'2000m', why:'温和海拔 + 慢节奏，给身体一个舒适的适应窗口'},
+      {n:'丽江 · 玉龙雪山', alt:'2400m', why:'可先古城适应两日，再视状态决定是否上索道'},
+      {n:'甘南 · 扎尕那', alt:'2900m', why:'石城秘境海拔适中，是通往更高处的完美跳板'},
+      {n:'林芝', alt:'3000m', why:'藏地江南氧气相对充足，进藏前最友好的适应站'}
+    ],
+    [ // tier 2
+      {n:'三亚', alt:'5m', why:'海风与阳光最养人，先把状态充满再谈远方'},
+      {n:'桂林 · 阳朔', alt:'150m', why:'山水甲天下且零海拔负担，徒步竹筏两相宜'},
+      {n:'厦门', alt:'10m', why:'环岛路骑行 + 闽南烟火气，治愈值拉满'},
+      {n:'成都 · 青城山', alt:'600m', why:'低海拔氧吧，为将来的高原计划悄悄打底'}
+    ]
+  ];
+  const dests = DESTS[tier].slice(0,3).map(d=>({...d, match:Math.min(98, Math.round(score + rnd()*14 - 4))}));
+
+  /* --- sports --- */
+  const SPORT_POOL = {
+    0:[ // high
+      {n:'高原徒步', lv:'强度 ★★★★', d:'每周 1-2 次 · 单次 3-5h，出发前 4 周开始阶梯训练', ic:'hike'},
+      {n:'登山训练', lv:'强度 ★★★★☆', d:'爬楼梯/负重登阶，重点提升腿部耐力与心肺', ic:'mount'},
+      {n:'长途骑行', lv:'强度 ★★★', d:'周末 40-60km，模拟高原持续低氧输出', ic:'bike'},
+      {n:'露营过夜', lv:'强度 ★★', d:'提前适应温差与低氧睡眠环境', ic:'camp'}
+    ],
+    1:[
+      {n:'轻徒步', lv:'强度 ★★★', d:'每周 2 次 · 单次 1.5h，心率保持在 120 左右', ic:'hike'},
+      {n:'户外瑜伽', lv:'强度 ★★', d:'晨起 30 分钟，呼吸与柔韧并进，稳定自主神经', ic:'yoga'},
+      {n:'城市骑行', lv:'强度 ★★☆', d:'通勤改骑行，每周累计 2 小时即有收益', ic:'bike'},
+      {n:'溯溪 / 溪谷漫步', lv:'强度 ★★', d:'亲水低冲击，兼顾情绪调节与轻度有氧', ic:'water'}
+    ],
+    2:[
+      {n:'游泳', lv:'强度 ★★', d:'每周 2-3 次 · 每次 40 分钟，对心肺最友好的打底运动', ic:'swim'},
+      {n:'八段锦 / 太极', lv:'强度 ★', d:'每日 12 分钟，调息养神，改善睡眠与气血', ic:'taichi'},
+      {n:'城市漫步 CityWalk', lv:'强度 ★', d:'日行 8000 步，零门槛建立运动习惯', ic:'walk'},
+      {n:'普拉提', lv:'强度 ★★', d:'每周 2 次，核心稳定 + 呼吸控制同步提升', ic:'pilates'}
+    ]
+  };
+  let sports = SPORT_POOL[tier].slice();
+  // MBTI flavor: E gets a social sport note, I gets solo note
+  const socialNote = S.mbti[0]==='E' ? '约上同伴一起，坚持率会翻倍' : '独处型运动更贴合你的恢复节奏';
+  sports[3] = {...sports[3], d: sports[3].d + ' · ' + socialNote};
+
+  /* --- texts --- */
+  const mbtiDesc = {E:'外向能量让你在陌生环境中恢复更快',I:'内向特质让你更擅长聆听身体的细微信号'}[S.mbti[0]];
+  const sleepTxt = {good:'睡眠节律稳定，为低氧耐受提供了良好基础',mid:'睡眠处于中等水平，出行前建议提前一周规律作息',bad:'近期睡眠偏弱，建议先修复睡眠再规划高海拔行程'}[S.sleep];
+  const summary = `你的面部气色与精神状态特征点提取完成，交叉生辰八字（日主${pillar.gz}·五行属${pillar.elem}，生肖属${zodiac}）与 MBTI 人格档案（${mbti}）建模后可见：${mbtiDesc}，${sleepTxt}。综合模拟测算，你的高原适应指数为 ${score} 分，属于「${TIERS[tier].name}」区间。以下内容将围绕你的情绪基线、人格因子与命理五行，给出目的地与运动方式的个性化推荐。`;
+
+  const emoTop = emos.slice().sort((a,b)=>b[1]-a[1])[0];
+  const emoSummary = `当前情绪基线以「${emoTop[0]}」为主（${emoTop[1]}%）。情绪稳定性与低氧环境下的主观不适感呈负相关——保持当前的情绪管理节奏，本身就是高原适应的隐形加分项。`;
+
+  const finalSummary = `综合四维模型（面部特征模拟 · 八字命理 · MBTI 人格 · 情绪状态），你的推荐方向是「${TIERS[tier].name}」。${tier===0?'身体条件已经准备好了，剩下的只是挑一个好天气出发。':tier===1?'不需要急，高原一直在那里；用 1-2 次过渡型旅行摸清自己的边界，反而走得更远。':'远方不一定在高处。先在低海拔把心肺与睡眠养到最佳状态，高原清单只是延迟，不是删除。'}`;
+
+  const advicePool = {
+    0:[`出发前 2 周保持每周 3 次有氧，抵达首日不洗澡、不剧烈运动`,
+       `行程采用「阶梯上升」原则，每上升 1000 米安排 1 天适应`,
+       `随身备葡萄糖与保温杯，少量多次补水比猛灌更有效`,
+       `把你的${mbti}型好奇心留给风景，把保守留给身体信号`],
+    1:[`首站控制在 3000m 以内，抵达 48 小时内避免饮酒与熬夜`,
+       `出行前 1 周开始规律作息，睡眠是最好的抗高反药`,
+       `每天早晚各测一次血氧（便携仪即可），低于 88 就下撤休整`,
+       `选择 2-3 人小团或熟悉路线的朋友同行，情绪安全同样重要`],
+    2:[`未来 8 周以游泳/快走建立心肺基础，每周累计 150 分钟`,
+       `先把睡眠固定在 23:30 前入睡，连续 3 周再评估高原计划`,
+       `从青城山、莫干山这类 1000m 以内山地开始"预演"`,
+       `高原不是 KPI，状态到位时它会是奖赏而不是挑战`]
+  };
+
+  S.report = {seed, score, tier, TIERS, spo2, hr, cpf, emos, wx, dests, sports, mbti, pillar, zodiac, summary, emoSummary, finalSummary, advice:advicePool[tier]};
+  renderReport();
+  go('s-report');
+}
+
+/* =============== report render =============== */
+function renderReport(){
+  const R = S.report;
+  $('rptNo').textContent = 'NO. CYB-2026-' + String(R.seed%900000+100000);
+  $('rptDate').textContent = new Date().toISOString().slice(0,10) + ' · 充氧宝 AI 实验室';
+  $('rptAvatar').src = S.photoDataUrl;
+  $('rptSummary').textContent = R.summary;
+  $('tierName').textContent = R.TIERS[R.tier].name;
+  $('tierDesc').textContent = R.TIERS[R.tier].desc;
+  $('mSpo2').innerHTML = R.spo2 + '<i>%</i>';
+  $('mHr').innerHTML = R.hr + '<i>bpm</i>';
+  $('mCpf').textContent = R.cpf;
+  $('mCpfOk').textContent = {A:'优秀',['B+']:'良好',B:'中等',['C+']:'待提升'}[R.cpf];
+  $('emoSummary').textContent = R.emoSummary;
+  $('finalSummary').textContent = R.finalSummary;
+
+  // factor tags
+  $('factorTags').innerHTML = [
+    `<div class="ftag">MBTI · <b>${R.mbti}</b></div>`,
+    `<div class="ftag">日主 · <b>${R.pillar.gz}</b>（${R.pillar.elem}）</div>`,
+    `<div class="ftag">生肖 · <b>${R.zodiac}</b></div>`,
+    `<div class="ftag">情绪基线 · <b>${{calm:'平静',excited:'兴奋',anxious:'焦虑',tired:'疲惫'}[S.mood]}</b></div>`
+  ].join('');
+
+  // wuxing bars
+  const WX_COLOR={木:'#3ddc97',火:'#ff7b7b',土:'#ffcf6b',金:'#c9d4ea',水:'#38e1ff'};
+  $('wuxingBars').innerHTML = R.wx.map(([e,v])=>
+    `<div class="wx"><span class="n">五行${e}</span><div class="bar"><i style="width:${v*2}%;background:${WX_COLOR[e]}"></i></div><span class="v">${v}%</span></div>`
+  ).join('');
+
+  // destinations
+  $('destList').innerHTML = R.dests.map((d,i)=>
+    `<div class="dest-card"><div class="rank">${i+1}</div>
+      <div class="info"><b>${d.n}</b><span class="alt">海拔 ${d.alt}</span><p>${d.why}</p></div>
+      <div class="match"><b>${d.match}%</b><span>匹配度</span></div></div>`
+  ).join('');
+
+  // sports
+  const ICONS = {
+    hike:'<svg viewBox="0 0 24 24" fill="none" stroke="#38e1ff" stroke-width="1.7" stroke-linecap="round"><path d="M13 4l3 4-2 3 3 8M9 21l3-7-4-3 2-5"/><circle cx="13.5" cy="3" r="1.4"/></svg>',
+    mount:'<svg viewBox="0 0 24 24" fill="none" stroke="#38e1ff" stroke-width="1.7" stroke-linejoin="round"><path d="M3 20l6-11 4 6 3-4 5 9z"/></svg>',
+    bike:'<svg viewBox="0 0 24 24" fill="none" stroke="#38e1ff" stroke-width="1.6"><circle cx="6" cy="17" r="3.4"/><circle cx="18" cy="17" r="3.4"/><path d="M6 17l3.5-8H14l4 8M9.5 9L8 6h3" stroke-linecap="round"/></svg>',
+    camp:'<svg viewBox="0 0 24 24" fill="none" stroke="#38e1ff" stroke-width="1.7" stroke-linejoin="round"><path d="M12 4L3 20h18z"/><path d="M12 12l-3 8h6z"/></svg>',
+    yoga:'<svg viewBox="0 0 24 24" fill="none" stroke="#38e1ff" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="5.5" r="1.6"/><path d="M4 19c3-1 5-3 5-6M20 19c-3-1-5-3-5-6M9 9c1 1.5 5 1.5 6 0"/></svg>',
+    water:'<svg viewBox="0 0 24 24" fill="none" stroke="#38e1ff" stroke-width="1.6" stroke-linecap="round"><path d="M3 10c2 2 4 2 6 0s4-2 6 0 4 2 6 0M3 16c2 2 4 2 6 0s4-2 6 0 4 2 6 0"/></svg>',
+    swim:'<svg viewBox="0 0 24 24" fill="none" stroke="#38e1ff" stroke-width="1.6" stroke-linecap="round"><circle cx="16" cy="6" r="1.8"/><path d="M3 13l5-3 4 4 5-2M3 18c2 1.5 4 1.5 6 0s4-1.5 6 0 4 1.5 6 0"/></svg>',
+    taichi:'<svg viewBox="0 0 24 24" fill="none" stroke="#38e1ff" stroke-width="1.6"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5a4.2 4.2 0 010 8.5 4.2 4.2 0 000 8.5" /><circle cx="12" cy="7.7" r="1" fill="#38e1ff"/><circle cx="12" cy="16.3" r="1" fill="#38e1ff"/></svg>',
+    walk:'<svg viewBox="0 0 24 24" fill="none" stroke="#38e1ff" stroke-width="1.7" stroke-linecap="round"><circle cx="13" cy="4" r="1.5"/><path d="M13 7l-2 5 3 3 1 6M11 12l-3 2M14 15l4 1"/></svg>',
+    pilates:'<svg viewBox="0 0 24 24" fill="none" stroke="#38e1ff" stroke-width="1.6" stroke-linecap="round"><circle cx="6" cy="8" r="1.6"/><path d="M4 14c4-4 10-4 16 0M8 18h8"/></svg>'
+  };
+  $('sportList').innerHTML = R.sports.map(sp=>
+    `<div class="sport"><div class="ic">${ICONS[sp.ic]||ICONS.hike}</div><b>${sp.n}</b><div class="lv">${sp.lv}</div><p>${sp.d}</p></div>`
+  ).join('');
+
+  // advice
+  $('adviceList').innerHTML = R.advice.map(a=>`<li>${a}</li>`).join('');
+
+  drawGauge(R.score);
+  drawDonut(R.emos);
+  startWaves(R);
+}
+
+/* --- gauge --- */
+function drawGauge(score){
+  const cv = $('gaugeCv'), ctx = cv.getContext('2d');
+  const cx=150, cy=150, r=110;
+  let cur = 0;
+  const target = score;
+  clearInterval(cv._t);
+  cv._t = setInterval(()=>{
+    cur += (target-cur)*.12 + .4;
+    if(cur>=target){cur=target;clearInterval(cv._t)}
+    ctx.clearRect(0,0,300,220);
+    ctx.lineCap='round';
+    ctx.beginPath(); ctx.arc(cx,cy,r,Math.PI,2*Math.PI);
+    ctx.strokeStyle='rgba(88,140,255,.15)'; ctx.lineWidth=16; ctx.stroke();
+    const grad = ctx.createLinearGradient(40,0,260,0);
+    grad.addColorStop(0,'#4f8cff'); grad.addColorStop(1,'#38e1ff');
+    ctx.beginPath(); ctx.arc(cx,cy,r,Math.PI,Math.PI + Math.PI*cur/100);
+    ctx.strokeStyle=grad; ctx.lineWidth=16;
+    ctx.shadowColor='rgba(56,225,255,.5)'; ctx.shadowBlur=14; ctx.stroke();
+    ctx.shadowBlur=0;
+    $('gScore').textContent = Math.round(cur);
+  }, 30);
+}
+
+/* --- donut --- */
+function drawDonut(emos){
+  const cv=$('donutCv'), ctx=cv.getContext('2d');
+  const COLORS=['#38e1ff','#3ddc97','#8b7bff','#ffcf6b','#ff9d6b','#4f8cff'];
+  ctx.clearRect(0,0,260,260);
+  let a=-Math.PI/2;
+  emos.forEach((e,i)=>{
+    const ang = e[1]/100*Math.PI*2;
+    ctx.beginPath();
+    ctx.arc(130,130,96,a,a+ang);
+    ctx.arc(130,130,60,a+ang,a,true);
+    ctx.closePath();
+    ctx.fillStyle=COLORS[i%COLORS.length];
+    ctx.globalAlpha=.92; ctx.fill();
+    a+=ang;
+  });
+  ctx.globalAlpha=1;
+  ctx.fillStyle='#e8efff'; ctx.font='700 26px sans-serif'; ctx.textAlign='center';
+  const top = emos.slice().sort((x,y)=>y[1]-x[1])[0];
+  ctx.fillText(top[1]+'%',130,126);
+  ctx.font='11px sans-serif'; ctx.fillStyle='#8fa3d0';
+  ctx.fillText(top[0],130,148);
+  $('donutLegend').innerHTML = emos.map((e,i)=>
+    `<div class="lg"><i style="background:${COLORS[i%COLORS.length]}"></i>${e[0]}<b>${e[1]}%</b></div>`
+  ).join('');
+}
+
+/* --- waves --- */
+function startWaves(R){
+  const w1=$('wave1').getContext('2d'), w2=$('wave2').getContext('2d');
+  $('hrvTag').textContent = R.hr<76?'HRV 正常':R.hr<88?'HRV 轻度偏高':'HRV 偏高 · 建议放松';
+  $('brTag').textContent = S.stress==='high'?'节律偏快':'节律平稳';
+  let t=0;
+  clearInterval(window._wt);
+  window._wt = setInterval(()=>{
+    t+=.06;
+    // ECG-ish
+    w1.clearRect(0,0,640,88); w1.beginPath();
+    for(let x=0;x<=640;x+=4){
+      const ph=(x/640*4+t)%1;
+      let y=52;
+      y -= Math.sin(x/40+t*3)*4;
+      if(ph>.1&&ph<.16) y-=28*Math.sin((ph-.1)/.06*Math.PI);   // R spike
+      if(ph>.16&&ph<.22) y+=10*Math.sin((ph-.16)/.06*Math.PI);
+      x===0?w1.moveTo(x,y):w1.lineTo(x,y);
+    }
+    w1.strokeStyle='#ff7b7b'; w1.lineWidth=2; w1.shadowColor='rgba(255,123,123,.5)'; w1.shadowBlur=6; w1.stroke();
+    // breath
+    w2.clearRect(0,0,640,88); w2.beginPath();
+    for(let x=0;x<=640;x+=4){
+      const y=44+Math.sin(x/90+t*1.6)*22*Math.sin(t*.5+x/640*2);
+      x===0?w2.moveTo(x,y):w2.lineTo(x,y);
+    }
+    w2.strokeStyle='#38e1ff'; w2.lineWidth=2; w2.shadowColor='rgba(56,225,255,.5)'; w2.shadowBlur=6; w2.stroke();
+  }, 50);
+}
+
+/* --- share --- */
+function shareCard(btn){
+  const R=S.report; if(!R) return;
+  const txt = `我的高原适应指数 ${R.score} 分 · ${R.TIERS[R.tier].name}\n推荐目的地：${R.dests.map(d=>d.n).join(' / ')}\n—— 充氧宝 AI 趣味测评`;
+  if(navigator.clipboard){ navigator.clipboard.writeText(txt).catch(()=>{}); }
+  const old = btn.textContent;
+  btn.textContent = '卡片文案已复制';
+  setTimeout(()=>btn.textContent=old, 1600);
+}
+
+/* =============== checkin =============== */
+document.querySelectorAll('.mood-b').forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll('.mood-b').forEach(o=>o.classList.remove('on'));
+    b.classList.add('on'); S.ckMood=+b.dataset.v; refreshCkBtn();
+  };
+});
+function refreshCkBtn(){
+  const ok = S.ckMood!=null;
+  $('ckBtn').style.opacity=ok?1:.45;
+  $('ckBtn').style.pointerEvents=ok?'auto':'none';
+}
+function doCheckin(){
+  const v=S.ckMood;
+  const msg = v>=80?'今日氧值 '+v+' · 满氧出发，状态很在线':
+              v>=60?'今日氧值 '+v+' · 平稳的一天，给自己点个赞':
+              v>=40?'今日氧值 '+v+' · 有点缺氧，晚上早点休息充充电':
+                    '今日氧值 '+v+' · 氧宝陪你深呼吸三次，明天会更好';
+  $('ckResult').textContent = msg;
+  $('ckBtn').textContent = '已打卡';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 1024" role="img" aria-label="CYB final IP eight states">
+  <defs>
+    <radialGradient id="bodyMain" cx="35%" cy="25%" r="70%">
+      <stop offset="0" stop-color="#EFFFFB"/>
+      <stop offset="0.38" stop-color="#9FEDE1"/>
+      <stop offset="0.72" stop-color="#5AA7FF"/>
+      <stop offset="1" stop-color="#1F5FA8"/>
+    </radialGradient>
+    <linearGradient id="shade" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.68"/>
+      <stop offset="1" stop-color="#063866" stop-opacity="0.58"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-25%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="14" stdDeviation="16" flood-color="#1F5FA8" flood-opacity="0.2"/>
+    </filter>
+    <symbol id="ip-happy" viewBox="0 0 256 256">
+      <ellipse cx="128" cy="226" rx="62" ry="10" fill="#061B2B" opacity=".11"/>
+      <path d="M128 20 C168 20 201 54 205 97 C208 134 196 178 166 211 C153 226 141 235 128 235 C115 235 103 226 90 211 C60 178 48 134 51 97 C55 54 88 20 128 20 Z" fill="url(#bodyMain)"/>
+      <path d="M128 20 C168 20 201 54 205 97 C208 134 196 178 166 211 C153 226 141 235 128 235 C115 235 103 226 90 211 C60 178 48 134 51 97 C55 54 88 20 128 20 Z" fill="url(#shade)" opacity=".44"/>
+      <path d="M94 33 C112 23 143 19 166 31 C146 27 121 29 104 42 C82 58 74 88 77 118 C68 83 75 47 94 33 Z" fill="#FFFFFF" opacity=".42"/>
+      <path d="M128 13 C136 4 148 0 160 5 C148 9 138 16 132 26 Z" fill="currentColor"/>
+      <path d="M73 118 H54 M202 118 H183" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="50" cy="118" r="10" fill="currentColor"/>
+      <circle cx="206" cy="118" r="10" fill="currentColor"/>
+      <circle cx="50" cy="118" r="4" fill="#EFFFFB"/>
+      <circle cx="206" cy="118" r="4" fill="#EFFFFB"/>
+      <path d="M91 102 C101 94 111 94 121 102" fill="none" stroke="#061B2B" stroke-width="7" stroke-linecap="round"/>
+      <path d="M135 102 C145 94 155 94 165 102" fill="none" stroke="#061B2B" stroke-width="7" stroke-linecap="round"/>
+      <path d="M104 145 C116 157 140 157 152 145" fill="none" stroke="#061B2B" stroke-width="7" stroke-linecap="round"/>
+      <circle cx="128" cy="151" r="48" fill="currentColor" opacity=".34"/>
+      <circle cx="128" cy="151" r="30" fill="currentColor"/>
+      <circle cx="128" cy="151" r="21" fill="none" stroke="#FFFFFF" stroke-width="5" opacity=".62"/>
+    </symbol>
+  </defs>
+  <rect width="2048" height="1024" fill="#F6FFFB"/>
+  <g font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-weight="700" font-size="34" fill="#061B2B">
+    <g transform="translate(40 58)" style="color:#35D6B8"><use href="#ip-happy" width="200" height="200" filter="url(#shadow)"/><text x="100" y="258" text-anchor="middle">oxy-yong</text></g>
+    <g transform="translate(292 58)" style="color:#5AA7FF"><use href="#ip-happy" width="200" height="200" filter="url(#shadow)"/><text x="100" y="258" text-anchor="middle">oxy-yun</text></g>
+    <g transform="translate(544 58)" style="color:#FFB84D"><use href="#ip-happy" width="200" height="200" filter="url(#shadow)"/><text x="100" y="258" text-anchor="middle">oxy-xi</text></g>
+    <g transform="translate(796 58)" style="color:#A78BFA"><use href="#ip-happy" width="200" height="200" filter="url(#shadow)"/><text x="100" y="258" text-anchor="middle">oxy-mi</text></g>
+    <g transform="translate(1048 58)" style="color:#FF6B6B"><use href="#ip-happy" width="200" height="200" filter="url(#shadow)"/><text x="100" y="258" text-anchor="middle">oxy-ran</text></g>
+    <g transform="translate(1300 58)" style="color:#8B95A7"><use href="#ip-happy" width="200" height="200" filter="url(#shadow)"/><text x="100" y="258" text-anchor="middle">oxy-yu</text></g>
+    <g transform="translate(1552 58)" style="color:#FFD166"><use href="#ip-happy" width="200" height="200" filter="url(#shadow)"/><text x="100" y="258" text-anchor="middle">oxy-ju</text></g>
+    <g transform="translate(1804 58)" style="color:#7BC96F"><use href="#ip-happy" width="200" height="200" filter="url(#shadow)"/><text x="100" y="258" text-anchor="middle">oxy-ban</text></g>
+  </g>
+  <g transform="translate(80 430)" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" fill="#061B2B">
+    <text x="0" y="0" font-size="42" font-weight="800">State usage</text>
+    <text x="0" y="62" font-size="28">Keep the same shell. Only oxygen-core color, glow level, bubbles and face expression respond to yangbaoState.</text>
+    <text x="0" y="112" font-size="28">Do not drive shell shape from personaState. CTA remains #35D6B8.</text>
+  </g>
+</svg>

@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-label="CYB final IP transparent source">
+  <defs>
+    <radialGradient id="bodyMain" cx="35%" cy="25%" r="70%">
+      <stop offset="0" stop-color="#EFFFFB"/>
+      <stop offset="0.38" stop-color="#9FEDE1"/>
+      <stop offset="0.72" stop-color="#5AA7FF"/>
+      <stop offset="1" stop-color="#1F5FA8"/>
+    </radialGradient>
+    <linearGradient id="bodyShade" x1="220" y1="184" x2="822" y2="900" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.78"/>
+      <stop offset="0.45" stop-color="#35D6B8" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#0A3B72" stop-opacity="0.7"/>
+    </linearGradient>
+    <radialGradient id="coreGlow" cx="50%" cy="48%" r="52%">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="0.35" stop-color="#DFFFF8"/>
+      <stop offset="0.65" stop-color="#35D6B8"/>
+      <stop offset="1" stop-color="#35D6B8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="coreFill" cx="45%" cy="35%" r="68%">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="0.42" stop-color="#9AF2E6"/>
+      <stop offset="1" stop-color="#35D6B8"/>
+    </radialGradient>
+    <linearGradient id="glass" x1="318" y1="188" x2="690" y2="860" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.92"/>
+      <stop offset="0.42" stop-color="#FFFFFF" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.06"/>
+    </linearGradient>
+    <filter id="softShadow" x="-25%" y="-20%" width="150%" height="155%">
+      <feDropShadow dx="0" dy="28" stdDeviation="34" flood-color="#1F5FA8" flood-opacity="0.22"/>
+      <feDropShadow dx="0" dy="10" stdDeviation="16" flood-color="#35D6B8" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+
+  <g id="cyb-final-ip" filter="url(#softShadow)">
+    <ellipse cx="512" cy="878" rx="238" ry="42" fill="#061B2B" opacity="0.12"/>
+
+    <path d="M512 118 C654 118 768 238 780 390 C790 520 746 690 642 805 C596 856 558 888 512 888 C466 888 428 856 382 805 C278 690 234 520 244 390 C256 238 370 118 512 118 Z" fill="url(#bodyMain)"/>
+    <path d="M512 118 C654 118 768 238 780 390 C790 520 746 690 642 805 C596 856 558 888 512 888 C466 888 428 856 382 805 C278 690 234 520 244 390 C256 238 370 118 512 118 Z" fill="url(#bodyShade)" opacity="0.48"/>
+    <path d="M372 172 C440 132 548 120 632 168 C558 146 470 152 406 200 C326 260 294 368 304 482 C274 354 298 228 372 172 Z" fill="url(#glass)" opacity="0.82"/>
+
+    <path d="M512 88 C540 54 586 40 630 58 C586 72 548 98 526 136 Z" fill="#35D6B8"/>
+    <path d="M519 101 C548 78 580 68 608 70 C574 83 546 105 530 133 Z" fill="#EFFFFB" opacity="0.58"/>
+
+    <g id="side-connectors">
+      <path d="M284 496 H216" stroke="#35D6B8" stroke-width="22" stroke-linecap="round"/>
+      <path d="M740 496 H808" stroke="#35D6B8" stroke-width="22" stroke-linecap="round"/>
+      <circle cx="206" cy="496" r="38" fill="#35D6B8"/>
+      <circle cx="818" cy="496" r="38" fill="#35D6B8"/>
+      <circle cx="206" cy="496" r="17" fill="#EFFFFB" opacity="0.92"/>
+      <circle cx="818" cy="496" r="17" fill="#EFFFFB" opacity="0.92"/>
+    </g>
+
+    <g id="face">
+      <path d="M374 432 C410 405 448 405 484 432" fill="none" stroke="#061B2B" stroke-width="28" stroke-linecap="round"/>
+      <path d="M540 432 C576 405 614 405 650 432" fill="none" stroke="#061B2B" stroke-width="28" stroke-linecap="round"/>
+      <path d="M430 586 C476 632 548 632 594 586" fill="none" stroke="#061B2B" stroke-width="26" stroke-linecap="round"/>
+      <circle cx="342" cy="534" r="28" fill="#FFB8C6" opacity="0.44"/>
+      <circle cx="682" cy="534" r="28" fill="#FFB8C6" opacity="0.44"/>
+    </g>
+
+    <circle cx="512" cy="604" r="196" fill="url(#coreGlow)" opacity="0.58"/>
+    <circle id="oxygen-core" cx="512" cy="604" r="116" fill="url(#coreFill)"/>
+    <circle cx="512" cy="604" r="86" fill="none" stroke="#FFFFFF" stroke-width="16" opacity="0.64"/>
+    <path d="M452 570 C476 532 536 516 580 548" fill="none" stroke="#FFFFFF" stroke-width="18" stroke-linecap="round" opacity="0.72"/>
+
+    <g id="bubbles" fill="#FFFFFF">
+      <circle cx="332" cy="250" r="18" opacity="0.72"/>
+      <circle cx="684" cy="284" r="13" opacity="0.62"/>
+      <circle cx="716" cy="642" r="18" opacity="0.46"/>
+      <circle cx="300" cy="694" r="12" opacity="0.42"/>
+    </g>
+  </g>
+</svg>

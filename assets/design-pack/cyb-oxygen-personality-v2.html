@@ -1,0 +1,1558 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>充氧宝 · 氧系人格测评 V2</title>
+<style>
+:root{
+  --bg:#060b1a; --bg2:#0a1230; --card:#0e1838; --card2:#121f47;
+  --line:rgba(88,140,255,.18); --line2:rgba(88,140,255,.35);
+  --cyan:#38e1ff; --blue:#4f8cff; --violet:#8b7bff; --gold:#ffcf6b;
+  --txt:#e8efff; --sub:#8fa3d0; --dim:#5b6c99;
+  --good:#3ddc97; --warn:#ffcf6b; --bad:#ff7b7b;
+  --pc:#38e1ff; /* persona color, set by JS */
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:"PingFang SC","HarmonyOS Sans SC","Microsoft YaHei",system-ui,sans-serif;
+  background:var(--bg); color:var(--txt); min-height:100vh; overflow-x:hidden;
+}
+body::before{
+  content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(900px 500px at 85% -10%, rgba(79,140,255,.16), transparent 60%),
+    radial-gradient(700px 500px at -10% 30%, rgba(139,123,255,.12), transparent 60%),
+    radial-gradient(800px 600px at 50% 110%, rgba(56,225,255,.10), transparent 60%);
+}
+.grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+  background-image:linear-gradient(rgba(88,140,255,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(88,140,255,.05) 1px,transparent 1px);
+  background-size:44px 44px;
+  mask-image:radial-gradient(ellipse at 50% 30%,#000 30%,transparent 75%);}
+.app{position:relative;z-index:1;max-width:460px;margin:0 auto;min-height:100vh;
+  padding:0 18px 40px;display:flex;flex-direction:column}
+.screen{display:none;flex-direction:column;flex:1;animation:fadeUp .45s ease both}
+.screen.active{display:flex}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* ---------- top bar ---------- */
+.topbar{display:flex;align-items:center;gap:10px;padding:18px 0 6px}
+.logo{width:36px;height:36px;border-radius:11px;flex:none;
+  background:linear-gradient(135deg,#1b3a8f,#0c1c4e);border:1px solid var(--line2);
+  display:flex;align-items:center;justify-content:center}
+.logo svg{width:20px;height:20px}
+.topbar .name{font-size:15px;font-weight:600;letter-spacing:.5px}
+.topbar .sub{font-size:10px;color:var(--sub);letter-spacing:2px;text-transform:uppercase}
+.back{margin-left:auto;font-size:12px;color:var(--sub);border:1px solid var(--line);
+  padding:6px 12px;border-radius:99px;cursor:pointer;background:rgba(14,24,56,.6)}
+.back:active{transform:scale(.95)}
+
+/* ---------- home ---------- */
+.hero{padding:30px 4px 8px;text-align:left}
+.tag{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--cyan);
+  border:1px solid rgba(56,225,255,.35);border-radius:99px;padding:5px 12px;
+  background:rgba(56,225,255,.07);letter-spacing:1px}
+.tag .dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);
+  box-shadow:0 0 8px var(--cyan);animation:blink 1.6s infinite}
+@keyframes blink{50%{opacity:.35}}
+.hero h1{font-size:32px;line-height:1.28;margin:16px 0 10px;font-weight:700;
+  background:linear-gradient(120deg,#fff 20%,#9fc2ff 60%,#38e1ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{font-size:13.5px;color:var(--sub);line-height:1.8}
+.hero-metrics{display:flex;gap:10px;margin:22px 0}
+.hm{flex:1;background:linear-gradient(160deg,var(--card),rgba(14,24,56,.5));
+  border:1px solid var(--line);border-radius:14px;padding:12px 10px;text-align:center}
+.hm b{display:block;font-size:19px;color:var(--cyan);font-weight:700}
+.hm span{font-size:10px;color:var(--sub)}
+.btn{display:block;width:100%;border:none;cursor:pointer;border-radius:16px;
+  padding:16px;font-size:16px;font-weight:600;letter-spacing:2px;color:#04122b;
+  background:linear-gradient(120deg,#38e1ff,#4f8cff);box-shadow:0 8px 30px rgba(56,150,255,.35);
+  transition:transform .15s}
+.btn:active{transform:scale(.97)}
+.btn.ghost{background:transparent;color:var(--sub);border:1px solid var(--line);
+  box-shadow:none;font-weight:400;font-size:13px;padding:12px;letter-spacing:1px}
+.home-note{margin-top:14px;font-size:11px;color:var(--dim);text-align:center;line-height:1.7}
+
+/* persona preview strip */
+.preview-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:20px 0 6px}
+.pv{background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:10px 4px;text-align:center}
+.pv i{display:block;width:22px;height:22px;margin:0 auto 6px;border-radius:50%;
+  box-shadow:0 0 12px currentColor;background:currentColor;opacity:.9}
+.pv span{font-size:9.5px;color:var(--sub)}
+
+/* ---------- quiz ---------- */
+.q-progress{display:flex;align-items:center;gap:10px;margin:18px 0 6px}
+.q-progress .bar{flex:1;height:4px;background:rgba(88,140,255,.15);border-radius:99px;overflow:hidden}
+.q-progress .bar i{display:block;height:100%;width:0;border-radius:99px;
+  background:linear-gradient(90deg,var(--blue),var(--cyan));transition:width .35s}
+.q-progress .num{font-size:11px;color:var(--sub);letter-spacing:1px;flex:none}
+.q-card{background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line2);
+  border-radius:22px;padding:26px 20px;margin-top:14px}
+.q-card .q-dim{font-size:10px;color:var(--cyan);letter-spacing:2px;margin-bottom:8px}
+.q-card h3{font-size:18px;line-height:1.6;margin-bottom:22px;font-weight:700}
+.q-opt{display:block;width:100%;text-align:left;background:rgba(6,12,32,.55);
+  border:1px solid var(--line);border-radius:14px;padding:15px 16px;margin-bottom:10px;
+  cursor:pointer;color:var(--txt);font-size:14px;line-height:1.6;transition:all .2s}
+.q-opt:active{transform:scale(.98)}
+.q-opt.picked{border-color:var(--cyan);background:rgba(56,225,255,.1);
+  box-shadow:0 0 18px rgba(56,225,255,.15)}
+.q-opt .ab{display:inline-flex;width:24px;height:24px;border-radius:8px;margin-right:10px;
+  background:rgba(56,225,255,.1);border:1px solid rgba(56,225,255,.35);color:var(--cyan);
+  font-size:12px;align-items:center;justify-content:center;vertical-align:-6px}
+
+/* ---------- 氧宝 companion ---------- */
+.companion{display:flex;align-items:flex-end;gap:10px;margin:16px 2px 0;min-height:74px}
+.companion .bubble{position:relative;background:var(--card2);border:1px solid var(--line2);
+  border-radius:14px 14px 14px 4px;padding:9px 13px;font-size:12px;color:#c4d2f2;
+  line-height:1.7;max-width:70%;animation:pop .3s ease}
+@keyframes pop{from{opacity:0;transform:scale(.9) translateY(6px)}to{opacity:1;transform:none}}
+.oxyb{width:64px;height:64px;flex:none;animation:bob 2.6s ease-in-out infinite}
+.oxyb.big{width:120px;height:120px}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.oxyb .ex,.oxyb .acc{display:none}
+.oxyb.st-calm .ex-calm{display:block}
+.oxyb.st-cheer .ex-cheer{display:block}
+.oxyb.st-hug .ex-hug{display:block}
+.oxyb.st-tea .ex-tea{display:block}
+.oxyb.st-bubble .ex-bubble{display:block}
+.oxyb.st-write .ex-write{display:block}
+.oxyb.g2 .acc-leaf,.oxyb.g3 .acc-leaf{display:block}
+.oxyb.g3 .acc-ring{display:block}
+.oxyb .float-p{animation:floatUp 2.4s ease-in infinite}
+@keyframes floatUp{0%{opacity:0;transform:translateY(0)}20%{opacity:1}100%{opacity:0;transform:translateY(-14px)}}
+
+/* ---------- analyzing ---------- */
+.ana-wrap{display:flex;flex-direction:column;align-items:center;padding-top:60px}
+.ana-status{text-align:center;margin-top:26px;width:100%}
+.ana-status .step-txt{font-size:13.5px;color:var(--cyan);min-height:22px;letter-spacing:.5px}
+.ana-bar{width:72%;height:4px;background:rgba(88,140,255,.15);border-radius:99px;margin:14px auto;overflow:hidden}
+.ana-bar i{display:block;height:100%;width:0;border-radius:99px;
+  background:linear-gradient(90deg,var(--blue),var(--cyan));transition:width .3s}
+.ana-pct{text-align:center;font-size:11px;color:var(--dim);letter-spacing:2px}
+
+/* ---------- report ---------- */
+.rpt-head{background:linear-gradient(160deg,#122457,#0a1436);border:1px solid var(--line2);
+  border-radius:20px;padding:18px;margin-top:18px;position:relative;overflow:hidden}
+.rpt-head::after{content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;
+  border-radius:50%;background:radial-gradient(circle,rgba(56,225,255,.18),transparent 70%)}
+.rpt-no{font-size:10px;color:var(--dim);letter-spacing:1.5px}
+.rpt-head h2{font-size:21px;margin:6px 0 4px;letter-spacing:1px}
+.rpt-head .date{font-size:11px;color:var(--sub)}
+
+.persona-hero{position:relative;margin-top:14px;border-radius:22px;padding:26px 20px 22px;
+  text-align:center;overflow:hidden;border:1px solid var(--line2);
+  background:linear-gradient(170deg,var(--card2),var(--card));}
+.persona-hero .halo{position:absolute;left:50%;top:-70px;width:280px;height:280px;
+  transform:translateX(-50%);border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,color-mix(in srgb,var(--pc) 38%,transparent),transparent 68%)}
+.persona-hero .orb{width:96px;height:96px;margin:6px auto 14px;border-radius:50%;position:relative;
+  background:radial-gradient(circle at 34% 30%,#fff3,color-mix(in srgb,var(--pc) 85%,#000) 62%,color-mix(in srgb,var(--pc) 40%,#000));
+  box-shadow:0 0 46px color-mix(in srgb,var(--pc) 65%,transparent),inset 0 0 22px rgba(255,255,255,.22)}
+.persona-hero .orb::after{content:"";position:absolute;left:20%;top:14%;width:26%;height:18%;
+  border-radius:50%;background:rgba(255,255,255,.5);filter:blur(3px)}
+.persona-hero h2{font-size:30px;letter-spacing:4px;font-weight:800;position:relative;
+  text-shadow:0 0 24px color-mix(in srgb,var(--pc) 60%,transparent)}
+.persona-hero .alias{margin-top:6px;font-size:12px;color:var(--pc);letter-spacing:2px;position:relative}
+.persona-hero .mbti-tag{display:inline-block;margin-top:10px;font-size:10.5px;color:var(--sub);
+  border:1px solid var(--line2);border-radius:99px;padding:4px 12px;letter-spacing:1px;position:relative}
+.persona-hero .oneliner{margin-top:14px;font-size:13px;color:#c4d2f2;line-height:1.9;position:relative}
+.color-chip{display:inline-flex;align-items:center;gap:8px;margin-top:14px;position:relative;
+  border:1px solid var(--line2);border-radius:99px;padding:6px 14px;font-size:11px;color:var(--sub)}
+.color-chip i{width:12px;height:12px;border-radius:50%;background:var(--pc);
+  box-shadow:0 0 10px var(--pc)}
+
+.block{background:linear-gradient(160deg,var(--card),rgba(12,20,48,.6));border:1px solid var(--line);
+  border-radius:18px;padding:16px;margin-top:14px}
+.block-t{font-size:14.5px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.block-t::before{content:"";width:4px;height:14px;border-radius:2px;
+  background:linear-gradient(180deg,var(--cyan),var(--blue))}
+.block-t .en{margin-left:auto;font-size:9px;color:var(--dim);letter-spacing:2px;font-weight:400}
+.summary-txt{font-size:12.5px;color:#c4d2f2;line-height:2;text-align:justify}
+.soft-note{font-size:10.5px;color:var(--dim);line-height:1.7;margin-bottom:10px}
+
+.career-list{display:flex;flex-direction:column;gap:9px}
+.career{display:flex;align-items:center;gap:12px;background:rgba(6,12,32,.55);
+  border:1px solid var(--line);border-radius:13px;padding:12px}
+.career .rk{width:26px;height:26px;flex:none;border-radius:8px;display:flex;align-items:center;
+  justify-content:center;font-size:12px;font-weight:800;color:#04122b;
+  background:linear-gradient(135deg,var(--pc),color-mix(in srgb,var(--pc) 55%,#4f8cff))}
+.career b{font-size:13.5px;font-weight:600}
+.career span{display:block;font-size:10.5px;color:var(--sub);margin-top:2px}
+
+.place-card{display:flex;gap:12px;align-items:center;background:rgba(6,12,32,.55);
+  border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px}
+.place-card .pic{width:44px;height:44px;flex:none;border-radius:12px;display:flex;align-items:center;
+  justify-content:center;background:rgba(56,225,255,.08);border:1px solid rgba(56,225,255,.25)}
+.place-card .pic svg{width:24px;height:24px}
+.place-card .info{flex:1;min-width:0}
+.place-card .info b{font-size:14px}
+.place-card .info .k{font-size:9.5px;color:var(--gold);margin-left:6px;letter-spacing:1px}
+.place-card .info p{font-size:10.5px;color:var(--sub);margin-top:3px;line-height:1.6}
+
+.sport-line{display:flex;align-items:center;gap:12px;background:rgba(6,12,32,.55);
+  border:1px solid var(--line);border-radius:13px;padding:13px 14px}
+.sport-line .lv{font-size:10px;color:var(--gold);flex:none;letter-spacing:1px}
+.sport-line b{font-size:13.5px}
+.sport-line p{font-size:10.5px;color:var(--sub);margin-top:2px}
+
+/* letter from 氧宝 */
+.letter{background:linear-gradient(160deg,rgba(18,31,71,.9),rgba(10,18,48,.85));
+  border:1px solid var(--line2);border-radius:18px;padding:18px 16px;margin-top:14px;position:relative}
+.letter .l-t{font-size:12px;color:var(--cyan);letter-spacing:2px;margin-bottom:10px;
+  display:flex;align-items:center;gap:8px}
+.letter .l-t::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line2),transparent)}
+.letter p{font-size:13px;color:#d7e3ff;line-height:2.1}
+.letter .l-sign{text-align:right;font-size:11px;color:var(--sub);margin-top:10px}
+.letter .l-grow{display:inline-block;margin-top:8px;font-size:10px;color:var(--good);
+  border:1px solid rgba(61,220,151,.4);border-radius:99px;padding:4px 12px;background:rgba(61,220,151,.07)}
+.letter .oxyb{position:absolute;right:8px;top:-30px;width:58px;height:58px}
+
+/* collection dex */
+.dex{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.dex .dx{border:1px solid var(--line);border-radius:12px;padding:10px 4px;text-align:center;
+  background:rgba(6,12,32,.5);position:relative}
+.dex .dx i{display:block;width:20px;height:20px;margin:0 auto 6px;border-radius:50%}
+.dex .dx span{font-size:9px;color:var(--sub)}
+.dex .dx.locked{opacity:.42}
+.dex .dx.locked i{background:#26304f !important;box-shadow:none !important}
+.dex .dx.mine{border-color:var(--pc);box-shadow:0 0 14px color-mix(in srgb,var(--pc) 35%,transparent)}
+.dex .dx.mine::after{content:"本次";position:absolute;top:-7px;right:-4px;font-size:8px;color:#04122b;
+  background:var(--pc);border-radius:99px;padding:2px 6px;font-weight:700}
+.dex-note{text-align:center;font-size:10.5px;color:var(--dim);margin-top:10px}
+
+.disclaimer{margin-top:16px;padding:12px 14px;border:1px dashed rgba(255,207,107,.4);border-radius:12px;
+  font-size:10.5px;color:#c9b287;line-height:1.8;background:rgba(255,207,107,.05)}
+.rpt-actions{display:flex;gap:10px;margin-top:18px}
+.rpt-actions .btn{flex:1;font-size:13.5px;padding:14px;letter-spacing:1px}
+.btn.poster{background:linear-gradient(120deg,var(--pc),color-mix(in srgb,var(--pc) 55%,#4f8cff));
+  color:#0a1026;font-weight:700}
+
+/* sticky CTA (模块0→模块1 强制回流, 不可关闭) */
+.sticky-cta{position:sticky;bottom:0;margin:18px -18px -40px;padding:12px 18px 22px;z-index:5;
+  background:linear-gradient(180deg,transparent,rgba(6,11,26,.94) 30%)}
+.sticky-cta .btn{letter-spacing:1px}
+.sticky-cta .cta-note{text-align:center;font-size:9.5px;color:var(--dim);margin-top:8px}
+
+/* ---------- checkin ---------- */
+.ck-card{background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line2);
+  border-radius:22px;padding:26px 20px;margin-top:22px;text-align:center}
+.ck-card h3{font-size:17px;margin-bottom:6px}
+.ck-card .sub2{font-size:11.5px;color:var(--sub);margin-bottom:20px;line-height:1.7}
+.slider-row{display:flex;gap:8px;justify-content:center;margin:18px 0}
+.mood-b{width:56px;height:56px;border-radius:14px;background:rgba(6,12,32,.6);border:1px solid var(--line);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;transition:all .2s}
+.mood-b svg{width:20px;height:20px}
+.mood-b span{font-size:9px;color:var(--dim)}
+.mood-b.on{border-color:var(--cyan);background:rgba(56,225,255,.1)}
+.mood-b.on span{color:var(--cyan)}
+.ck-result{margin-top:16px;font-size:13px;color:var(--cyan);min-height:20px;line-height:1.8}
+.ck-challenge{margin-top:14px;display:none}
+.footer-brand{margin-top:auto;padding-top:30px;text-align:center;font-size:10px;color:var(--dim);letter-spacing:2px}
+
+/* shared view */
+.shared-card{text-align:center;padding-top:36px}
+.shared-card .persona-hero{margin-top:16px}
+.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);z-index:80;
+  background:#122457;border:1px solid var(--line2);color:var(--txt);font-size:12px;
+  padding:10px 18px;border-radius:99px;opacity:0;pointer-events:none;transition:opacity .25s;
+  max-width:86%;text-align:center}
+.toast.show{opacity:1}
+
+/* ---------- poster modal ---------- */
+.poster-modal{position:fixed;inset:0;z-index:60;display:none;flex-direction:column;
+  background:rgba(4,8,20,.96);backdrop-filter:blur(6px);padding:14px 16px 22px;overflow-y:auto}
+.poster-modal.open{display:flex}
+.pm-head{display:flex;align-items:center;font-size:14px;font-weight:700;letter-spacing:1px;padding:6px 2px 12px}
+.pm-head .ver{font-size:9.5px;color:var(--dim);margin-left:8px;letter-spacing:1px;font-weight:400}
+.pm-close{margin-left:auto;width:32px;height:32px;border-radius:50%;border:1px solid var(--line2);
+  color:var(--sub);display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;
+  background:rgba(14,24,56,.7)}
+.pm-preview{display:flex;justify-content:center}
+.pm-preview img{width:min(72vw,300px);border-radius:14px;border:1px solid var(--line2);
+  box-shadow:0 18px 60px rgba(0,0,0,.55)}
+.pm-actions{display:flex;gap:10px;margin:14px 0 10px}
+.pm-actions .btn{flex:1;font-size:13px;padding:13px;letter-spacing:1px}
+.pm-strip-title{font-size:10.5px;color:var(--dim);letter-spacing:1px;margin:6px 2px 8px}
+.pm-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.pm-thumb{border:1px solid var(--line);border-radius:10px;overflow:hidden;cursor:pointer;position:relative;
+  background:#0a1230;transition:transform .15s}
+.pm-thumb:active{transform:scale(.95)}
+.pm-thumb img{width:100%;display:block}
+.pm-thumb.cur{border-color:var(--cyan);box-shadow:0 0 12px rgba(56,225,255,.35)}
+.pm-thumb span{position:absolute;left:0;right:0;bottom:0;font-size:9px;text-align:center;
+  background:rgba(4,8,20,.72);color:var(--sub);padding:3px 0}
+.pm-note{font-size:9.5px;color:var(--dim);text-align:center;line-height:1.7;margin-top:12px}
+
+/* ---------- challenge invite modal ---------- */
+.invite-mask{position:fixed;inset:0;z-index:70;display:none;align-items:flex-end;justify-content:center;
+  background:rgba(4,8,20,.72);backdrop-filter:blur(4px)}
+.invite-mask.open{display:flex}
+.invite{width:100%;max-width:460px;background:linear-gradient(170deg,#13245c,#0a1436);
+  border:1px solid var(--line2);border-bottom:none;border-radius:26px 26px 0 0;
+  padding:20px 20px 26px;animation:slideUp .38s ease}
+@keyframes slideUp{from{transform:translateY(60px);opacity:0}to{transform:none;opacity:1}}
+.invite .iv-top{display:flex;align-items:flex-end;gap:10px}
+.invite .iv-top .oxyb{width:72px;height:72px}
+.invite .iv-bubble{background:rgba(56,225,255,.08);border:1px solid rgba(56,225,255,.3);
+  border-radius:14px 14px 14px 4px;padding:10px 13px;font-size:12.5px;color:#d7e3ff;line-height:1.8;flex:1}
+.invite h3{font-size:19px;margin:16px 0 6px;letter-spacing:1px}
+.invite .iv-sub{font-size:11.5px;color:var(--sub);line-height:1.8;margin-bottom:14px}
+.iv-rules{background:rgba(6,12,32,.55);border:1px solid var(--line);border-radius:14px;padding:12px 14px;
+  font-size:11.5px;color:#c4d2f2;line-height:2;margin-bottom:16px}
+.iv-rules b{color:var(--gold)}
+.invite .btn{font-size:15px}
+.invite .later{display:block;text-align:center;margin-top:12px;font-size:11px;color:var(--dim);cursor:pointer}
+
+/* ---------- challenge screen ---------- */
+.ch-head{margin-top:18px;background:linear-gradient(160deg,#13245c,#0a1436);border:1px solid var(--line2);
+  border-radius:20px;padding:18px;position:relative;overflow:hidden}
+.ch-head::after{content:"";position:absolute;right:-50px;top:-50px;width:170px;height:170px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,207,107,.16),transparent 70%)}
+.ch-head .t{font-size:10px;color:var(--gold);letter-spacing:2px}
+.ch-head h2{font-size:21px;margin:6px 0 4px}
+.ch-head .d{font-size:11.5px;color:var(--sub);line-height:1.7}
+.ch-badges{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.badge{border:1px solid var(--line);border-radius:16px;padding:14px 6px 12px;text-align:center;
+  background:rgba(6,12,32,.55);position:relative;transition:all .3s}
+.badge .b-ico{width:52px;height:52px;margin:0 auto 8px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;position:relative}
+.badge .b-ico svg{width:30px;height:30px}
+.badge b{display:block;font-size:11px;font-weight:700}
+.badge span{display:block;font-size:8.5px;color:var(--dim);margin-top:3px;line-height:1.5}
+.badge.locked{opacity:.45;filter:grayscale(.85)}
+.badge.won{border-color:var(--gold);box-shadow:0 0 18px rgba(255,207,107,.22)}
+.badge.won .b-ico{animation:badgePop .5s ease}
+@keyframes badgePop{0%{transform:scale(.4)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
+
+.ch-progress{margin-top:14px;background:linear-gradient(160deg,var(--card),rgba(12,20,48,.6));
+  border:1px solid var(--line);border-radius:18px;padding:16px}
+.ch-days{display:flex;align-items:flex-start;justify-content:space-between;margin-top:12px;position:relative}
+.ch-days::before{content:"";position:absolute;left:6%;right:6%;top:13px;height:2px;
+  background:rgba(88,140,255,.18);border-radius:99px}
+.day-dot{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:5px;width:11%}
+.day-dot i{width:26px;height:26px;border-radius:50%;border:2px solid var(--line2);background:#0a1230;
+  display:flex;align-items:center;justify-content:center;font-size:10px;font-style:normal;color:var(--dim)}
+.day-dot span{font-size:8.5px;color:var(--dim)}
+.day-dot.done i{border-color:var(--good);background:rgba(61,220,151,.15);color:var(--good)}
+.day-dot.done span{color:var(--good)}
+.day-dot.now i{border-color:var(--gold);background:rgba(255,207,107,.14);color:var(--gold);
+  box-shadow:0 0 12px rgba(255,207,107,.35)}
+.day-dot.now span{color:var(--gold)}
+
+.task{display:flex;align-items:center;gap:12px;background:rgba(6,12,32,.55);border:1px solid var(--line);
+  border-radius:14px;padding:13px 14px;margin-top:10px}
+.task .t-ck{width:26px;height:26px;flex:none;border-radius:8px;border:1.6px solid var(--line2);
+  display:flex;align-items:center;justify-content:center;font-size:13px;color:transparent}
+.task.done .t-ck{border-color:var(--good);background:rgba(61,220,151,.16);color:var(--good)}
+.task .t-info{flex:1;min-width:0}
+.task .t-info b{font-size:13px}
+.task .t-info p{font-size:10px;color:var(--sub);margin-top:2px;line-height:1.6}
+.task .t-go{flex:none;font-size:11px;color:var(--cyan);border:1px solid rgba(56,225,255,.4);
+  border-radius:99px;padding:7px 13px;cursor:pointer;background:rgba(56,225,255,.06)}
+.task.done .t-go{display:none}
+
+.breath{display:none;margin-top:12px;text-align:center;padding:18px 10px 8px}
+.breath.show{display:block}
+.breath .b-circle{width:110px;height:110px;margin:0 auto;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#9ff0ff,#1b6fd0);
+  box-shadow:0 0 40px rgba(56,200,240,.4);transition:transform 3.2s ease-in-out;transform:scale(.6)}
+.breath .b-txt{margin-top:14px;font-size:12.5px;color:var(--cyan);min-height:20px}
+
+.share-node{margin-top:12px;border:1px dashed rgba(255,207,107,.45);border-radius:14px;
+  padding:12px 14px;background:rgba(255,207,107,.05)}
+.share-node b{font-size:12px;color:var(--gold)}
+.share-node p{font-size:11px;color:#c9b287;margin-top:4px;line-height:1.7}
+.share-node .t-go{display:inline-block;margin-top:8px;font-size:11px;color:var(--gold);
+  border:1px solid rgba(255,207,107,.5);border-radius:99px;padding:6px 13px;cursor:pointer}
+
+.ch-complete{margin-top:14px;border:1px solid rgba(61,220,151,.5);border-radius:18px;padding:20px 16px;
+  background:linear-gradient(160deg,rgba(61,220,151,.1),rgba(10,18,48,.6));text-align:center;display:none}
+.ch-complete.show{display:block}
+.ch-complete h3{font-size:17px;color:var(--good);margin-bottom:6px}
+.ch-complete p{font-size:11.5px;color:#c4d2f2;line-height:1.9}
+.demo-row{display:flex;gap:10px;margin-top:16px}
+.demo-row .btn{flex:1;font-size:12px;padding:12px;letter-spacing:1px}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="app">
+
+  <!-- top bar -->
+  <div class="topbar">
+    <div class="logo">
+      <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#38e1ff" stroke-width="1.6"/><circle cx="12" cy="12" r="3.5" fill="#38e1ff" opacity=".9"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="#4f8cff" stroke-width="1.4" stroke-linecap="round"/></svg>
+    </div>
+    <div>
+      <div class="name">充氧宝</div>
+      <div class="sub">OXYGEN PERSONA LAB</div>
+    </div>
+    <div class="back" id="backBtn" style="display:none">‹ 返回</div>
+  </div>
+
+  <!-- ========== HOME ========== -->
+  <div class="screen active" id="s-home">
+    <div class="hero">
+      <div class="tag"><span class="dot"></span>氧系新兴测评 · 30 秒出身份</div>
+      <h1>你是哪一种<br>氧系人格？</h1>
+      <p>8 道快问快答，解锁你的专属氧系身份：氧气颜色、适配方向、适合去的高原与城市、适合的运动——还有氧宝写给你的一封信，和一张你的专属身份海报。</p>
+    </div>
+
+    <div class="companion">
+      <div id="homeOxyb"></div>
+      <div class="bubble" id="homeBubble">嗨，我是氧宝。答完 8 道题，我把你的「氧系人格」讲给你听～</div>
+    </div>
+
+    <div class="hero-metrics">
+      <div class="hm"><b>8</b><span>快问快答</span></div>
+      <div class="hm"><b>8</b><span>身份海报</span></div>
+      <div class="hm"><b>7天</b><span>充氧挑战</span></div>
+    </div>
+
+    <div class="preview-grid" id="previewGrid"></div>
+    <div class="dex-note">测完解锁你的那一种 · 凑齐 8 种召唤满氧图鉴</div>
+
+    <button class="btn" style="margin-top:18px" onclick="startQuiz()">开始测我的氧系人格</button>
+    <div class="home-note">测完可加入「7 天充氧挑战」，和氧宝一起连续充氧 7 天<br>本测评为趣味互动内容，结果不构成心理诊断、医疗建议或职业指导</div>
+  </div>
+
+  <!-- ========== QUIZ ========== -->
+  <div class="screen" id="s-quiz">
+    <div class="q-progress">
+      <div class="num" id="qNum">1 / 8</div>
+      <div class="bar"><i id="qBar"></i></div>
+    </div>
+    <div class="companion">
+      <div id="quizOxyb"></div>
+      <div class="bubble" id="quizBubble">第一题，凭直觉选就好。</div>
+    </div>
+    <div class="q-card">
+      <div class="q-dim" id="qDim">QUESTION 1</div>
+      <h3 id="qText"></h3>
+      <button class="q-opt" id="qOptA"></button>
+      <button class="q-opt" id="qOptB"></button>
+    </div>
+    <div class="home-note">答案没有对错，选最像你的那一个</div>
+  </div>
+
+  <!-- ========== ANALYZING ========== -->
+  <div class="screen" id="s-analyzing">
+    <div class="ana-wrap">
+      <div id="anaOxyb"></div>
+      <div class="ana-status">
+        <div class="step-txt" id="anaStep">正在收集你的氧系因子…</div>
+        <div class="ana-bar"><i id="anaBar"></i></div>
+        <div class="ana-pct" id="anaPct">0%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== REPORT ========== -->
+  <div class="screen" id="s-report">
+    <div class="rpt-head">
+      <div class="rpt-no" id="rptNo">NO. CYB-O2-000000</div>
+      <h2>氧系人格报告</h2>
+      <div class="date" id="rptDate">2026-07-25 · 充氧宝 氧系实验室</div>
+    </div>
+
+    <div class="persona-hero" id="personaHero">
+      <div class="halo"></div>
+      <div class="orb"></div>
+      <h2 id="pName">—</h2>
+      <div class="alias" id="pAlias">—</div>
+      <div class="mbti-tag" id="pMbti">MBTI · —</div>
+      <div class="oneliner" id="pOne">—</div>
+      <div class="color-chip"><i></i><span id="pColor">氧气颜色 · —</span></div>
+    </div>
+
+    <!-- 氧宝的信 -->
+    <div class="letter">
+      <div id="letterOxyb"></div>
+      <div class="l-t">氧宝写给你的信</div>
+      <p id="letterBody">—</p>
+      <div class="l-sign">—— 你的氧宝</div>
+      <span class="l-grow" id="letterGrow">—</span>
+    </div>
+
+    <div class="block">
+      <div class="block-t">适配方向 Top 3 <span class="en">DIRECTIONS</span></div>
+      <div class="soft-note">以下为生活方式向软推荐，供参考，不构成职业建议。</div>
+      <div class="career-list" id="careerList"></div>
+    </div>
+
+    <div class="block">
+      <div class="block-t">适合你充氧的地方 <span class="en">PLACES</span></div>
+      <div id="placeList"></div>
+    </div>
+
+    <div class="block">
+      <div class="block-t">适合你的运动 <span class="en">SPORTS</span></div>
+      <div class="sport-line">
+        <span class="lv" id="sportLv">—</span>
+        <div><b id="sportName">—</b><p id="sportDesc">—</p></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-t">氧系人格图鉴 <span class="en">COLLECTION</span></div>
+      <div class="dex" id="dexGrid"></div>
+      <div class="dex-note" id="dexNote">已解锁 1 / 8 · 邀好友来测，凑齐 8 种氧系人格</div>
+    </div>
+
+    <div class="disclaimer">「氧系人格」为趣味身份标签，非心理测评结论；适配方向、目的地与运动推荐均为生活方式参考，不构成职业、医疗或心理建议。民俗文化类内容（如八字联测）不构成任何人生建议。</div>
+
+    <div class="rpt-actions">
+      <button class="btn poster" onclick="openPoster()">生成我的身份海报</button>
+      <button class="btn ghost" onclick="copyShare()">复制分享文案</button>
+    </div>
+
+    <!-- 强制回流 CTA：不可关闭 / 不可跳过（#闭环规则 文案逐字一致） -->
+    <div class="sticky-cta">
+      <button class="btn" onclick="goCheckin()">去充氧宝测你的情绪氧值</button>
+      <div class="cta-note">趣味身份已解锁 · 真实的今日氧值，还要你亲自打卡</div>
+    </div>
+  </div>
+
+  <!-- ========== CHECKIN (模块1 stub) ========== -->
+  <div class="screen" id="s-checkin">
+    <div class="ck-card">
+      <h3>今日充氧打卡</h3>
+      <div class="sub2">从氧系人格回到真实状态 · 记录今天的你，才算真正进入充氧宝</div>
+      <div style="display:flex;justify-content:center" id="ckOxyb"></div>
+      <div class="slider-row" id="moodRow">
+        <div class="mood-b" data-v="90">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3ddc97" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M8 13s1.5 2.5 4 2.5 4-2.5 4-2.5" stroke-linecap="round"/><circle cx="9" cy="10" r=".8" fill="#3ddc97"/><circle cx="15" cy="10" r=".8" fill="#3ddc97"/></svg>
+          <span>满氧</span>
+        </div>
+        <div class="mood-b" data-v="70">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#38e1ff" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M8 14h8" stroke-linecap="round"/><circle cx="9" cy="10" r=".8" fill="#38e1ff"/><circle cx="15" cy="10" r=".8" fill="#38e1ff"/></svg>
+          <span>平稳</span>
+        </div>
+        <div class="mood-b" data-v="50">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#ffcf6b" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M8 15s1.5-1.5 4-1.5 4 1.5 4 1.5" stroke-linecap="round"/><circle cx="9" cy="10" r=".8" fill="#ffcf6b"/><circle cx="15" cy="10" r=".8" fill="#ffcf6b"/></svg>
+          <span>微缺氧</span>
+        </div>
+        <div class="mood-b" data-v="32">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#ff7b7b" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M8 16s1.5-2 4-2 4 2 4 2" stroke-linecap="round"/><path d="M8.5 9.5l2 2M10.5 9.5l-2 2M13.5 9.5l2 2M15.5 9.5l-2 2" stroke-linecap="round"/></svg>
+          <span>缺氧</span>
+        </div>
+      </div>
+      <button class="btn" onclick="doCheckin()" id="ckBtn" style="opacity:.45;pointer-events:none">完成打卡</button>
+      <div class="ck-result" id="ckResult"></div>
+      <div class="ck-challenge" id="ckChallenge">
+        <button class="btn ghost" onclick="go('s-challenge')">查看 7 天充氧挑战进度</button>
+      </div>
+    </div>
+    <button class="btn ghost" style="margin-top:14px" onclick="restart()">返回首页</button>
+  </div>
+
+  <!-- ========== CHALLENGE (7天充氧挑战) ========== -->
+  <div class="screen" id="s-challenge">
+    <div class="ch-head">
+      <div class="t">7 天充氧挑战 · OXYGEN CHALLENGE</div>
+      <h2>和氧宝一起充氧 7 天</h2>
+      <div class="d">不是测完就结束。你的氧系人格只是入口，真正的变化从今天打卡开始。</div>
+    </div>
+
+    <div class="ch-badges" id="chBadges"></div>
+
+    <div class="ch-progress">
+      <div class="block-t" style="margin-bottom:2px">挑战进度 <span class="en">DAY 0 – 7</span></div>
+      <div class="ch-days" id="chDays"></div>
+      <div id="chTasks"></div>
+      <div class="breath" id="breathBox">
+        <div class="b-circle" id="breathCircle"></div>
+        <div class="b-txt" id="breathTxt">跟着圆圈，慢慢呼吸…</div>
+      </div>
+      <div id="chShareNode"></div>
+    </div>
+
+    <div class="ch-complete" id="chComplete">
+      <h3>7 天充氧挑战完成</h3>
+      <p>双倍徽章已点亮：氧系身份徽章 + 7 天充氧挑战徽章。<br>这 7 天里，你每天都有好好照顾自己。</p>
+      <div class="demo-row">
+        <button class="btn" onclick="copyChallengeReport()">分享我的挑战报告</button>
+      </div>
+    </div>
+
+    <div class="demo-row">
+      <button class="btn ghost" id="demoNextBtn" onclick="demoNextDay()">演示：模拟进入下一天</button>
+      <button class="btn ghost" onclick="restart()">返回首页</button>
+    </div>
+    <div class="home-note">真实环境中按自然日推进 · 演示模式可点击「模拟进入下一天」<br>打卡数据与徽章进度仅保存在本机</div>
+  </div>
+
+  <!-- ========== SHARED VIEW ========== -->
+  <div class="screen" id="s-shared">
+    <div class="shared-card">
+      <div class="tag"><span class="dot"></span>好友向你分享了他的氧系人格</div>
+      <div class="persona-hero" id="sharedHero" style="margin-top:16px">
+        <div class="halo"></div>
+        <div class="orb"></div>
+        <h2 id="shName">—</h2>
+        <div class="alias" id="shAlias">—</div>
+        <div class="oneliner" id="shOne">—</div>
+      </div>
+      <div class="home-note" style="margin:16px 0">“我朋友是<span id="shName2" style="color:var(--cyan)"></span>，我是哪种？”<br>来测你的氧系人格 →</div>
+      <button class="btn" onclick="clearHashAndStart()">我也要测我的氧系人格</button>
+      <div class="home-note">本测评为趣味互动内容，结果不构成心理诊断、医疗建议或职业指导</div>
+    </div>
+  </div>
+
+  <div class="footer-brand">CHONGYANGBAO · 给自己充充氧</div>
+</div>
+
+<!-- ========== 身份海报弹层 ========== -->
+<div class="poster-modal" id="posterModal">
+  <div class="pm-head">我的身份海报 <span class="ver">1080×1920 · 视觉规范 V1（产品已收口）</span>
+    <div class="pm-close" onclick="closePoster()">✕</div>
+  </div>
+  <div class="pm-preview"><img id="pmImg" alt="氧系人格身份海报"></div>
+  <div class="pm-actions">
+    <button class="btn" onclick="downloadPoster()">下载 PNG（1080×1920）</button>
+    <button class="btn ghost" onclick="downloadAllPosters()">批量下载 8 张</button>
+  </div>
+  <div class="pm-strip-title">8 张身份海报（点击查看大图 / 支持物料批量出图）</div>
+  <div class="pm-strip" id="pmStrip"></div>
+  <div class="pm-note">统一骨架：氧宝左上角 · 人格名 + 一句话软结论 · 三张玻璃卡（职业方向 / 城市高原 / 运动）· 氧宝的信 · 氧气颜色条<br>底部回流 CTA 不可移除 · 右下角固定「⚠ 趣味测评，非医疗/职业建议，仅供娱乐参考」角标</div>
+</div>
+
+<!-- ========== 挑战邀请弹层 ========== -->
+<div class="invite-mask" id="inviteMask">
+  <div class="invite">
+    <div class="iv-top">
+      <div id="ivOxyb"></div>
+      <div class="iv-bubble">打卡完成！氧值已记录。接下来这件事，氧宝想认真邀请你——</div>
+    </div>
+    <h3>7 天充氧挑战</h3>
+    <div class="iv-sub">不是测完就结束，和氧宝一起充氧 7 天。<br>你的氧系人格只是入口，真正的变化从今天打卡开始。</div>
+    <div class="iv-rules">
+      <b>Day 0（已完成）</b> 氧系人格测评 + 今日氧值打卡 → 点亮「氧系身份」徽章<br>
+      <b>Day 1 – 7</b> 每日 1 次今日氧值打卡 + 1 次调节任务（呼吸充氧 10 秒）<br>
+      <b>完成奖励</b> 双倍徽章：氧系身份徽章 + 7 天充氧挑战徽章
+    </div>
+    <button class="btn" onclick="acceptChallenge()">接受挑战，点亮我的身份徽章</button>
+    <span class="later" onclick="closeInvite()">稍后再说</span>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= 埋点 stub（事件名对齐进度同步官看板口径） ================= */
+function track(ev, data){
+  try{ console.log('[track]', ev, data ? JSON.stringify(data) : ''); }catch(e){ console.log('[track]', ev); }
+}
+
+/* ================= 软表达合规自检（参照 containsForbiddenPhrase 模式） ================= */
+const SOFT_FORBIDDEN = ['天生','必须','决定','推荐你','命中注定','最配','灵魂伴侣','诊断','治疗'];
+function softExpressionCheck(texts){
+  const hits = [];
+  texts.forEach(t=>{
+    SOFT_FORBIDDEN.forEach(w=>{ if(t && t.indexOf(w) !== -1) hits.push({word:w, text:t}); });
+  });
+  return hits;
+}
+
+/* ================= 氧宝 IP 组件（SVG · 6 状态 · 3 成长阶段） ================= */
+function oxybSVG(state, growth, big){
+  const cls = 'oxyb ' + (big?'big ':'') + ' st-' + state + ' g' + growth;
+  return `<svg class="${cls}" viewBox="0 0 120 120" fill="none">
+    <defs>
+      <radialGradient id="obg" cx="38%" cy="30%" r="80%">
+        <stop offset="0%" stop-color="#9ff0ff"/><stop offset="55%" stop-color="#38c8f0"/><stop offset="100%" stop-color="#1b6fd0"/>
+      </radialGradient>
+    </defs>
+    <g class="acc acc-ring">
+      <circle cx="60" cy="64" r="52" stroke="#3ddc97" stroke-width="1.4" stroke-dasharray="4 7" opacity=".8"/>
+      <circle cx="60" cy="64" r="57" stroke="#3ddc97" stroke-width=".8" opacity=".35"/>
+    </g>
+    <circle cx="60" cy="64" r="40" fill="url(#obg)" opacity=".96"/>
+    <ellipse cx="46" cy="46" rx="12" ry="8" fill="#fff" opacity=".5"/>
+    <circle cx="88" cy="88" r="7" fill="#9ff0ff" opacity=".35"/>
+    <g class="acc acc-leaf">
+      <path d="M60 22 C52 12 40 12 38 4 C50 4 60 10 62 20 Z" fill="#3ddc97"/>
+      <path d="M60 22 C64 14 74 12 78 6 C68 4 60 12 60 22 Z" fill="#5ff0b0"/>
+    </g>
+    <g class="ex ex-calm">
+      <circle cx="48" cy="60" r="4" fill="#062b4a"/><circle cx="72" cy="60" r="4" fill="#062b4a"/>
+      <circle cx="49.5" cy="58.5" r="1.3" fill="#fff"/><circle cx="73.5" cy="58.5" r="1.3" fill="#fff"/>
+      <path d="M52 74 Q60 80 68 74" stroke="#062b4a" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="38" cy="70" r="4.5" fill="#ff9db8" opacity=".55"/><circle cx="82" cy="70" r="4.5" fill="#ff9db8" opacity=".55"/>
+    </g>
+    <g class="ex ex-cheer">
+      <path d="M42 58 Q48 52 54 58" stroke="#062b4a" stroke-width="3.4" stroke-linecap="round"/>
+      <path d="M66 58 Q72 52 78 58" stroke="#062b4a" stroke-width="3.4" stroke-linecap="round"/>
+      <path d="M50 72 Q60 82 70 72 Q60 76 50 72 Z" fill="#062b4a"/>
+      <circle cx="38" cy="70" r="5" fill="#ff9db8" opacity=".7"/><circle cx="82" cy="70" r="5" fill="#ff9db8" opacity=".7"/>
+      <g class="float-p"><circle cx="22" cy="30" r="3" fill="#ffcf6b"/><circle cx="98" cy="26" r="2.4" fill="#3ddc97"/>
+      <path d="M30 16 l2.2 4.4 4.4 2.2 -4.4 2.2 -2.2 4.4 -2.2 -4.4 -4.4 -2.2 4.4 -2.2 Z" fill="#ffcf6b"/>
+      <path d="M94 40 l1.8 3.6 3.6 1.8 -3.6 1.8 -1.8 3.6 -1.8 -3.6 -3.6 -1.8 3.6 -1.8 Z" fill="#38e1ff"/></g>
+    </g>
+    <g class="ex ex-hug">
+      <path d="M43 60 Q48 56 53 60" stroke="#062b4a" stroke-width="3.2" stroke-linecap="round"/>
+      <path d="M67 60 Q72 56 77 60" stroke="#062b4a" stroke-width="3.2" stroke-linecap="round"/>
+      <path d="M54 74 Q60 78 66 74" stroke="#062b4a" stroke-width="3" stroke-linecap="round"/>
+      <path d="M20 66 Q30 84 48 82" stroke="#1b6fd0" stroke-width="7" stroke-linecap="round"/>
+      <path d="M100 66 Q90 84 72 82" stroke="#1b6fd0" stroke-width="7" stroke-linecap="round"/>
+      <circle cx="38" cy="70" r="5" fill="#ff9db8" opacity=".7"/><circle cx="82" cy="70" r="5" fill="#ff9db8" opacity=".7"/>
+    </g>
+    <g class="ex ex-tea">
+      <circle cx="48" cy="60" r="4" fill="#062b4a"/><circle cx="72" cy="60" r="4" fill="#062b4a"/>
+      <path d="M54 73 Q60 77 66 73" stroke="#062b4a" stroke-width="3" stroke-linecap="round"/>
+      <rect x="76" y="70" width="20" height="14" rx="4" fill="#ffcf6b"/>
+      <path d="M96 73 q6 2 0 8" stroke="#ffcf6b" stroke-width="3" fill="none"/>
+      <path class="float-p" d="M82 64 q3 -4 0 -8 M89 64 q3 -4 0 -8" stroke="#e8efff" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+    </g>
+    <g class="ex ex-bubble">
+      <circle cx="48" cy="60" r="4" fill="#062b4a"/><circle cx="72" cy="60" r="4" fill="#062b4a"/>
+      <circle cx="49.5" cy="58.5" r="1.3" fill="#fff"/><circle cx="73.5" cy="58.5" r="1.3" fill="#fff"/>
+      <circle cx="60" cy="74" r="4" stroke="#062b4a" stroke-width="2.6"/>
+      <g class="float-p"><circle cx="86" cy="44" r="5" stroke="#9ff0ff" stroke-width="2"/>
+      <circle cx="96" cy="30" r="3.4" stroke="#9ff0ff" stroke-width="1.8"/>
+      <circle cx="104" cy="18" r="2.2" stroke="#9ff0ff" stroke-width="1.5"/></g>
+    </g>
+    <g class="ex ex-write">
+      <path d="M43 60 Q48 56 53 60" stroke="#062b4a" stroke-width="3.2" stroke-linecap="round"/>
+      <path d="M67 60 Q72 56 77 60" stroke="#062b4a" stroke-width="3.2" stroke-linecap="round"/>
+      <path d="M54 74 Q60 78 66 74" stroke="#062b4a" stroke-width="3" stroke-linecap="round"/>
+      <rect x="22" y="72" width="26" height="18" rx="3" fill="#e8efff"/>
+      <path d="M22 74 l13 9 13 -9" stroke="#8fa3d0" stroke-width="2" fill="none"/>
+    </g>
+  </svg>`;
+}
+function mountOxyb(id, state, growth, big){
+  document.getElementById(id).innerHTML = oxybSVG(state, growth, big);
+}
+
+/* ================= 数据：8 种氧系人格（海报文案 = 创意总监收口版差异化文案） ================= */
+/* pc1/pc2 = 身份海报主色值（创意总监视觉规范 V1 · 产品收口确认版）
+   soft = 一句话软结论（收口版） · letter30 = 氧宝 30 字信（收口版）
+   oxyState = 氧宝 8 情绪态名（IP 侧口径） · oxySvg = 对应 SVG 状态 */
+const PERSONAS = {
+  gaoyuan: {
+    key:'gaoyuan', name:'高原氧王', alias:'统治级适应者', mbti:['ENTJ','ESTJ'], ei:'E',
+    color:'#ffcf6b', colorName:'曜金黄', pc1:'#D4A017', pc2:'#1A1A2E', oxyColor:'赤金',
+    oxyState:'满氧态', oxySvg:'cheer',
+    oneliner:'氧气越稀薄，你越清醒。习惯冲在最前的领跑者，喜欢把目标插在最远处。',
+    soft:'善于决策、愿意扛事，越复杂越像充电——这类方向可能跟你的氧系人格比较合拍。',
+    letter30:'你不是一个人在冲。氧宝在你背后，累了就回来充点氧，我们明天继续。',
+    careers:[['MBA / 战略咨询','如果考虑深造或转向，这条路径可能更贴合你的氧系人格，供参考'],
+             ['创业合伙人','如果身边有合适的同路人，这类角色可能很衬你的决断力，供参考'],
+             ['项目操盘手','如果追求掌控感，统筹全局的位置或许很适合你，供参考']],
+    plateau:{n:'稻城亚丁', alt:'海拔 2900–4700m', why:'三神山在等你，心肺够稳就上牛奶海', match:96},
+    city:{n:'深圳', why:'高能量的城市节奏，与你的统治欲同频', match:93},
+    sport:{n:'高原徒步 / 间歇性有氧', lv:'强度 ★★★★', d:'每周 4–5 次，挑战型输出对你就是充氧'},
+    letter:'你往前冲的时候，记得回头看看，我一直在你身后冒泡。'
+  },
+  shenhai: {
+    key:'shenhai', name:'深海低氧', alias:'极压思考者', mbti:['INTJ','INTP'], ei:'I',
+    color:'#4f8cff', colorName:'深潜蓝', pc1:'#5B8CBF', pc2:'#1B2838', oxyColor:'冰蓝',
+    oxyState:'蓄氧态', oxySvg:'calm',
+    oneliner:'越安静越深的地方，你的思维越亮。低氧环境，恰是你的高压舱。',
+    soft:'在深度思考中获得能量，架构和长期规划这类路径可能更贴合你的氧系气质。',
+    letter30:'别人看不懂你的安静，但氧宝知道——你在蓄能。慢慢来，我们不急。',
+    careers:[['架构师','如果享受搭建系统的感觉，这类路径可能更贴合你的氧系气质，供参考'],
+             ['研究者','如果愿意长期深耕一个领域，这条路可能很适合你，供参考'],
+             ['长期主义者','如果相信时间复利，慢变量赛道值得考虑，供参考']],
+    plateau:{n:'青海湖', alt:'海拔 3196m', why:'环湖骑行正好，开阔湖境衬你的深思考', match:92},
+    city:{n:'杭州', why:'湖畔与书局，给深度思考留足安静', match:90},
+    sport:{n:'长距离游泳 / 骑行', lv:'强度 ★★★', d:'节律型耐力运动，适合边动边想'},
+    letter:'你不用说话我也懂，安静陪着你，就是我最喜欢的事。'
+  },
+  chunfeng: {
+    key:'chunfeng', name:'春风型', alias:'氧气治愈者', mbti:['ENFP','ENFJ'], ei:'E',
+    color:'#3ddc97', colorName:'春风绿', pc1:'#F4A460', pc2:'#2E1C1B', oxyColor:'暖橙',
+    oxyState:'微氧态', oxySvg:'bubble',
+    oneliner:'你路过的地方，空气都会变软。治愈别人，是你的本能充氧方式。',
+    soft:'有感染力和共情力，把想法传递出去的方向可能让你最有氧感。',
+    letter30:'你走到哪里哪里就暖和了点。氧宝也被你吹醒了，今天也想开花。',
+    careers:[['内容创作者','如果想把温度变成作品，这条路径可能更贴合你的氧系人格，供参考'],
+             ['用户研究','如果对"懂人"有热情，这类方向可能很适合你，供参考'],
+             ['心理向科普 / 社群','如果想陪伴更多人，这条路径值得考虑，供参考']],
+    plateau:{n:'林芝', alt:'海拔 3000m', why:'西藏的春天入口，海拔友好、氧感舒服', match:88},
+    city:{n:'昆明', why:'春城四季，和你的温度刚刚好', match:91},
+    sport:{n:'户外瑜伽 / 飞盘', lv:'强度 ★★☆', d:'有人在场的轻运动，你的坚持率会翻倍'},
+    letter:'你总顾着给别人送春风，今天这阵风，是我吹给你的。'
+  },
+  chenwu: {
+    key:'chenwu', name:'晨雾型', alias:'内向共情者', mbti:['INFP','INFJ'], ei:'I',
+    color:'#8b7bff', colorName:'晨雾紫', pc1:'#C4A1D9', pc2:'#241F2E', oxyColor:'薄紫',
+    oxyState:'安静修复', oxySvg:'write',
+    oneliner:'你像清晨的雾，安静地把世界裹软。敏感不是弱点，是你的天线。',
+    soft:'内在世界丰富、观察细腻，创作和陪伴类方向或许是你最自在的氧气空间。',
+    letter30:'你的世界里有很多东西别人还没看见，但氧宝看见了。很美。',
+    careers:[['写作 / 文字工作者','如果习惯把感受写成字，这条路径可能更贴合你的氧系气质，供参考'],
+             ['艺术疗愈','如果想用创作陪伴他人，这类方向可能很衬你，供参考'],
+             ['独立研究者','如果享受独处式深耕，这条路径值得考虑，供参考']],
+    plateau:{n:'大理', alt:'海拔 1990m', why:'先在大理把呼吸调顺，再往高处走', match:88},
+    city:{n:'成都', why:'慢半拍的烟火气，容得下你的小情绪', match:89},
+    sport:{n:'晨间散步 / 冥想拉伸', lv:'强度 ★★', d:'一日一次的温柔出汗，给神经降降压'},
+    letter:'你感受到的每一分细微，我都收好了，它们一点都不多余。'
+  },
+  jiyang: {
+    key:'jiyang', name:'急氧型', alias:'行动派', mbti:['ESTP','ENTP'], ei:'E',
+    color:'#ff9d6b', colorName:'燃橙', pc1:'#E74C3C', pc2:'#1C1212', oxyColor:'岩浆红',
+    oxyState:'行动充氧', oxySvg:'cheer',
+    oneliner:'你的想法落地比别人的计划还快。立刻上场，就是你的充氧方式。',
+    soft:'行动力就是你最好的充氧方式，需要立刻上、马上试的场域可能最对你的节奏。',
+    letter30:'不等了不等了我们走。今天打卡了吗？没打的话我们立刻来 10 秒。',
+    careers:[['销售 / 商务拓展','如果喜欢现场过招，这条路径可能更贴合你的氧系人格，供参考'],
+             ['创业','如果受够了慢节奏，自己开场可能很对你的胃口，供参考'],
+             ['运动教练','如果想把能量变成职业，这条路径值得考虑，供参考']],
+    plateau:{n:'羊卓雍措', alt:'海拔 4441m', why:'蓝到失真的圣湖，配得上你的行动力', match:94},
+    city:{n:'重庆', why:'山城的上坡下坎，和你的动能刚好匹配', match:90},
+    sport:{n:'攀岩 / 越野跑', lv:'强度 ★★★★', d:'要的就是立刻上，多巴胺即充氧'},
+    letter:'你冲得快没关系，我会努力冒泡，跟上你的速度。'
+  },
+  yandong: {
+    key:'yandong', name:'岩洞型', alias:'冷静工匠', mbti:['ISTP','ISFP'], ei:'I',
+    color:'#5ec8d8', colorName:'石青', pc1:'#7F8C8D', pc2:'#1C1C1C', oxyColor:'岩灰',
+    oxyState:'低氧提示', oxySvg:'calm',
+    oneliner:'越紧急你越稳。双手和手艺，是你对抗世界噪声的方式。',
+    soft:'喜欢把一件事做到极致，技术手艺类方向可能比需要大量社交的场域更让你舒服。',
+    letter30:'你一个人琢磨很久的样子，氧宝觉得很酷。敲完这一行，记得起来呼吸一次。',
+    careers:[['工程师','如果喜欢拆解与建造，这条路径可能更贴合你的氧系气质，供参考'],
+             ['手作人 / 匠人','如果享受把东西做到极致，这条路径可能很衬你，供参考'],
+             ['急诊 / 应急方向','如果越乱越冷静是你的特质，这类方向值得考虑，供参考']],
+    plateau:{n:'丽江', alt:'海拔 2400m', why:'古城慢走两天，让身体先认认海拔', match:85},
+    city:{n:'青岛', why:'海边的安静作坊感，适合沉下心做东西', match:84},
+    sport:{n:'攀岩 / 单人游泳', lv:'强度 ★★★', d:'一个人跟路线较劲，最对你的脾气'},
+    letter:'你不说话的时候，我也知道你很厉害。慢慢来，我不催。'
+  },
+  yangqiba: {
+    key:'yangqiba', name:'氧气吧主', alias:'社交枢纽', mbti:['ESFJ','ESFP'], ei:'E',
+    color:'#ffb3c7', colorName:'蜜粉', pc1:'#F5C842', pc2:'#2E2810', oxyColor:'日光黄',
+    oxyState:'社交补氧', oxySvg:'tea',
+    oneliner:'你是人群里的制氧机。把大家聚在一起，你自己就满氧了。',
+    soft:'能量来自连接与照顾他人，社交枢纽型角色可能就是你天然的氧气空间。',
+    letter30:'你把大家都安排得好好的，那你自己呢？氧宝给你留了一格氧，专属于你。',
+    careers:[['HR / 组织发展','如果享受成就他人，这条路径可能更贴合你的氧系人格，供参考'],
+             ['社群运营 / 主理人','如果想把热闹变成事业，这条路径可能很适合你，供参考'],
+             ['教师 / 培训师','如果喜欢被需要的感觉，这类方向值得考虑，供参考']],
+    plateau:{n:'厦门', alt:'海拔 <100m', why:'环岛路骑骑车，温柔地回回血', match:82},
+    city:{n:'长沙', why:'不夜城的烟火气，够你招呼一整条街', match:88},
+    sport:{n:'团课 / 羽毛球', lv:'强度 ★★★', d:'有人陪练的运动，你才能一直玩下去'},
+    letter:'你照顾了所有人，今天换我照顾你。茶给你温好了。'
+  },
+  taixian: {
+    key:'taixian', name:'苔藓型', alias:'静默守护', mbti:['ISFJ','ISTJ'], ei:'I',
+    color:'#8fd0a5', colorName:'苔绿', pc1:'#6B8E5A', pc2:'#1A2618', oxyColor:'苔绿',
+    oxyState:'稳定陪伴', oxySvg:'hug',
+    oneliner:'你不抢光，却让整片森林更稳。长久的陪伴，是你的超能力。',
+    soft:'稳定、可靠、默默滋养，需要长期耐心和细致的方向可能是你最踏实的氧气土壤。',
+    letter30:'你不用大声说话，你的存在本身就是一种安定。氧宝在你身边，就这样。',
+    careers:[['护理 / 照护方向','如果想守护他人，这条路径可能更贴合你的氧系气质，供参考'],
+             ['档案 / 质量管理','如果对秩序有执念，这类方向可能很适合你，供参考'],
+             ['后端支持 / 长期陪伴','如果享受做坚实的后盾，这条路径值得考虑，供参考']],
+    plateau:{n:'阳朔', alt:'海拔 150m', why:'漓江边发呆，给身体放个假', match:80},
+    city:{n:'苏州', why:'园林的安静秩序，和你的节奏同频', match:86},
+    sport:{n:'八段锦 / 太极', lv:'强度 ★', d:'每日 12 分钟，调息养神，长久主义的运动'},
+    letter:'你默默撑住了好多东西。在我这里，你可以不用撑。'
+  }
+};
+const PERSONA_ORDER = ['gaoyuan','shenhai','chunfeng','chenwu','jiyang','yandong','yangqiba','taixian'];
+const MBTI_TO_KEY = {};
+Object.values(PERSONAS).forEach(p=>p.mbti.forEach(m=>MBTI_TO_KEY[m]=p.key));
+
+/* ================= 题库（8 题 · 每维度 2 题） ================= */
+const QUESTIONS = [
+  {dim:'E / I · 能量来源', text:'忙完一整周，你最想要的回血方式是？',
+   a:['约朋友出门，吸一吸人间烟火气','E'], b:['一个人待着，慢慢给自己回氧','I']},
+  {dim:'S / N · 感知世界', text:'第一次看到高原湖泊，你的第一反应是？',
+   a:['掏出手机，记录它真实的样子','S'], b:['愣住，脑补它是天空掉下来的碎片','N']},
+  {dim:'T / F · 做决定', text:'好朋友深夜向你倾诉烦恼，你通常先？',
+   a:['帮他拆问题、找解法','T'], b:['先接住情绪，陪他待一会儿','F']},
+  {dim:'J / P · 生活节奏', text:'出门旅行前，你的画风更接近？',
+   a:['攻略做到小时级，心里才踏实','J'], b:['订个住处就出发，到了再说','P']},
+  {dim:'E / I · 能量来源', text:'在一群不熟的人中间，你更像？',
+   a:['气氛发动机，聊着聊着就熟了','E'], b:['安静充电桩，观察比参与舒服','I']},
+  {dim:'S / N · 感知世界', text:'学一样新东西时，你更相信？',
+   a:['看得见的步骤、经验和细节','S'], b:['直觉、灵感和可能性','N']},
+  {dim:'T / F · 做决定', text:'做一个重要选择时，你更依赖？',
+   a:['逻辑、数据和利弊清单','T'], b:['内心感受与价值观','F']},
+  {dim:'J / P · 生活节奏', text:'计划突然被打乱时，你的内心 OS 是？',
+   a:['立刻重建秩序，不然浑身难受','J'], b:['乱中有序也挺好，随机应变','P']}
+];
+const REACTS = [
+  ['bubble','嗯嗯，这很你～'],
+  ['calm','氧宝记下了。'],
+  ['cheer','这个答案会发光！'],
+  ['bubble','继续继续，我在听。'],
+  ['tea','喝口水，下一题。'],
+  ['calm','你比想象中更了解自己。'],
+  ['bubble','最后一题啦。'],
+  ['cheer','答完了！氧宝去给你调颜色～']
+];
+
+/* ================= 状态 ================= */
+const S = {qi:0, dims:{E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0}, firstPick:{}, result:null, ckMood:null, checkedToday:false, posterKey:null};
+const $ = id => document.getElementById(id);
+const LS_COUNT='cyb_oxy_count', LS_COLL='cyb_oxy_collection', LS_CH='cyb_challenge_v1';
+function getCount(){ return +(localStorage.getItem(LS_COUNT)||0); }
+function getColl(){ try{ return JSON.parse(localStorage.getItem(LS_COLL)||'[]'); }catch(e){ return []; } }
+
+/* ================= 导航 ================= */
+const ORDER = ['s-home','s-quiz','s-analyzing','s-report','s-checkin','s-challenge'];
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo(0,0);
+  const idx = ORDER.indexOf(id);
+  $('backBtn').style.display = (idx>0 && idx<2) ? 'block':'none';
+  if(id==='s-challenge') renderChallenge();
+}
+$('backBtn').onclick = ()=>{ go('s-home'); };
+function restart(){
+  S.qi=0; S.dims={E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0}; S.firstPick={}; S.result=null; S.ckMood=null; S.checkedToday=false;
+  document.querySelectorAll('.mood-b.on').forEach(e=>e.classList.remove('on'));
+  $('ckResult').textContent=''; $('ckChallenge').style.display='none';
+  $('ckBtn').textContent='完成打卡';
+  refreshCkBtn();
+  mountOxyb('homeOxyb','calm',growth(),false);
+  go('s-home');
+}
+function growth(){ const c=getCount(); return c>=3?3:c>=2?2:1; }
+
+/* ================= 首页 ================= */
+mountOxyb('homeOxyb','bubble',growth(),false);
+$('previewGrid').innerHTML = PERSONA_ORDER.map(k=>{
+  const p=PERSONAS[k];
+  return `<div class="pv"><i style="color:${p.color}"></i><span>${p.name}</span></div>`;
+}).join('');
+
+/* ================= 答题 ================= */
+function startQuiz(){
+  S.qi=0; S.dims={E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0}; S.firstPick={};
+  track('entry_test_start');
+  mountOxyb('quizOxyb','calm',growth(),false);
+  $('quizBubble').textContent='第一题，凭直觉选就好。';
+  renderQ(); go('s-quiz');
+}
+function renderQ(){
+  const q = QUESTIONS[S.qi];
+  $('qNum').textContent = (S.qi+1)+' / 8';
+  $('qBar').style.width = (S.qi/8*100)+'%';
+  $('qDim').textContent = 'QUESTION '+(S.qi+1)+' · '+q.dim;
+  $('qText').textContent = q.text;
+  $('qOptA').innerHTML = '<span class="ab">A</span>'+q.a[0];
+  $('qOptB').innerHTML = '<span class="ab">B</span>'+q.b[0];
+  $('qOptA').classList.remove('picked'); $('qOptB').classList.remove('picked');
+  $('qOptA').onclick = ()=>pick('a');
+  $('qOptB').onclick = ()=>pick('b');
+}
+function pick(side){
+  const q = QUESTIONS[S.qi];
+  const pole = q[side][1];
+  S.dims[pole]++;
+  const dimKey = q.dim.slice(0,3);
+  if(!(dimKey in S.firstPick)) S.firstPick[dimKey]=pole;
+  (side==='a'?$('qOptA'):$('qOptB')).classList.add('picked');
+  const [st,line] = REACTS[S.qi];
+  mountOxyb('quizOxyb',st,growth(),false);
+  $('quizBubble').textContent = line;
+  setTimeout(()=>{
+    S.qi++;
+    if(S.qi<8){ renderQ(); }
+    else{ startAnalyze(); }
+  }, 620);
+}
+
+/* ================= 分析动画 ================= */
+const ANA_STEPS = ['正在收集你的氧系因子…','匹配 8 大氧系人格原型…','调配你的专属氧气颜色…','生成适配方向与目的地…','氧宝写信中…'];
+const ANA_STATES = ['bubble','calm','cheer','tea','write'];
+function startAnalyze(){
+  go('s-analyzing');
+  let p=0, step=-1;
+  const timer=setInterval(()=>{
+    p += 3 + Math.random()*5;
+    if(p>=100){ p=100; clearInterval(timer); setTimeout(buildReport, 400); }
+    const si = Math.min(ANA_STEPS.length-1, Math.floor(p/100*ANA_STEPS.length));
+    if(si!==step){
+      step=si; $('anaStep').textContent = ANA_STEPS[step];
+      mountOxyb('anaOxyb', ANA_STATES[step], growth(), true);
+    }
+    $('anaBar').style.width=p+'%';
+    $('anaPct').textContent=Math.floor(p)+'%';
+  }, 110);
+}
+
+/* ================= 生成报告 ================= */
+function computeMBTI(){
+  const pick = (a,b,key)=> S.dims[a]===S.dims[b] ? S.firstPick[key] : (S.dims[a]>S.dims[b]?a:b);
+  return pick('E','I','E /') + pick('S','N','S /') + pick('T','F','T /') + pick('J','P','J /');
+}
+function buildReport(){
+  const mbti = computeMBTI();
+  const key = MBTI_TO_KEY[mbti] || 'chunfeng';
+  const c = getCount()+1; localStorage.setItem(LS_COUNT, String(c));
+  const coll = getColl(); if(!coll.includes(key)){ coll.push(key); localStorage.setItem(LS_COLL, JSON.stringify(coll)); }
+  S.result = {key, mbti, count:c, coll};
+  track('entry_test_complete', {persona:key, mbti:mbti});
+  renderReport();
+  go('s-report');
+}
+function renderReport(){
+  const R=S.result, p=PERSONAS[R.key];
+  document.documentElement.style.setProperty('--pc', p.color);
+  $('rptNo').textContent = 'NO. CYB-O2-' + String(100000 + (R.key.charCodeAt(0)*7919 + R.count*137)%900000);
+  $('rptDate').textContent = new Date().toISOString().slice(0,10) + ' · 充氧宝 氧系实验室';
+  $('pName').textContent = p.name;
+  $('pAlias').textContent = p.alias;
+  $('pMbti').textContent = 'MBTI · ' + R.mbti;
+  $('pOne').textContent = p.oneliner;
+  $('pColor').textContent = '氧气颜色 · ' + p.oxyColor;
+
+  const growLines = {1:'第一次见你——我记住你了。',2:'又见面啦，今天的我长出一片新叶子啦。',3:'第三次并肩，我们的默契已经 +1。'};
+  const gl = growLines[Math.min(R.count,3)];
+  $('letterBody').textContent = gl + p.letter;
+  $('letterGrow').textContent = {1:'成长阶段 · 初识气泡',2:'成长阶段 · 新叶氧宝',3:'成长阶段 · 默契氧宝'}[Math.min(R.count,3)];
+  mountOxyb('letterOxyb','write',growth(),false);
+
+  $('careerList').innerHTML = p.careers.map((c,i)=>
+    `<div class="career"><div class="rk">${i+1}</div><div><b>${c[0]}</b><span>${c[1]}</span></div></div>`
+  ).join('');
+
+  const icoM = '<svg viewBox="0 0 24 24" fill="none" stroke="#38e1ff" stroke-width="1.7" stroke-linejoin="round"><path d="M3 20l6-11 4 6 3-4 5 9z"/></svg>';
+  const icoC = '<svg viewBox="0 0 24 24" fill="none" stroke="#38e1ff" stroke-width="1.6" stroke-linejoin="round"><path d="M4 21V8l5-4 5 4v13"/><path d="M14 21V11l6-3v13"/><path d="M2 21h20" stroke-linecap="round"/></svg>';
+  $('placeList').innerHTML =
+    `<div class="place-card"><div class="pic">${icoM}</div><div class="info"><b>${p.plateau.n}</b><span class="k">${p.plateau.alt}</span><p>${p.plateau.why}</p></div></div>`+
+    `<div class="place-card"><div class="pic">${icoC}</div><div class="info"><b>${p.city.n}</b><span class="k">城市</span><p>${p.city.why}</p></div></div>`;
+
+  $('sportLv').textContent = p.sport.lv;
+  $('sportName').textContent = p.sport.n;
+  $('sportDesc').textContent = p.sport.d;
+
+  $('dexGrid').innerHTML = PERSONA_ORDER.map(k=>{
+    const d=PERSONAS[k], un=R.coll.includes(k);
+    return `<div class="dx ${un?'':'locked'} ${k===R.key?'mine':''}"><i style="background:${d.color};box-shadow:0 0 10px ${d.color}"></i><span>${un?d.name:'???'}</span></div>`;
+  }).join('');
+  $('dexNote').textContent = `已解锁 ${R.coll.length} / 8 · 邀好友来测，凑齐 8 种氧系人格`;
+  mountOxyb('ckOxyb','calm',growth(),true);
+}
+
+/* ================= 工具 ================= */
+function toast(msg){
+  const t=$('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(t._tm); t._tm=setTimeout(()=>t.classList.remove('show'),2000);
+}
+function wrapText(ctx, text, x, y, maxW, lh){
+  let line='', yy=y;
+  for(const ch of text){
+    if(ctx.measureText(line+ch).width > maxW){ ctx.fillText(line,x,yy); line=ch; yy+=lh; }
+    else line+=ch;
+  }
+  if(line) ctx.fillText(line,x,yy);
+  return yy;
+}
+function mixHex(a,b,t){
+  const pa=[1,3,5].map(i=>parseInt(a.substr(i,2),16));
+  const pb=[1,3,5].map(i=>parseInt(b.substr(i,2),16));
+  return '#'+pa.map((v,i)=>Math.round(v+(pb[i]-v)*t).toString(16).padStart(2,'0')).join('');
+}
+function rr(x,rx,ry,rw,rh,r){
+  x.beginPath();
+  x.moveTo(rx+r,ry);
+  x.arcTo(rx+rw,ry,rx+rw,ry+rh,r); x.arcTo(rx+rw,ry+rh,rx,ry+rh,r);
+  x.arcTo(rx,ry+rh,rx,ry,r); x.arcTo(rx,ry,rx+rw,ry,r);
+  x.closePath();
+}
+
+/* ================= 氧宝 Canvas 绘制（海报左上角 IP · 8 情绪态） ================= */
+function drawOxybCanvas(x, cx, cy, r, state){
+  const g = x.createRadialGradient(cx-r*.3, cy-r*.35, r*.1, cx, cy, r);
+  g.addColorStop(0,'#9ff0ff'); g.addColorStop(.55,'#38c8f0'); g.addColorStop(1,'#1b6fd0');
+  x.fillStyle=g; x.beginPath(); x.arc(cx,cy,r,0,7); x.fill();
+  x.fillStyle='rgba(255,255,255,.5)';
+  x.beginPath(); x.ellipse(cx-r*.32,cy-r*.4,r*.3,r*.18,-.5,0,7); x.fill();
+  const ex = r*.2, ey = cy-r*.07, er=r*.1;
+  x.strokeStyle='#062b4a'; x.fillStyle='#062b4a'; x.lineCap='round';
+  if(state==='cheer' || state==='hug' || state==='write'){
+    x.lineWidth=r*.075;
+    x.beginPath(); x.arc(cx-ex,ey+r*.02,er*1.1,Math.PI*1.15,Math.PI*1.85); x.stroke();
+    x.beginPath(); x.arc(cx+ex,ey+r*.02,er*1.1,Math.PI*1.15,Math.PI*1.85); x.stroke();
+  }else{
+    x.beginPath(); x.arc(cx-ex,ey,er,0,7); x.fill();
+    x.beginPath(); x.arc(cx+ex,ey,er,0,7); x.fill();
+    x.fillStyle='#fff';
+    x.beginPath(); x.arc(cx-ex+er*.35,ey-er*.35,er*.32,0,7); x.fill();
+    x.beginPath(); x.arc(cx+ex+er*.35,ey-er*.35,er*.32,0,7); x.fill();
+  }
+  const my = cy+r*.22;
+  if(state==='cheer'){
+    x.fillStyle='#062b4a';
+    x.beginPath(); x.arc(cx,my,r*.18,0,Math.PI); x.closePath(); x.fill();
+  }else if(state==='bubble'){
+    x.lineWidth=r*.06;
+    x.beginPath(); x.arc(cx,my+r*.04,r*.11,0,7); x.stroke();
+    x.lineWidth=r*.05; x.strokeStyle='rgba(159,240,255,.9)';
+    x.beginPath(); x.arc(cx+r*.75,cy-r*.55,r*.14,0,7); x.stroke();
+    x.beginPath(); x.arc(cx+r*.98,cy-r*.85,r*.09,0,7); x.stroke();
+  }else{
+    x.lineWidth=r*.07;
+    x.beginPath(); x.arc(cx,my-r*.06,r*.16,.25*Math.PI,.75*Math.PI); x.stroke();
+  }
+  x.fillStyle='rgba(255,157,184,.6)';
+  x.beginPath(); x.arc(cx-r*.52,cy+r*.12,r*.11,0,7); x.fill();
+  x.beginPath(); x.arc(cx+r*.52,cy+r*.12,r*.11,0,7); x.fill();
+  if(state==='tea'){
+    x.fillStyle='#ffcf6b'; rr(x,cx+r*.42,cy+r*.28,r*.42,r*.3,r*.09); x.fill();
+    x.strokeStyle='#ffcf6b'; x.lineWidth=r*.06;
+    x.beginPath(); x.arc(cx+r*.92,cy+r*.42,r*.1,-.5,1.6); x.stroke();
+  }
+  if(state==='write'){
+    x.fillStyle='#e8efff'; rr(x,cx-r*.85,cy+r*.3,r*.5,r*.34,r*.06); x.fill();
+    x.strokeStyle='#8fa3d0'; x.lineWidth=r*.045;
+    x.beginPath(); x.moveTo(cx-r*.85,cy+r*.34); x.lineTo(cx-r*.6,cy+r*.52); x.lineTo(cx-r*.35,cy+r*.34); x.stroke();
+  }
+  if(state==='hug'){
+    x.strokeStyle='#1b6fd0'; x.lineWidth=r*.14; x.lineCap='round';
+    x.beginPath(); x.moveTo(cx-r*.95,cy+r*.1); x.quadraticCurveTo(cx-r*.6,cy+r*.6,cx-r*.2,cy+r*.55); x.stroke();
+    x.beginPath(); x.moveTo(cx+r*.95,cy+r*.1); x.quadraticCurveTo(cx+r*.6,cy+r*.6,cx+r*.2,cy+r*.55); x.stroke();
+  }
+}
+
+/* ================= 身份海报（1080×1920 · 创意总监视觉规范 V1 收口版） ================= */
+function posterTexts(p){
+  return [p.soft, p.letter30, p.oneliner,
+    ...p.careers.map(c=>c[0]+c[1]),
+    p.plateau.why, p.city.why, p.sport.d,
+    '来测你的氧系人格，再测今日情绪氧值',
+    '趣味测评，非医疗/职业建议，仅供娱乐参考'];
+}
+function drawPoster(key){
+  const p=PERSONAS[key];
+  /* 软表达合规自检：任何一张海报文案命中禁用词即拒绝出图 */
+  const hits = softExpressionCheck(posterTexts(p));
+  if(hits.length){
+    console.error('[softExpressionCheck] 命中禁用词，已拦截出图:', hits);
+    return null;
+  }
+  const W=1080, H=1920;
+  const cv=document.createElement('canvas'); cv.width=W; cv.height=H;
+  const x=cv.getContext('2d');
+
+  /* 背景：主色渐变（上深下浅），底部收束深蓝 */
+  const bg=x.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0, p.pc2);
+  bg.addColorStop(.5, mixHex(p.pc2,p.pc1,.55));
+  bg.addColorStop(.8, mixHex(p.pc2,p.pc1,.3));
+  bg.addColorStop(1, '#0A1430');
+  x.fillStyle=bg; x.fillRect(0,0,W,H);
+  /* 主色光晕 */
+  const glow=x.createRadialGradient(W/2,380,40,W/2,380,560);
+  glow.addColorStop(0,p.pc1+'4d'); glow.addColorStop(1,'rgba(0,0,0,0)');
+  x.fillStyle=glow; x.fillRect(0,0,W,H);
+
+  /* 氧宝 IP · 左上角固定（对应情绪态） */
+  drawOxybCanvas(x, 112, 112, 56, p.oxySvg);
+  x.textAlign='left';
+  x.fillStyle='rgba(255,255,255,.85)'; x.font='600 26px sans-serif';
+  x.fillText('氧宝 · ' + p.oxyState, 188, 104);
+  x.fillStyle='rgba(255,255,255,.45)'; x.font='20px sans-serif';
+  x.fillText('充氧宝 · 氧系人格测评', 188, 138);
+
+  /* 人格主视觉 */
+  x.textAlign='center';
+  x.fillStyle='rgba(255,255,255,.82)'; x.font='40px sans-serif';
+  x.fillText('我 是', W/2, 296);
+  x.shadowColor=p.pc1; x.shadowBlur=44;
+  x.fillStyle='#ffffff'; x.font='800 96px sans-serif';
+  x.fillText(p.name, W/2, 396);
+  x.shadowBlur=0;
+  x.fillStyle=mixHex(p.pc1,'#ffffff',.35); x.font='28px sans-serif';
+  x.fillText(p.alias, W/2, 448);
+
+  /* 一句话软结论 */
+  x.fillStyle='rgba(255,255,255,.92)'; x.font='33px sans-serif';
+  wrapText(x, p.soft, W/2, 522, 840, 50);
+
+  /* ---- 玻璃卡片公共 ---- */
+  const CX=70, CW=W-140;
+  function glass(y,h,label){
+    x.fillStyle='rgba(255,255,255,.08)';
+    rr(x,CX,y,CW,h,26); x.fill();
+    x.strokeStyle='rgba(255,255,255,.2)'; x.lineWidth=1.5;
+    rr(x,CX,y,CW,h,26); x.stroke();
+    x.textAlign='left';
+    x.fillStyle=mixHex(p.pc1,'#ffffff',.45); x.font='700 23px sans-serif';
+    x.fillText(label, CX+32, y+44);
+  }
+
+  /* 卡片 1 · 适合职业方向 */
+  glass(628, 292, '适合职业方向');
+  p.careers.forEach((c,i)=>{
+    const yy=628+92+i*66;
+    x.fillStyle=p.pc1; rr(x,CX+32,yy-26,44,44,12); x.fill();
+    x.fillStyle='#0A1430'; x.font='800 24px sans-serif'; x.textAlign='center';
+    x.fillText(String(i+1), CX+54, yy+5);
+    x.textAlign='left';
+    x.fillStyle='#fff'; x.font='700 29px sans-serif';
+    x.fillText(c[0], CX+94, yy-2);
+    const w0=x.measureText(c[0]).width;
+    x.fillStyle='rgba(255,255,255,.6)'; x.font='21px sans-serif';
+    x.fillText('供参考', CX+94+w0+16, yy-2);
+  });
+
+  /* 卡片 2 · 适合城市或高原 */
+  glass(950, 212, '适合城市或高原');
+  x.fillStyle='#fff'; x.font='29px sans-serif'; x.textAlign='left';
+  x.fillText('⛰  ' + p.plateau.n + '（' + p.plateau.alt + '）', CX+32, 950+92);
+  x.fillStyle=mixHex(p.pc1,'#ffffff',.3); x.font='700 27px sans-serif';
+  x.fillText('匹配度 ' + p.plateau.match + '%', CX+660, 950+92);
+  x.fillStyle='#fff'; x.font='29px sans-serif';
+  x.fillText('🏙  ' + p.city.n, CX+32, 950+146);
+  x.fillStyle=mixHex(p.pc1,'#ffffff',.3); x.font='700 27px sans-serif';
+  x.fillText('匹配度 ' + p.city.match + '%', CX+660, 950+146);
+  x.fillStyle='rgba(255,255,255,.45)'; x.font='20px sans-serif';
+  x.fillText('非医疗 / 非命理建议 · 仅供娱乐参考', CX+32, 950+188);
+
+  /* 卡片 3 · 适合运动 */
+  glass(1192, 208, '适合运动');
+  x.fillStyle='#fff'; x.font='700 31px sans-serif';
+  x.fillText(p.sport.n, CX+32, 1192+90);
+  const wSport=x.measureText(p.sport.n).width;
+  x.fillStyle='#ffcf6b'; x.font='24px sans-serif';
+  x.fillText(p.sport.lv, CX+32+wSport+24, 1192+90);
+  x.fillStyle='rgba(255,255,255,.8)'; x.font='24px sans-serif';
+  x.fillText(p.sport.d, CX+32, 1192+136);
+  x.fillStyle='rgba(255,255,255,.55)'; x.font='22px sans-serif';
+  x.fillText(p.ei==='E' ? 'E 人加成：约上搭子一起练，坚持率会更高（供参考）' : 'I 人友好：一个人按自己的节奏来，也很合适（供参考）', CX+32, 1192+178);
+
+  /* 卡片 4 · 氧宝写给你 */
+  glass(1430, 182, '氧宝写给你：');
+  x.fillStyle='rgba(255,255,255,.92)'; x.font='27px sans-serif';
+  wrapText(x, p.letter30, CX+32, 1430+92, CW-64, 42);
+
+  /* 氧气颜色条 */
+  x.textAlign='left';
+  x.fillStyle='rgba(255,255,255,.8)'; x.font='25px sans-serif';
+  x.fillText('你的氧气颜色 · ' + p.oxyColor, CX, 1680);
+  [p.pc1, mixHex(p.pc1,'#ffffff',.4), mixHex(p.pc2,p.pc1,.5)].forEach((c,i)=>{
+    x.fillStyle=c; rr(x,CX+292+i*70,1652,56,40,10); x.fill();
+  });
+
+  /* 深度 CTA 条（不可移除 · 回流模块1） */
+  x.fillStyle='#0B1740';
+  x.fillRect(0,1730,W,142);
+  x.strokeStyle='rgba(88,140,255,.4)'; x.lineWidth=1.5;
+  x.beginPath(); x.moveTo(0,1730); x.lineTo(W,1730); x.stroke();
+  x.textAlign='center';
+  x.fillStyle='#fff'; x.font='700 38px sans-serif';
+  x.fillText('来测你的氧系人格，再测今日情绪氧值 →', W/2, 1792);
+  x.fillStyle='rgba(255,255,255,.5)'; x.font='22px sans-serif';
+  x.fillText('充氧宝 · 去充氧宝测你的情绪氧值', W/2, 1840);
+
+  /* 固定合规角标 · 右下角（不可裁切隐藏） */
+  x.textAlign='right';
+  x.fillStyle='rgba(255,255,255,.6)'; x.font='22px sans-serif';
+  x.fillText('⚠ 趣味测评，非医疗/职业建议，仅供娱乐参考', W-36, H-24);
+
+  return cv;
+}
+
+/* ---------- 海报弹层 / 图库 ---------- */
+function openPoster(){
+  if(!S.result) return;
+  track('poster_generate_click', {persona:S.result.key});
+  S.posterKey = S.result.key;
+  $('posterModal').classList.add('open');
+  buildPosterStrip();
+  showPoster(S.posterKey);
+}
+function closePoster(){ $('posterModal').classList.remove('open'); }
+function buildPosterStrip(){
+  $('pmStrip').innerHTML = '';
+  PERSONA_ORDER.forEach(k=>{
+    const cv = drawPoster(k);
+    if(!cv){ toast('海报文案合规自检未通过，已拦截'); return; }
+    const th=document.createElement('div');
+    th.className='pm-thumb'+(k===S.posterKey?' cur':'');
+    th.dataset.key=k;
+    const img=document.createElement('img');
+    img.src=cv.toDataURL('image/jpeg',.72);
+    const nm=document.createElement('span'); nm.textContent=PERSONAS[k].name;
+    th.appendChild(img); th.appendChild(nm);
+    th.onclick=()=>{ S.posterKey=k; showPoster(k);
+      document.querySelectorAll('.pm-thumb').forEach(e=>e.classList.toggle('cur',e.dataset.key===k)); };
+    $('pmStrip').appendChild(th);
+  });
+}
+function showPoster(key){
+  const cv = drawPoster(key);
+  if(!cv) return;
+  $('pmImg').src = cv.toDataURL('image/png');
+  track('poster_render_success', {persona:key});
+}
+function downloadPoster(){
+  const cv = drawPoster(S.posterKey);
+  if(!cv) return;
+  const a=document.createElement('a');
+  a.download='氧系人格身份海报-'+PERSONAS[S.posterKey].name+'.png';
+  a.href=cv.toDataURL('image/png');
+  a.click();
+  toast('身份海报已生成下载（1080×1920）');
+}
+function downloadAllPosters(){
+  let n=0;
+  PERSONA_ORDER.forEach((k,i)=>{
+    setTimeout(()=>{
+      const cv=drawPoster(k); if(!cv) return;
+      const a=document.createElement('a');
+      a.download='氧系人格身份海报-'+PERSONAS[k].name+'.png';
+      a.href=cv.toDataURL('image/png');
+      a.click(); n++;
+      if(n===8) toast('8 张身份海报已全部生成下载');
+    }, i*380);
+  });
+}
+
+/* ================= 分享文案（裂变钩子） ================= */
+function copyShare(){
+  if(!S.result) return;
+  const p=PERSONAS[S.result.key];
+  const link=location.href.split('#')[0]+'#share='+S.result.key;
+  const txt=`我的氧系人格是【${p.name} · ${p.alias}】\n${p.soft}\n适合去：${p.plateau.n} / ${p.city.n}（供参考）· 适合运动：${p.sport.n}\n—— 来测你的氧系人格，再测今日情绪氧值？\n${link}`;
+  const done=()=>toast('分享文案已复制');
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(done).catch(()=>{fallbackCopy(txt);done();});
+  }else{ fallbackCopy(txt); done(); }
+}
+function fallbackCopy(txt){
+  const ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta);
+  ta.select(); try{document.execCommand('copy')}catch(e){} document.body.removeChild(ta);
+}
+
+/* ================= 打卡（模块1 stub） → 挑战邀请 ================= */
+function goCheckin(){
+  track('cta_click', {cta:'去充氧宝测你的情绪氧值'});
+  go('s-checkin');
+}
+document.querySelectorAll('.mood-b').forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll('.mood-b').forEach(o=>o.classList.remove('on'));
+    b.classList.add('on'); S.ckMood=+b.dataset.v; refreshCkBtn();
+  };
+});
+function refreshCkBtn(){
+  const ok=S.ckMood!=null;
+  $('ckBtn').style.opacity=ok?1:.45;
+  $('ckBtn').style.pointerEvents=ok?'auto':'none';
+}
+function doCheckin(){
+  const v=S.ckMood;
+  const p=S.result?PERSONAS[S.result.key]:null;
+  const msg = v>=80?'今日氧值 '+v+' · 满氧出发，'+ (p?p.name:'你') +'的状态很在线':
+              v>=60?'今日氧值 '+v+' · 平稳的一天，给自己点个赞':
+              v>=40?'今日氧值 '+v+' · 有点缺氧，氧宝给你递杯热茶':
+                    '今日氧值 '+v+' · 氧宝抱抱你，深呼吸三次，明天会更好';
+  $('ckResult').textContent = msg;
+  mountOxyb('ckOxyb', v>=80?'cheer':v>=60?'calm':v>=40?'tea':'hug', growth(), true);
+  $('ckBtn').textContent = '已打卡 · 明天也来充氧吧';
+  S.checkedToday = true;
+  track('checkin_complete', {oxygen:v});
+  /* 挑战联动 */
+  const ch = chLoad();
+  if(ch && ch.accepted && !ch.done){
+    if(ch.day>=1 && !ch.tasks.ck){ ch.tasks.ck = true; chSave(ch); toast('挑战任务已记录：今日打卡 ✓'); }
+    $('ckChallenge').style.display='block';
+  }else if(ch && ch.accepted && ch.done){
+    $('ckChallenge').style.display='block';
+  }else{
+    setTimeout(showInvite, 900);
+  }
+}
+
+/* ================= 7 天充氧挑战 ================= */
+function chDefault(){ return {accepted:false, day:0, doneDays:[], tasks:{ck:false, rg:false}, badges:{identity:false, seven:false}, done:false, shareShown:{}}; }
+function chLoad(){ try{ return JSON.parse(localStorage.getItem(LS_CH)||'null'); }catch(e){ return null; } }
+function chSave(c){ localStorage.setItem(LS_CH, JSON.stringify(c)); }
+function chState(){ return chLoad() || chDefault(); }
+
+function showInvite(){
+  const ch = chState();
+  if(ch.accepted) return;
+  mountOxyb('ivOxyb','cheer',growth(),false);
+  $('inviteMask').classList.add('open');
+  track('challenge_invite_show');
+}
+function closeInvite(){ $('inviteMask').classList.remove('open'); }
+function acceptChallenge(){
+  const ch = chState();
+  ch.accepted = true; ch.day = 0;
+  ch.badges.identity = true;           /* Day 0：测评 + 首次打卡 已完成 */
+  ch.doneDays = [0];
+  chSave(ch);
+  closeInvite();
+  track('challenge_accept');
+  toast('已点亮「氧系身份」徽章 · 挑战开始');
+  go('s-challenge');
+}
+
+const SHARE_NODES = {
+  1:{t:'分享节点 · Day 1', d:'把你的身份海报晒出去：我是哪种氧，你是哪种氧？', btn:'去生成身份海报', act:'poster'},
+  3:{t:'分享节点 · Day 3', d:'晒晒氧宝的成长变化——连续 3 天充氧，它长出了新叶子。', btn:'复制成长分享文案', act:'grow'},
+  7:{t:'分享节点 · Day 7', d:'分享你的 7 天挑战报告：双倍徽章到手，变化真实发生。', btn:'分享我的挑战报告', act:'report'}
+};
+function renderChallenge(){
+  const ch = chState();
+  if(!ch.accepted){ go('s-home'); return; }
+  const p = S.result ? PERSONAS[S.result.key] : null;
+
+  /* 徽章墙 */
+  const badges = [
+    {won:ch.badges.identity, name:'氧系身份', sub:'Day 0 · 测评 + 首次打卡', ico:'<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="'+(p?p.color:'#38e1ff')+'" stroke-width="1.6"/><circle cx="12" cy="12" r="3.5" fill="'+(p?p.color:'#38e1ff')+'"/></svg>', bg:p?p.color:'#38e1ff'},
+    {won:ch.badges.seven, name:'7 天充氧挑战', sub:'连续 7 天打卡 + 调节', ico:'<svg viewBox="0 0 24 24" fill="none" stroke="#ffcf6b" stroke-width="1.7" stroke-linejoin="round"><path d="M12 3l2.5 5.4 5.5.7-4 4 1 5.6-5-2.8-5 2.8 1-5.6-4-4 5.5-.7z"/></svg>', bg:'#ffcf6b'},
+    {won:false, name:'氧友初识', sub:'组队玩法 · 即将上线', ico:'<svg viewBox="0 0 24 24" fill="none" stroke="#8fa3d0" stroke-width="1.6"><circle cx="8.5" cy="12" r="4.5"/><circle cx="15.5" cy="12" r="4.5"/></svg>', bg:'#8fa3d0', soon:true}
+  ];
+  $('chBadges').innerHTML = badges.map(b=>
+    `<div class="badge ${b.won?'won':'locked'}">
+      <div class="b-ico" style="background:${b.bg}22;border:1px solid ${b.bg}55">${b.ico}</div>
+      <b>${b.name}</b><span>${b.sub}</span>
+    </div>`).join('');
+
+  /* Day 0-7 进度点 */
+  $('chDays').innerHTML = Array.from({length:8},(_,d)=>{
+    const cls = ch.doneDays.includes(d) ? 'done' : (d===ch.day && !ch.done ? 'now' : '');
+    const mark = ch.doneDays.includes(d) ? '✓' : d;
+    return `<div class="day-dot ${cls}"><i>${mark}</i><span>${d===0?'身份':'Day '+d}</span></div>`;
+  }).join('');
+
+  /* 今日任务 / 完成态 */
+  const tasksEl = $('chTasks'), shareEl = $('chShareNode');
+  $('breathBox').classList.remove('show');
+  shareEl.innerHTML = '';
+  if(ch.done){
+    tasksEl.innerHTML = '';
+    $('chComplete').classList.add('show');
+    $('demoNextBtn').style.display='none';
+    renderShareNode(shareEl, ch, 7);
+    return;
+  }
+  $('chComplete').classList.remove('show');
+  $('demoNextBtn').style.display='';
+
+  if(ch.day === 0){
+    tasksEl.innerHTML =
+      `<div class="task done"><div class="t-ck">✓</div><div class="t-info"><b>Day 0 · 氧系人格测评</b><p>已完成 · 你的氧系身份已解锁</p></div></div>
+       <div class="task done"><div class="t-ck">✓</div><div class="t-info"><b>Day 0 · 今日氧值打卡</b><p>已完成 · 「氧系身份」徽章已点亮</p></div></div>`;
+  }else{
+    const ckDone = ch.tasks.ck || S.checkedToday;
+    if(ckDone && !ch.tasks.ck){ ch.tasks.ck = true; chSave(ch); }
+    tasksEl.innerHTML =
+      `<div class="task ${ch.tasks.ck?'done':''}"><div class="t-ck">✓</div><div class="t-info"><b>Day ${ch.day} · 今日氧值打卡</b><p>记录今天真实的情绪氧值</p></div>${ch.tasks.ck?'':'<span class="t-go" onclick="go(\'s-checkin\')">去打卡</span>'}</div>
+       <div class="task ${ch.tasks.rg?'done':''}"><div class="t-ck">✓</div><div class="t-info"><b>Day ${ch.day} · 调节任务 · 呼吸充氧 10 秒</b><p>跟着氧宝做一组深呼吸（模块3 · 呼吸氧舱入口）</p></div>${ch.tasks.rg?'':'<span class="t-go" onclick="startBreath()">开始</span>'}</div>`;
+    if(ch.tasks.ck && ch.tasks.rg && !ch.doneDays.includes(ch.day)){
+      tasksEl.innerHTML += `<button class="btn" style="margin-top:14px" onclick="completeDay()">完成 Day ${ch.day} · 继续充氧</button>`;
+    }
+  }
+  /* 分享节点：当天已完成且是 Day 1/3/7 时保持展示 */
+  const lastDone = ch.doneDays.length ? Math.max.apply(null, ch.doneDays) : -1;
+  if(lastDone === ch.day && SHARE_NODES[lastDone]){
+    renderShareNode(shareEl, ch, lastDone);
+  }
+}
+
+function renderShareNode(el, ch, day){
+  const n = SHARE_NODES[day];
+  if(!n){ el.innerHTML=''; return; }
+  el.innerHTML = `<div class="share-node"><b>${n.t}</b><p>${n.d}</p><span class="t-go" onclick="shareNodeAct('${n.act}')">${n.btn}</span></div>`;
+}
+function shareNodeAct(act){
+  if(act==='poster'){ openPoster(); }
+  else if(act==='grow'){
+    const link=location.href.split('#')[0];
+    fallbackCopy('第 3 天，我的氧宝长出了新叶子。连续 3 天给它打卡充氧，它现在状态满氧。来充氧宝，养一只你的氧宝 → '+link);
+    toast('成长分享文案已复制');
+  }else if(act==='report'){ copyChallengeReport(); }
+}
+function copyChallengeReport(){
+  const p = S.result ? PERSONAS[S.result.key] : null;
+  const link=location.href.split('#')[0];
+  fallbackCopy('我和氧宝完成了 7 天充氧挑战：氧系人格【'+(p?p.name:'已解锁')+'】+ 连续 7 天打卡充氧，双倍徽章到手。不是测完就结束，真正的变化从打卡开始。来测你的氧系人格 → '+link);
+  toast('挑战报告文案已复制');
+  track('challenge_share_report');
+}
+
+/* 呼吸充氧 10 秒（模块3 stub） */
+let breathTimer=null;
+function startBreath(){
+  const box=$('breathBox'), c=$('breathCircle'), t=$('breathTxt');
+  box.classList.add('show');
+  const seq=[['吸气…',1,3200],['呼气…',0,3200],['吸气…',1,3200]];
+  let i=0;
+  t.textContent=seq[0][0]; c.style.transform='scale('+ (seq[0][1]?1:.6) +')';
+  breathTimer=setInterval(()=>{
+    i++;
+    if(i>=seq.length){
+      clearInterval(breathTimer);
+      t.textContent='完成 · 氧值 +1，调节任务 ✓';
+      const ch=chState(); ch.tasks.rg=true; chSave(ch);
+      setTimeout(renderChallenge, 900);
+      return;
+    }
+    t.textContent=seq[i][0];
+    c.style.transform='scale('+(seq[i][1]?1:.6)+')';
+  }, 3200);
+}
+
+function completeDay(){
+  const ch = chState();
+  if(!ch.doneDays.includes(ch.day)) ch.doneDays.push(ch.day);
+  track('challenge_day_status', {day:ch.day, status:'complete'});
+  if(ch.day >= 7){
+    ch.badges.seven = true; ch.done = true;
+    chSave(ch);
+    toast('已点亮「7 天充氧挑战」徽章 · 双倍徽章达成');
+  }else{
+    chSave(ch);
+    renderChallenge();
+    renderShareNode($('chShareNode'), ch, ch.day);
+    toast('Day '+ch.day+' 完成 · 明天继续充氧');
+    return;
+  }
+  renderChallenge();
+}
+function demoNextDay(){
+  const ch = chState();
+  if(!ch.accepted || ch.done) return;
+  if(ch.day===0){ ch.day=1; }
+  else{
+    if(!ch.doneDays.includes(ch.day)) ch.doneDays.push(ch.day);
+    if(ch.day>=7){ ch.badges.seven=true; ch.done=true; chSave(ch); toast('已点亮「7 天充氧挑战」徽章 · 双倍徽章达成'); renderChallenge(); return; }
+    ch.day++;
+  }
+  ch.tasks={ck:false, rg:false};
+  chSave(ch);
+  renderChallenge();
+}
+
+/* ================= 分享落地页（hash） ================= */
+function clearHashAndStart(){ history.replaceState(null,'',location.pathname+location.search); restart(); startQuiz(); }
+(function initShared(){
+  const h=location.hash;
+  if(h.startsWith('#share=')){
+    const key=h.slice(7), p=PERSONAS[key];
+    if(p){
+      document.documentElement.style.setProperty('--pc', p.color);
+      $('shName').textContent=p.name; $('shName2').textContent=p.name;
+      $('shAlias').textContent=p.alias; $('shOne').textContent=p.oneliner;
+      document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+      $('s-shared').classList.add('active');
+    }
+  }
+})();
+
+/* ================= 启动自检：全部海报文案软表达扫描 ================= */
+(function selfCheck(){
+  const all=[];
+  PERSONA_ORDER.forEach(k=>all.push(...posterTexts(PERSONAS[k])));
+  const hits=softExpressionCheck(all);
+  if(hits.length){ console.error('[softExpressionCheck] 启动自检命中禁用词:', hits); }
+  else{ console.log('[softExpressionCheck] 启动自检通过：8 张海报文案无禁用词'); }
+})();
+</script>
+</body>
+</html>

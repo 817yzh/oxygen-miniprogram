@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>充氧宝 · IP 陪伴融合网页版 V3（视觉收口版）</title>
+<style>
+/* ==========================================================================
+   视觉基线：cyb-ui-tokens-v1.css（收口冻结默认 token，同名内联）
+   8 态色品牌命名：氧涌/氧蕴/氧曦/氧谧/氧燃/氧语/氧聚/氧伴（创意总监 V1 定稿）
+   原则：CTA 不随人格/情绪变色；深底主流程（#060B1A）；实底列表卡；
+        不做 8 套主题页；氧宝外观不随人格变化。
+   ========================================================================== */
+:root{
+  /* 8 态色 token */
+  --cyb-oxy-yong:#35D6B8; /* 满氧 · 氧涌 */
+  --cyb-oxy-yun:#5AA7FF;  /* 蓄氧 · 氧蕴 */
+  --cyb-oxy-xi:#FFB84D;   /* 微氧 · 氧曦 */
+  --cyb-oxy-mi:#A78BFA;   /* 安静修复 · 氧谧 */
+  --cyb-oxy-ran:#FF6B6B;  /* 行动充氧 · 氧燃 */
+  --cyb-oxy-yu:#8B95A7;   /* 低氧提示 · 氧语 */
+  --cyb-oxy-ju:#FFD166;   /* 社交补氧 · 氧聚 */
+  --cyb-oxy-ban:#7BC96F;  /* 稳定陪伴 · 氧伴 */
+  /* CTA 统一主色（单色，不随状态/人格变色） */
+  --cyb-cta-bg:#35D6B8; --cyb-cta-text:#061B2B; --cyb-cta-pressed:#22BFA4;
+  --cyb-cta-disabled:rgba(139,149,167,.35);
+  /* 深底层级 */
+  --bg:#060B1A; --bg2:#081122; --bg3:#0B1730;
+  --card:rgba(255,255,255,.08); --card-line:rgba(255,255,255,.14);
+  --txt:#EAF2FF; --sub:#93A4C3;
+  /* 字体 / 圆角 */
+  --cyb-font-main:"PingFang SC","Microsoft YaHei",sans-serif;
+  --cyb-r-card:16px; --cyb-r-capsule:999px; --cyb-r-poster-glass:24px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:#060B1A;font-family:var(--cyb-font-main);color:var(--txt);display:flex;justify-content:center;min-height:100vh}
+.phone{width:100%;max-width:430px;min-height:100vh;background:var(--bg);position:relative;display:flex;flex-direction:column;overflow:hidden}
+.space-bg{position:absolute;inset:0;pointer-events:none;opacity:1;
+  background:
+    radial-gradient(circle at 50% 0%,rgba(53,214,184,.04),transparent 36%),
+    radial-gradient(circle at 50% 100%,rgba(53,214,184,.06),transparent 38%)}
+.scroll{flex:1;overflow-y:auto;padding:16px 16px 96px;position:relative;z-index:1}
+h1{font-size:28px;line-height:1.3;font-weight:800;letter-spacing:0} h2{font-size:20px;line-height:1.4;font-weight:700;margin-bottom:12px;letter-spacing:0}
+h3{font-size:16px;line-height:1.5;font-weight:700;letter-spacing:0}
+h2 .tag{font-weight:600}
+.sub{color:var(--sub);font-size:12px;line-height:1.7}
+.card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:var(--cyb-r-card);padding:16px;margin-bottom:14px}
+.card.primary{background:linear-gradient(160deg,rgba(255,255,255,.10),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.16);border-radius:var(--cyb-r-poster-glass);backdrop-filter:blur(8px);box-shadow:0 18px 48px rgba(0,0,0,.24);padding:20px 18px}
+.card.secondary{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14);border-radius:var(--cyb-r-card);padding:16px}
+.glass{background:linear-gradient(160deg,rgba(255,255,255,.10),rgba(255,255,255,.04));
+  border:1px solid rgba(255,255,255,.16);border-radius:var(--cyb-r-poster-glass);backdrop-filter:blur(8px)}
+.tag{display:inline-block;font-size:11px;padding:3px 10px;border-radius:var(--cyb-r-capsule);background:rgba(255,255,255,.08);color:var(--sub);margin-left:6px;vertical-align:2px}
+.cta{display:block;width:100%;height:48px;border:none;border-radius:var(--cyb-r-card);padding:0 14px;font-size:15px;font-weight:700;
+  background:var(--cyb-cta-bg);color:var(--cyb-cta-text);cursor:pointer;transition:transform .12s,background .2s;font-family:var(--cyb-font-main)}
+.cta:active{transform:scale(.98);background:var(--cyb-cta-pressed)}
+.cta.ghost{height:44px;background:transparent;color:var(--cyb-cta-bg);border:1px solid var(--cyb-cta-bg);font-size:14px;font-weight:500}
+.cta.ghost:active{background:rgba(53,214,184,.10)}
+.text-link{display:inline-flex;align-items:center;gap:4px;border:0;background:transparent;color:var(--cyb-cta-bg);font:700 13px/1 var(--cyb-font-main);padding:8px 0;cursor:pointer}
+.cta:disabled{background:var(--cyb-cta-disabled);color:#060B1A66}
+.page{display:none;animation:fadeIn .3s ease}
+.page.on{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ================= 氧人格身份条（Identity 层 · 静区） ================= */
+.id-bar{display:flex;align-items:center;gap:10px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.065);
+  border-radius:var(--cyb-r-card);padding:11px 14px;margin-bottom:12px;font-size:13px;cursor:pointer;transition:border-color .3s}
+.id-bar:active{transform:scale(.99)}
+.id-dot{width:22px;height:22px;border-radius:50%;flex:none;box-shadow:0 0 10px currentColor}
+.id-name{font-weight:700}
+.id-career{color:var(--sub);font-size:12px}
+.id-arrow{margin-left:auto;color:var(--sub);flex:none}
+
+/* ================= 氧宝舞台（首页主舞台 · 状态契约驱动） ================= */
+.stage{position:relative;height:318px;border-radius:var(--cyb-r-poster-glass);overflow:hidden;margin-bottom:16px;
+  border:1px solid rgba(255,255,255,.17);background:
+    radial-gradient(circle at 50% 72%,rgba(53,214,184,.13),transparent 31%),
+    radial-gradient(circle at 14% 16%,rgba(90,167,255,.11),transparent 28%),
+    linear-gradient(180deg,#0B1730 0%,#081122 58%,#060B1A 100%);
+  box-shadow:0 22px 56px rgba(0,0,0,.34)}
+.mist{position:absolute;border-radius:50%;filter:blur(26px);background:#8FA3C8;pointer-events:none;transition:opacity 1.2s;opacity:var(--mist,.4)}
+.mist.m1{width:240px;height:100px;left:-60px;top:26px}
+.mist.m2{width:280px;height:120px;right:-80px;bottom:36px}
+/* 人格氛围层（Identity · 仅背景晕染，不覆写氧芯情绪色；--persona-c 由 JS 注入冻结 8 态色） */
+.persona-veil{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity 1.2s;
+  background:radial-gradient(ellipse at 50% 112%, var(--persona-c,#35D6B8) 0%, transparent 62%)}
+.persona-glow{position:absolute;left:50%;bottom:34px;width:260px;height:52px;transform:translateX(-50%);
+  border-radius:50%;pointer-events:none;opacity:0;transition:opacity 1.2s;filter:blur(10px);
+  background:radial-gradient(ellipse, var(--persona-c,#35D6B8), transparent 72%)}
+.glow-floor{position:absolute;left:50%;bottom:40px;width:180px;height:30px;transform:translateX(-50%);
+  border-radius:50%;background:radial-gradient(ellipse,rgba(53,214,184,.35),transparent 70%);transition:all 1s}
+.plants{position:absolute;bottom:8px;left:0;right:0;display:flex;justify-content:space-around;font-size:24px;transition:opacity 1.2s;padding:0 30px}
+.yangbao{position:absolute;left:50%;bottom:48px;width:160px;height:170px;transform:translateX(-50%)}
+.yb-body-wrap{position:absolute;inset:0;transform-origin:50% 90%}
+.bob-lively{animation:bobLively 1.6s ease-in-out infinite}
+.bob-breath{animation:bobBreath 3.2s ease-in-out infinite}
+.bob-slow{animation:bobBreath 5.5s ease-in-out infinite}
+.bob-tremble{animation:tremble .5s ease-in-out infinite}
+.bob-heal{animation:bobHeal 4s ease-in-out infinite}
+@keyframes bobLively{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-10px) scale(1.015)}}
+@keyframes bobBreath{0%,100%{transform:translateY(0) scale(1,1)}50%{transform:translateY(-5px) scale(1.01,.99)}}
+@keyframes tremble{0%,100%{transform:translate(0,0)}25%{transform:translate(-1.5px,0)}75%{transform:translate(1.5px,0)}}
+@keyframes bobHeal{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.yb-svg{width:100%;height:100%;filter:drop-shadow(0 16px 28px rgba(0,0,0,.28)) drop-shadow(0 8px 18px rgba(53,214,184,.18))}
+.core-halo{position:absolute;left:50%;top:56%;width:60px;height:60px;transform:translate(-50%,-50%);border-radius:50%;pointer-events:none;transition:all .8s}
+.bubbles{position:absolute;inset:-26px 0 0;pointer-events:none;overflow:visible}
+.bub{position:absolute;border-radius:50%;border:1.5px solid rgba(255,255,255,.5);
+  background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.5),rgba(53,214,184,.12));animation:rise linear infinite}
+@keyframes rise{from{transform:translateY(10px);opacity:0}15%{opacity:.9}to{transform:translateY(-140px);opacity:0}}
+.oxy-ring{position:absolute;top:12px;right:12px;width:62px;height:62px}
+.oxy-ring svg{transform:rotate(-90deg)}
+.oxy-ring .num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;font-size:16px}
+.oxy-ring .num small{font-size:9px;font-weight:400;color:var(--sub)}
+.state-pill{position:absolute;top:14px;left:14px;font-size:12px;font-weight:700;padding:5px 12px;border-radius:var(--cyb-r-capsule);
+  background:#00000055;border:1px solid var(--card-line);backdrop-filter:blur(4px)}
+.yb-say{position:absolute;left:50%;bottom:10px;transform:translateX(-50%);white-space:nowrap;max-width:92%;overflow:hidden;text-overflow:ellipsis;
+  font-size:12px;background:#00000055;border:1px solid var(--card-line);padding:5px 14px;border-radius:var(--cyb-r-capsule);color:#CFE6DD}
+
+/* ================= 打卡（模块1） ================= */
+.seg{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.seg button{flex:1;min-width:56px;border:1px solid var(--card-line);background:rgba(255,255,255,.05);color:var(--sub);
+  border-radius:var(--cyb-r-card);padding:10px 4px;font-size:13px;cursor:pointer;transition:all .15s;font-family:var(--cyb-font-main)}
+.seg button.on{border-color:var(--cyb-cta-bg);color:var(--txt);background:rgba(53,214,184,.14);font-weight:700}
+.seg .emo{font-size:22px;display:block;margin-bottom:2px}
+.one-line{width:100%;border:1px solid var(--card-line);background:rgba(255,255,255,.05);border-radius:var(--cyb-r-card);
+  padding:12px;color:var(--txt);font-size:14px;margin:6px 0 12px;font-family:var(--cyb-font-main);outline:none}
+.one-line:focus{border-color:var(--cyb-cta-bg)}
+.streak-row{display:flex;align-items:center;gap:10px;margin-top:12px;font-size:13px;color:var(--sub)}
+.streak-row b{color:var(--cyb-oxy-ju);font-size:18px}
+
+/* ================= 测评入口（模块0） ================= */
+.banner{position:relative;overflow:hidden;border-radius:var(--cyb-r-poster-glass);padding:20px 18px;margin-bottom:14px;
+  background:linear-gradient(160deg,rgba(255,255,255,.10),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(8px)}
+.banner h2{font-size:20px;line-height:1.4;font-weight:700;margin-bottom:7px}
+.persona-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.persona-chip{border-radius:12px;padding:10px 4px;text-align:center;font-size:11px;border:1px solid var(--card-line);background:rgba(255,255,255,.05)}
+.persona-chip i{display:block;width:22px;height:22px;border-radius:50%;margin:0 auto 5px;font-style:normal;
+  box-shadow:0 0 12px currentColor}
+
+/* ================= 监测（模块2） ================= */
+.kv{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:10px 0;border-bottom:1px dashed var(--card-line)}
+.kv:last-child{border:none}
+.switch{position:relative;width:44px;height:24px;border-radius:var(--cyb-r-capsule);background:rgba(255,255,255,.14);cursor:pointer;transition:background .2s;flex:none}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:left .2s}
+.switch.on{background:var(--cyb-cta-bg)}
+.switch.on::after{left:23px}
+.switch.sub-sw{width:38px;height:21px}
+.switch.sub-sw::after{width:15px;height:15px}
+.switch.sub-sw.on::after{left:20px}
+
+/* ================= 调节（模块3） ================= */
+.breath-stage{position:relative;height:230px;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.breath-circle{width:150px;height:150px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;
+  background:radial-gradient(circle at 35% 30%,rgba(167,139,250,.5),rgba(167,139,250,.12));
+  border:2px solid rgba(167,139,250,.6);box-shadow:0 0 40px rgba(167,139,250,.25);
+  transition:transform 4s ease-in-out;font-size:15px;font-weight:700;text-align:center;padding:0 14px}
+.breath-circle small{font-size:11px;font-weight:400;color:var(--sub);margin-top:4px}
+.breath-mini-yb{position:absolute;bottom:0;right:6px;width:64px;height:68px}
+.tool-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px}
+.tool-cell{border:1px solid var(--card-line);border-radius:var(--cyb-r-card);padding:14px 6px;text-align:center;font-size:12px;color:var(--sub);background:rgba(255,255,255,.04)}
+.tool-cell b{display:block;font-size:20px;margin-bottom:5px}
+.treehole{border:1px solid rgba(167,139,250,.35);background:linear-gradient(160deg,rgba(167,139,250,.10),rgba(167,139,250,.03))}
+.treehole textarea{width:100%;min-height:74px;border:1px solid var(--card-line);background:rgba(0,0,0,.25);border-radius:12px;
+  padding:10px;color:var(--txt);font-size:13px;resize:vertical;font-family:var(--cyb-font-main);outline:none;margin:8px 0}
+.compliance{font-size:11px;color:var(--sub);line-height:1.7;background:rgba(255,255,255,.04);border:1px dashed var(--card-line);border-radius:12px;padding:10px 12px;margin-top:10px}
+.compliance b{color:#FFB84D}
+
+/* ================= 成长（模块4） ================= */
+.chart-wrap{position:relative;height:170px}
+#trendChart{width:100%;height:100%}
+.badge-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.badge{border:1px solid var(--card-line);border-radius:12px;padding:12px 4px;text-align:center;font-size:11px;color:var(--sub);background:rgba(255,255,255,.04)}
+.badge i{display:block;font-style:normal;font-size:22px;margin-bottom:5px;filter:grayscale(1);opacity:.4}
+.badge.got i{filter:none;opacity:1}
+.badge.got{color:var(--txt);border-color:rgba(53,214,184,.4)}
+/* mine：用户自己的人格徽章高亮（人格色发光） */
+.badge.mine{color:var(--txt);border-color:currentColor;box-shadow:0 0 14px currentColor;background:rgba(255,255,255,.07)}
+.badge.mine i{filter:none;opacity:1}
+.badge .b-cond{display:block;font-size:9px;color:var(--sub);margin-top:4px;line-height:1.4}
+.challenge-bar{height:10px;border-radius:var(--cyb-r-capsule);background:rgba(255,255,255,.1);overflow:hidden;margin:8px 0 4px}
+.challenge-bar i{display:block;height:100%;border-radius:var(--cyb-r-capsule);background:linear-gradient(90deg,var(--cyb-oxy-yong),var(--cyb-oxy-yun));transition:width .6s}
+.day-dots{display:flex;justify-content:space-between;margin-top:6px}
+.day-dots span{width:26px;height:26px;border-radius:50%;border:1px solid var(--card-line);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--sub)}
+.day-dots span.did{background:var(--cyb-cta-bg);color:var(--cyb-cta-text);border-color:transparent;font-weight:700}
+/* 成长页 · 我的氧人格卡片 */
+.persona-card{display:flex;align-items:center;gap:14px}
+.persona-card .pc-dot{width:46px;height:46px;border-radius:50%;flex:none;box-shadow:0 0 18px currentColor}
+.persona-card .pc-name{font-weight:800;font-size:17px}
+.persona-card .pc-sub{font-size:11.5px;color:var(--sub);margin-top:2px}
+.persona-card .pc-go{margin-left:auto;font-size:12px;color:var(--cyb-cta-bg);flex:none;white-space:nowrap}
+
+/* ================= 我的（模块5） ================= */
+.me-head{display:flex;align-items:center;gap:14px}
+.avatar{width:56px;height:56px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#B8F5E3,#3AA8C9);
+  display:flex;align-items:center;justify-content:center;font-size:26px;flex:none}
+
+/* ================= 底部导航 + 漂浮氧宝 ================= */
+.nav{position:absolute;bottom:0;left:0;right:0;display:flex;background:rgba(6,11,26,.92);backdrop-filter:blur(10px);
+  border-top:1px solid var(--card-line);z-index:20;padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+.nav button{flex:1;border:none;background:none;color:var(--sub);font-size:10px;padding:6px 0;cursor:pointer;font-family:var(--cyb-font-main)}
+.nav button i{display:block;font-style:normal;font-size:20px;margin-bottom:2px}
+.nav button.on{color:var(--cyb-cta-bg)}
+.mini-yb{position:absolute;right:14px;bottom:86px;width:58px;height:62px;z-index:19;cursor:pointer;transition:transform .2s;filter:drop-shadow(0 6px 14px rgba(53,214,184,.35))}
+.mini-yb:active{transform:scale(.9)}
+.mini-yb-bubble{position:absolute;right:80px;bottom:104px;width:210px;z-index:21;font-size:12px;line-height:1.6;
+  background:#0B1730;border:1px solid var(--card-line);border-radius:14px;padding:10px 12px;display:none;box-shadow:0 8px 30px rgba(0,0,0,.5)}
+.mini-yb-bubble.on{display:block;animation:fadeIn .25s}
+
+/* 分享卡弹层 */
+.share-mask{position:absolute;inset:0;background:rgba(2,5,12,.8);z-index:40;display:none;align-items:center;justify-content:center;padding:24px}
+.share-mask.on{display:flex}
+.share-box{width:100%;max-width:300px;text-align:center}
+#shareCanvas{width:100%;border-radius:18px;border:1px solid var(--card-line)}
+.share-box .cta{margin-top:12px}
+.proto-note{position:absolute;top:6px;right:10px;font-size:10px;color:#FFFFFF28;z-index:30}
+.footer-note{text-align:center;font-size:10.5px;color:#93A4C380;line-height:1.8;margin-top:6px}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="space-bg"></div>
+  <div class="proto-note">IP 陪伴融合网页版 V3 · 视觉收口版 · mock 数据</div>
+
+  <div class="scroll">
+
+    <!-- ============ 页 1 · 首页（身份条 + 氧宝舞台 + 模块1打卡 + 模块0入口 + 模块2摘要） ============ -->
+    <section class="page on" id="page-home">
+      <!-- ① 氧人格身份条（Identity 层 · 未测评/已测评两态） -->
+      <div class="id-bar" id="idBar"></div>
+
+      <!-- ② 问候语人格化 -->
+      <h1 id="greet">早安，我是氧宝 🫧</h1>
+      <p class="sub" style="margin:4px 0 12px" id="greetSub">你的氧气泡小守护者 · 全程陪伴每一次充氧</p>
+
+      <!-- 氧宝舞台：IP 表现只读 yangbaoState；③ 人格氛围层独立注入，不覆写氧芯情绪色 -->
+      <div class="stage" id="stage">
+        <div class="mist m1"></div><div class="mist m2"></div>
+        <div class="persona-veil" id="personaVeil"></div>
+        <div class="glow-floor" id="glowFloor"></div>
+        <div class="persona-glow" id="personaGlow"></div>
+        <div class="plants" id="plants"></div>
+        <div class="yangbao">
+          <div class="bubbles" id="bubbles"></div>
+          <div class="yb-body-wrap" id="ybWrap">
+            <svg class="yb-svg" viewBox="0 0 180 190">
+              <defs>
+                <radialGradient id="bodyGrad" cx="50%" cy="50%" r="78%">
+                  <stop offset="0%" stop-color="#B8F5E3"/><stop offset="40%" stop-color="#6FD8C0"/><stop offset="85%" stop-color="#3AA8C9"/><stop offset="100%" stop-color="#1A6A7A"/>
+                </radialGradient>
+                <radialGradient id="bodyHighlightGrad" cx="40%" cy="25%" r="58%">
+                  <stop offset="0%" stop-color="rgba(255,255,255,.55)"/><stop offset="60%" stop-color="rgba(255,255,255,0)"/>
+                </radialGradient>
+                <radialGradient id="bodyReflectGrad" cx="50%" cy="90%" r="48%">
+                  <stop offset="0%" stop-color="rgba(135,220,200,.35)"/><stop offset="70%" stop-color="rgba(135,220,200,0)"/>
+                </radialGradient>
+                <radialGradient id="coreGrad" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#FFFFFF"/><stop offset="45%" id="coreMid" stop-color="#35D6B8"/><stop offset="100%" id="coreEdge" stop-color="#35D6B8" stop-opacity="0"/>
+                </radialGradient>
+                <filter id="bodyInnerGlow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur in="SourceAlpha" stdDeviation="4" result="blur"/>
+                  <feOffset in="blur" dx="0" dy="2" result="offset"/>
+                  <feComposite in="offset" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="inner"/>
+                  <feFlood flood-color="#FFFFFF" flood-opacity=".15" result="glow"/>
+                  <feComposite in="glow" in2="inner" operator="in" result="innerGlow"/>
+                  <feComposite in="SourceGraphic" in2="innerGlow" operator="over"/>
+                </filter>
+              </defs>
+              <ellipse cx="90" cy="162" rx="48" ry="10" fill="rgba(0,0,0,.20)"/>
+              <path fill="url(#bodyHighlightGrad)"
+                d="M48 52 C63 28 105 20 126 36 C102 31 70 36 50 69 C46 64 45 58 48 52 Z"/>
+              <path fill="url(#bodyGrad)" filter="url(#bodyInnerGlow)"
+                d="M90 14 C138 14 162 52 162 96 C162 144 130 176 90 176 C50 176 18 144 18 96 C18 52 42 14 90 14 Z"/>
+              <path fill="url(#bodyHighlightGrad)"
+                d="M48 56 C64 31 105 24 128 43 C106 38 73 43 56 75 C49 71 45 64 48 56 Z"/>
+              <path fill="url(#bodyReflectGrad)"
+                d="M50 128 C67 158 114 164 136 132 C127 162 104 176 90 176 C70 176 54 160 50 128 Z"/>
+              <path fill="rgba(6,27,43,.08)"
+                d="M124 44 C145 57 153 82 149 108 C144 141 119 164 87 167 C122 151 140 128 140 97 C140 73 134 56 124 44 Z"/>
+              <g id="ybSprout" opacity="0" style="transition:opacity 1s">
+                <path d="M90 14 C88 4 82 0 76 2 C82 8 86 12 90 14" fill="#7EF0C8"/>
+                <path d="M90 14 C92 4 98 0 104 2 C98 8 94 12 90 14" fill="#35D6B8"/>
+              </g>
+              <circle id="ybCore" cx="90" cy="112" r="24" fill="url(#coreGrad)"/>
+              <circle cx="82" cy="103" r="7" fill="rgba(255,255,255,.46)"/>
+              <g id="ybEyes" stroke="#0B2A26" stroke-width="4" stroke-linecap="round" fill="#0B2A26"></g>
+              <g opacity=".24" fill="#FFFFFF">
+                <circle cx="64" cy="70" r="3"/><circle cx="112" cy="70" r="3"/>
+              </g>
+              <g id="ybBlush" opacity=".55">
+                <ellipse cx="52" cy="86" rx="9" ry="5" fill="#FF8FB1"/><ellipse cx="128" cy="86" rx="9" ry="5" fill="#FF8FB1"/>
+              </g>
+              <path id="ybMouth" stroke="#0B2A26" stroke-width="4" stroke-linecap="round" fill="none" d="M76 94 Q90 102 104 94"/>
+            </svg>
+            <div class="core-halo" id="coreHalo"></div>
+          </div>
+        </div>
+        <div class="oxy-ring">
+          <svg width="62" height="62">
+            <circle cx="31" cy="31" r="26" stroke="rgba(255,255,255,.14)" stroke-width="5" fill="#060B1Acc"/>
+            <circle id="oxyArc" cx="31" cy="31" r="26" stroke="#35D6B8" stroke-width="5" fill="none" stroke-linecap="round" stroke-dasharray="163.4" stroke-dashoffset="163.4"/>
+          </svg>
+          <div class="num"><span id="oxyNum">--</span><small>氧值</small></div>
+        </div>
+        <div class="state-pill" id="statePill">微氧</div>
+        <div class="yb-say" id="ybSay">今天也很平稳，一起加油吧</div>
+      </div>
+
+      <!-- 模块1 · 今日氧值打卡（④ placeholder 8 套 / ⑤ 24 条人格反馈语） -->
+      <div class="card primary">
+        <h2>今日氧值打卡 <span class="tag">模块1 · 10 秒</span></h2>
+        <div class="seg" id="emoSeg">
+          <button data-v="full"><span class="emo">😄</span>满氧</button>
+          <button data-v="micro" class="on"><span class="emo">🙂</span>微氧</button>
+          <button data-v="low"><span class="emo">😔</span>缺氧</button>
+          <button data-v="tense"><span class="emo">😣</span>紧绷</button>
+          <button data-v="healing"><span class="emo">😌</span>修复</button>
+        </div>
+        <input class="one-line" id="oneLine" maxlength="30" placeholder="一句话说说今天（可选）">
+        <button class="cta" id="checkinBtn">打卡，生成今日氧值</button>
+        <div class="streak-row">🔥 连续打卡 <b id="streakNum">0</b> 天 <span id="growthLabel">· 氧气小苗 🌱</span></div>
+      </div>
+
+      <!-- 模块0 · 氧系测评入口 -->
+      <div class="banner">
+        <h2>✨ 氧系人格测评</h2>
+        <p class="sub" style="color:#B9C8E4">你不是 E 人 / I 人，你可能是某种「氧」。6 题快测，解锁你的氧系身份海报。</p>
+        <div class="persona-grid" id="personaGrid"></div>
+        <button class="cta" style="margin-top:14px" onclick="switchTab('test')">去测我的氧系人格 →</button>
+      </div>
+
+      <!-- 模块2 · 监测摘要 -->
+      <div class="card secondary">
+        <h2>AI 情绪监测 <span class="tag">模块2 · 摘要</span></h2>
+        <div class="kv"><span>被动监测状态</span><b id="monSummary" style="color:var(--cyb-oxy-yu)">未开启</b></div>
+        <div class="kv"><span>今日温柔提示</span><b style="color:var(--cyb-oxy-yong);font-weight:600">绿区 · 继续保持 🌿</b></div>
+        <button class="cta ghost" style="margin-top:10px" onclick="switchTab('me')">管理监测授权</button>
+      </div>
+
+      <!-- 首页底部 · 氧人格固定标识（与非医疗声明并列） -->
+      <p class="sub" id="homePersonaFoot" style="text-align:center;margin-top:2px"></p>
+    </section>
+
+    <!-- ============ 页 2 · 模块0 氧系测评矩阵 ============ -->
+    <section class="page" id="page-test">
+      <h1>氧系测评矩阵</h1>
+      <p class="sub" style="margin:4px 0 12px">模块0 · 引流入口 —— 测一次，解锁多重身份；氧宝全程陪测</p>
+      <div class="card glass" style="text-align:center;padding:24px 16px">
+        <div style="font-size:40px">🧪</div>
+        <h2 style="margin-top:8px">氧系人格 · MBTI 快测</h2>
+        <p class="sub">6 道题 · 30 秒 · 生成 1080×1920 身份海报<br>8 种氧系人格：高原氧王 / 深海静氧 / 春风型 / 晨雾型 / 急氧型 / 岩洞型 / 氧气吧主 / 苔藓型</p>
+        <button class="cta" style="margin-top:14px" id="demoAssessBtn">开始测评（演示：直接写入测评结果）</button>
+        <p class="sub" style="margin-top:8px;font-size:11px">正式版跳转 cyb-oxygen-personality-v3.html 测评主流程，测评结果回写 personaState</p>
+      </div>
+      <div class="card primary">
+        <h2>第二波 · 联动测评（待启）</h2>
+        <div class="kv"><span>🏔️ 高原适应测评</span><b style="color:var(--sub)">已出原型 v2</b></div>
+        <div class="kv"><span>🔤 氧气词 H5</span><b style="color:var(--sub)">第二波</b></div>
+        <div class="kv"><span>🏙️ 八字城市（降级方案）</span><b style="color:var(--sub)">第二波</b></div>
+        <p class="sub" style="margin-top:8px">闭环规则：所有测评结论页保留「去充氧宝测你的情绪氧值」CTA，测评不替代打卡，分享回流落到模块1。</p>
+      </div>
+    </section>
+
+    <!-- ============ 页 3 · 模块3 情绪调节（⑨ 呼吸引导语人格化） ============ -->
+    <section class="page" id="page-adjust">
+      <h1>情绪调节</h1>
+      <p class="sub" style="margin:4px 0 12px">模块3 · 闭合核心 —— 氧宝陪你把氧值一点点充满</p>
+
+      <!-- 呼吸氧舱 -->
+      <div class="card secondary">
+        <h2>🫧 呼吸氧舱 <span class="tag">4-4-6 引导</span></h2>
+        <div class="breath-stage">
+          <div class="breath-circle" id="breathCircle"><span id="breathTxt">准备</span><small id="breathSub">跟随氧宝的节奏</small></div>
+          <svg class="breath-mini-yb" viewBox="0 0 180 190">
+            <ellipse cx="90" cy="166" rx="44" ry="9" fill="rgba(0,0,0,.18)"/>
+            <path fill="url(#bodyGrad)" filter="url(#bodyInnerGlow)"
+              d="M90 14 C138 14 162 52 162 96 C162 144 130 176 90 176 C50 176 18 144 18 96 C18 52 42 14 90 14 Z"/>
+            <path fill="rgba(255,255,255,.26)" d="M50 56 C66 32 104 25 127 42 C103 39 73 45 56 75 C50 71 46 63 50 56 Z"/>
+            <circle cx="90" cy="112" r="22" fill="url(#coreGrad)"/>
+          </svg>
+        </div>
+        <button class="cta" id="breathBtn">开始 3 轮呼吸</button>
+      </div>
+
+      <!-- 声音疗愈 / 小游戏 -->
+      <div class="card primary">
+        <h2>更多调节方式</h2>
+        <div class="tool-row">
+          <div class="tool-cell"><b>🌧️</b>白噪·雨声</div>
+          <div class="tool-cell"><b>🧘</b>冥想·5分钟</div>
+          <div class="tool-cell"><b>🎨</b>涂鸦·解压</div>
+        </div>
+        <p class="sub" style="margin-top:8px">正式版接入音频与小游戏资源；调节完成后回测氧值，闭合「调节→复测」。</p>
+      </div>
+
+      <!-- 树洞倾诉 -->
+      <div class="card treehole secondary">
+        <h2>🕳️ 树洞倾诉</h2>
+        <p class="sub">把想说的话放进树洞，氧宝和 AI 会一直听着。</p>
+        <textarea id="treeholeInput" maxlength="500" placeholder="今天有什么想倒出来的吗……"></textarea>
+        <button class="cta ghost" onclick="treeholeSend()">放进树洞</button>
+        <div class="compliance">
+          本功能为 AI 情绪陪伴工具，<b>不构成心理咨询、心理治疗或医疗服务</b>。<br>
+          如果你正经历特别难熬的时刻，可以随时联系：<b>全国心理援助热线 12320</b> · 希望24热线 400-161-9995 · 北京心理危机研究与干预中心 010-82951332。
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 页 4 · 模块4 成长与反馈（⑥ 人格卡片 / ⑦ 8 枚人格徽章 / ⑧ 分享卡人格签名） ============ -->
+    <section class="page" id="page-growth">
+      <h1>成长与反馈</h1>
+      <p class="sub" style="margin:4px 0 12px">模块4 · 反馈 + 复访 —— 看见自己一点点变好</p>
+
+      <!-- ⑥ 我的氧人格卡片 -->
+      <div class="card primary" id="personaCardWrap">
+        <h2>🪪 我的氧人格</h2>
+        <div class="persona-card" id="personaCard"></div>
+      </div>
+
+      <div class="card primary">
+        <h2>📈 本周氧值趋势</h2>
+        <div class="chart-wrap"><canvas id="trendChart"></canvas></div>
+      </div>
+
+      <div class="card secondary">
+        <h2>🏅 人格徽章 <span class="tag">8 人格行为成就</span></h2>
+        <div class="badge-grid" id="badgeGrid"></div>
+        <p class="sub" style="margin-top:8px;font-size:11px">每个人格对应一种行为特质；你自己的人格徽章发光高亮（mine），其余 7 枚为可收集目标。</p>
+      </div>
+
+      <div class="card secondary">
+        <h2>🎯 7 天充氧挑战</h2>
+        <div class="challenge-bar"><i id="challengeFill" style="width:0%"></i></div>
+        <div class="day-dots" id="dayDots"></div>
+        <p class="sub" style="margin-top:8px">连续打卡 7 天解锁「双倍徽章」；Day 1 / 3 / 7 触发分享节点，海报回流测评入口。</p>
+      </div>
+
+      <button class="cta" onclick="makeShareCard()">生成今日充氧分享卡</button>
+    </section>
+
+    <!-- ============ 页 5 · 模块5 我的 ============ -->
+    <section class="page" id="page-me">
+      <h1>我的</h1>
+      <p class="sub" style="margin:4px 0 12px">模块5 · 档案 / 提醒 / 隐私与授权</p>
+
+      <div class="card me-head">
+        <div class="avatar">🫧</div>
+        <div>
+          <div style="font-weight:700">氧友 · Demo</div>
+          <div class="sub">氧系人格：<span id="mePersona">未测定</span> · 连续打卡 <span id="meStreak">0</span> 天</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>被动监测授权 <span class="tag">opt-in</span></h2>
+        <div class="kv"><span>启用被动监测</span><div class="switch" id="monMaster"></div></div>
+        <div id="monSubs" style="opacity:.45;pointer-events:none">
+          <div class="kv"><span class="sub">🎙️ 语音情绪信号（仅声学特征，不出端）</span><div class="switch sub-sw" data-k="voice"></div></div>
+          <div class="kv"><span class="sub">⌨️ 文字情绪信号</span><div class="switch sub-sw" data-k="text"></div></div>
+          <div class="kv"><span class="sub">⏱️ 使用时长信号</span><div class="switch sub-sw" data-k="usage"></div></div>
+        </div>
+        <p class="sub" style="margin-top:8px">首次授权后开启，可随时关闭；原始数据不出端，仅本地提取特征。授权 6 个月后续期提醒。</p>
+      </div>
+
+      <div class="card">
+        <h2>提醒设置</h2>
+        <div class="kv"><span>每日打卡提醒</span><div class="switch on"></div></div>
+        <div class="kv"><span>周报推送</span><div class="switch on"></div></div>
+      </div>
+
+      <div class="card">
+        <h2>关于</h2>
+        <p class="sub">充氧宝是情绪健康陪伴工具，不是医疗器械，也不提供心理诊疗服务。测评内容为趣味娱乐性质，不构成专业建议。</p>
+      </div>
+    </section>
+
+    <p class="footer-note">充氧宝 · 情绪健康 AI 监测及调节系统<br>IP 陪伴融合网页版 V3 · 演示原型 · 非医疗用途</p>
+  </div>
+
+  <!-- 漂浮小氧宝（非首页常驻陪伴） -->
+  <div class="mini-yb-bubble" id="miniBubble"></div>
+  <svg class="mini-yb" id="miniYb" viewBox="0 0 180 190" style="display:none">
+    <ellipse cx="90" cy="166" rx="44" ry="9" fill="rgba(0,0,0,.18)"/>
+    <path fill="url(#bodyGrad)" filter="url(#bodyInnerGlow)"
+      d="M90 14 C138 14 162 52 162 96 C162 144 130 176 90 176 C50 176 18 144 18 96 C18 52 42 14 90 14 Z"/>
+    <path fill="rgba(255,255,255,.26)" d="M50 56 C66 32 104 25 127 42 C103 39 73 45 56 75 C50 71 46 63 50 56 Z"/>
+    <circle id="miniCore" cx="90" cy="112" r="22" fill="url(#coreGrad)"/>
+    <g stroke="#0B2A26" stroke-width="5" stroke-linecap="round" fill="#0B2A26">
+      <circle cx="66" cy="72" r="5"/><circle cx="114" cy="72" r="5"/>
+    </g>
+    <path stroke="#0B2A26" stroke-width="5" stroke-linecap="round" fill="none" d="M76 94 Q90 102 104 94"/>
+  </svg>
+
+  <!-- 底部导航 -->
+  <nav class="nav">
+    <button class="on" data-p="home"><i>🏠</i>首页</button>
+    <button data-p="test"><i>🧪</i>测评</button>
+    <button data-p="adjust"><i>🫧</i>调节</button>
+    <button data-p="growth"><i>🌱</i>成长</button>
+    <button data-p="me"><i>👤</i>我的</button>
+  </nav>
+
+  <!-- 分享卡弹层 -->
+  <div class="share-mask" id="shareMask">
+    <div class="share-box">
+      <canvas id="shareCanvas" width="750" height="1334"></canvas>
+      <button class="cta" onclick="document.getElementById('shareMask').classList.remove('on')">关闭</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ================================================================
+ * 充氧宝 · IP 陪伴融合网页版 V3（视觉收口版）
+ * 状态契约（唯一真相源）：
+ *   yangbaoState = { oxygenLevel, emotionType, growthStage, scene }
+ *   唯一渲染入口 renderYangbao(state) —— IP 表现只读 yangbaoState。
+ *
+ *   personaState = { personaType, personaName, careerLabel, assessedAt }
+ *   【红线】personaState 为新增独立字段，仅 Identity UI 层消费；
+ *           renderYangbao() 不得读取 personaState。
+ * 视觉红线：CTA 恒 #35D6B8；不做 8 套主题页；氧宝外观不随人格变化。
+ * 模块覆盖：模块0测评入口 / 模块1打卡 / 模块2监测 / 模块3调节 / 模块4成长 / 模块5我的
+ * ================================================================ */
+
+/* ---------- 持久化 ---------- */
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem('cyb_'+k); return v===null? d : JSON.parse(v);}catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem('cyb_'+k, JSON.stringify(v)); }catch(e){} }
+};
+
+/* ---------- 唯一状态源 ---------- */
+const yangbaoState = {
+  oxygenLevel: store.get('oxy', null) ?? 65,
+  emotionType: store.get('emo', 'micro'),
+  growthStage: 'seed',
+  scene: 'home'
+};
+
+/* ---------- 氧人格 Identity 层（独立状态 · 命名/职业/8态色均冻结） ---------- */
+const PERSONAS = {
+  'oxy-yong': { name:'氧涌', career:'高原氧王', color:'#35D6B8' },
+  'oxy-yun':  { name:'氧蕴', career:'深海静氧', color:'#5AA7FF' },
+  'oxy-xi':   { name:'氧曦', career:'春风型',   color:'#FFB84D' },
+  'oxy-mi':   { name:'氧谧', career:'晨雾型',   color:'#A78BFA' },
+  'oxy-ran':  { name:'氧燃', career:'急氧型',   color:'#FF6B6B' },
+  'oxy-yu':   { name:'氧语', career:'岩洞型',   color:'#8B95A7' },
+  'oxy-ju':   { name:'氧聚', career:'氧气吧主', color:'#FFD166' },
+  'oxy-ban':  { name:'氧伴', career:'苔藓型',   color:'#7BC96F' }
+};
+const personaState = store.get('persona', { personaType:null, personaName:null, careerLabel:null, assessedAt:null });
+
+/* ---------- 情绪视觉映射（8 态色 token 取色 · 品牌命名注释） ---------- */
+const EMOTION_VISUALS = {
+  full:    { label:'满氧',   core:'#35D6B8', /* 氧涌 */ glow:1.0, bubbles:{n:8,size:1.0,speed:1.4}, motion:'bob-lively',
+             eyes:'happy',  mouth:'M74 90 Q90 108 106 90', blush:1,   say:'哇，今天元气满满！✨', oxy:88 },
+  micro:   { label:'微氧',   core:'#5AA7FF', /* 氧蕴 */ glow:0.7, bubbles:{n:5,size:0.9,speed:1.0}, motion:'bob-breath',
+             eyes:'calm',   mouth:'M76 94 Q90 102 104 94', blush:0.6, say:'今天也很平稳，一起加油吧', oxy:65 },
+  low:     { label:'缺氧',   core:'#8B95A7', /* 氧语 */ glow:0.35,bubbles:{n:2,size:0.8,speed:0.5}, motion:'bob-slow',
+             eyes:'droopy', mouth:'M78 98 Q90 94 102 98',  blush:0.2, say:'氧宝陪着你，慢慢来 🫂', oxy:38 },
+  tense:   { label:'紧绷',   core:'#FFB84D', /* 氧曦 */ glow:0.6, bubbles:{n:10,size:0.5,speed:1.9},motion:'bob-tremble',
+             eyes:'tense',  mouth:'M76 96 Q83 91 90 96 Q97 101 104 96', blush:0, say:'深呼吸，氧宝在你身边', oxy:45 },
+  healing: { label:'修复中', core:'#A78BFA', /* 氧谧 */ glow:0.85,bubbles:{n:6,size:1.15,speed:0.8},motion:'bob-heal',
+             eyes:'closed', mouth:'M74 90 Q90 106 106 90', blush:0.8, say:'正在变好，继续保持 💜', oxy:72 }
+};
+/* 场景陪伴话术：氧宝在每个模块都"在场" */
+const SCENE_SAY = {
+  home:   null, /* 首页用情绪话术 */
+  test:   '测一次，看看你是什么「氧」🧪',
+  adjust: '跟我一起，慢慢把氧充满 🫧',
+  growth: '你看，这几天在变好哦 🌱',
+  me:     '授权都由你说了算，氧宝听你的'
+};
+const GROWTH_ENV = {
+  seed:   { mist:0.85, plants:[],             sprout:0, label:'氧气小苗 🌱' },
+  sprout: { mist:0.40, plants:['🌱'],         sprout:1, label:'氧气小苗 🌿' },
+  bloom:  { mist:0.08, plants:['🌿','🌸','🌱'], sprout:1, label:'氧气小花园 🌸' }
+};
+const EYES = {
+  happy:  '<path d="M58 74 Q66 64 74 74" fill="none"/><path d="M106 74 Q114 64 122 74" fill="none"/>',
+  calm:   '<circle cx="66" cy="72" r="5"/><circle cx="114" cy="72" r="5"/>',
+  droopy: '<path d="M58 78 Q66 74 74 78" fill="none"/><path d="M106 78 Q114 74 122 78" fill="none"/>',
+  tense:  '<path d="M58 70 L74 74" fill="none"/><path d="M122 70 L106 74" fill="none"/><circle cx="66" cy="78" r="4"/><circle cx="114" cy="78" r="4"/>',
+  closed: '<path d="M58 76 Q66 70 74 76" fill="none"/><path d="M106 76 Q114 70 122 76" fill="none"/>'
+};
+/* 8 人格图鉴（模块0 · 8 态色） */
+const PERSONA_COLORS = [
+  ['高原氧王','#35D6B8'],['深海静氧','#5AA7FF'],['春风型','#FFB84D'],['晨雾型','#A78BFA'],
+  ['急氧型','#FF6B6B'],['岩洞型','#8B95A7'],['氧气吧主','#FFD166'],['苔藓型','#7BC96F']
+];
+
+/* ---------- ④ 打卡 placeholder · 8 套（未测评用通用） ---------- */
+const CHECKIN_PLACEHOLDERS = {
+  'oxy-yong':'今天又征服了什么？说说看',
+  'oxy-yun':'积累了什么小收获？记下来',
+  'oxy-xi':'今天发现了什么温柔瞬间？',
+  'oxy-mi':'今天有给自己留安静时间吗？',
+  'oxy-ran':'今天的行动值拉满了吗？',
+  'oxy-yu':'有什么想被听见的？说吧',
+  'oxy-ju':'今天和谁在一起很开心？',
+  'oxy-ban':'今天谁在陪着你？感恩片刻'
+};
+/* ---------- ⑤ 打卡反馈语 · 24 条（8 人格 × 高/中/低氧值档）
+   骨架接 router_item_2_letter_copy（算法侧维护）；
+   待 #3 触发词白名单合规复核定稿后替换为冻结文案，槽位结构不变 ---------- */
+const CHECKIN_FEEDBACK = {
+  'oxy-yong': { hi:'氧涌如你，今天也能量满满！',        mid:'稳稳的节奏，正是高原氧王的本色。',   lo:'低氧只是暂时歇脚，你随时能再出发。' },
+  'oxy-yun':  { hi:'蓄积已久的能量，今天满格了。',       mid:'深水静流，你的节奏一直很稳。',       lo:'深海里也有安静的力量，慢慢来。' },
+  'oxy-xi':   { hi:'你今天的暖意，把周围都照亮了。',     mid:'春风不疾不徐，温柔也在积累。',       lo:'春风也有停歇时，先暖一暖自己。' },
+  'oxy-mi':   { hi:'安静中蓄满的能量，今天格外透亮。',   mid:'晨雾慢慢舒展，你的节奏刚刚好。',     lo:'在安静里待一会儿，修复正在发生。' },
+  'oxy-ran':  { hi:'行动值拉满！今天的你势不可挡。',     mid:'冲刺之间也记得换气，节奏很稳。',     lo:'引擎需要预热，慢慢来才能冲得远。' },
+  'oxy-yu':   { hi:'不声不响，今天的你亮得惊人。',       mid:'在自己的节奏里较劲，一直很酷。',     lo:'岩洞里歇一歇，灯一直给你亮着。' },
+  'oxy-ju':   { hi:'你聚起的热闹，今天也温暖了你自己。', mid:'照顾别人的同时，你也稳稳的。',       lo:'今天先照顾自己，茶给你温好了。' },
+  'oxy-ban':  { hi:'稳定的力量，今天格外饱满。',         mid:'不抢光的你，一直让森林更稳。',       lo:'扎下的根不会白扎，慢慢恢复。' }
+};
+/* ---------- ⑨ 呼吸引导语 · 8 条 ---------- */
+const BREATH_GUIDE = {
+  'oxy-yong':'吸入能量…呼出疲惫…继续保持满格',
+  'oxy-yun':'吸气储备…呼气释放…让力量蓄积',
+  'oxy-xi':'缓缓嗅到清晨…让温柔流经全身',
+  'oxy-mi':'在安静中修养…每一次呼吸都在修复',
+  'oxy-ran':'把压力呼出去…让行动充进来',
+  'oxy-yu':'让每一口呼吸说出你的心事',
+  'oxy-ju':'想象有人正陪着你一起呼吸',
+  'oxy-ban':'稳稳地、慢慢地…我一直在'
+};
+/* ---------- ⑦ 8 枚人格专属徽章（替换通用徽章 · 解锁条件覆盖各人格行为特征） ---------- */
+const PERSONA_BADGES = [
+  { id:'oxy-yong', icon:'🏔️', name:'氧涌·满氧行者',   color:'#35D6B8', cond:'累计7天氧值≥80',   ok:() => store.get('hiOxyDays',0) >= 7 },
+  { id:'oxy-yun',  icon:'🌊', name:'氧蕴·蓄氧之力',   color:'#5AA7FF', cond:'累计调节≥60分钟',  ok:() => store.get('regMinutes',0) >= 60 },
+  { id:'oxy-xi',   icon:'🌅', name:'氧曦·温柔观察者', color:'#FFB84D', cond:'连续打卡≥14天',    ok:() => store.get('streak',0) >= 14 },
+  { id:'oxy-mi',   icon:'🫧', name:'氧谧·安静修复师', color:'#A78BFA', cond:'呼吸氧舱≥10次',    ok:() => store.get('breathed',0) >= 10 },
+  { id:'oxy-ran',  icon:'⚡', name:'氧燃·行动派',     color:'#FF6B6B', cond:'单日氧值提升≥30',  ok:() => store.get('maxJump',0) >= 30 },
+  { id:'oxy-yu',   icon:'🕳️', name:'氧语·树洞倾诉者', color:'#8B95A7', cond:'使用树洞≥5次',     ok:() => store.get('treeholes',0) >= 5 },
+  { id:'oxy-ju',   icon:'💌', name:'氧聚·社交暖氧',   color:'#FFD166', cond:'分享卡片≥3次',     ok:() => store.get('shared',0) >= 3 },
+  { id:'oxy-ban',  icon:'🌿', name:'氧伴·稳定守护',   color:'#7BC96F', cond:'连续使用≥30天',    ok:() => store.get('streak',0) >= 30 }
+];
+
+const $ = id => document.getElementById(id);
+
+/* ---------- 唯一渲染入口（红线：不得读取 personaState） ---------- */
+function renderYangbao(state){
+  const v  = EMOTION_VISUALS[state.emotionType] || EMOTION_VISUALS.micro;
+  const lv = Math.max(0, Math.min(100, Math.round(state.oxygenLevel)));
+
+  $('ybWrap').className = 'yb-body-wrap ' + v.motion;
+  $('ybEyes').innerHTML = EYES[v.eyes];
+  $('ybMouth').setAttribute('d', v.mouth);
+  $('ybBlush').setAttribute('opacity', v.blush);
+  const glow = v.glow * (0.6 + lv / 250);
+  $('coreMid').setAttribute('stop-color', v.core);
+  $('coreEdge').setAttribute('stop-color', v.core);
+  $('ybCore').setAttribute('r', 18 + glow * 8);
+  $('coreHalo').style.background = 'radial-gradient(circle,' + v.core + '55, transparent 70%)';
+  $('coreHalo').style.opacity = glow;
+  $('coreHalo').style.transform = 'translate(-50%,-50%) scale(' + (0.85 + glow * 0.55) + ')';
+
+  const bb = $('bubbles'); bb.innerHTML = '';
+  for (let i = 0; i < v.bubbles.n; i++){
+    const s = document.createElement('span'); s.className = 'bub';
+    const sz = (8 + Math.random() * 10) * v.bubbles.size;
+    s.style.cssText = 'width:'+sz+'px;height:'+sz+'px;left:'+(8+Math.random()*84)+'%;bottom:'+(Math.random()*30)+
+      'px;animation-duration:'+(4.5/v.bubbles.speed)+'s;animation-delay:'+(Math.random()*3)+'s';
+    bb.appendChild(s);
+  }
+  $('statePill').textContent = v.label;
+  $('ybSay').textContent = SCENE_SAY[state.scene] || v.say;
+
+  const C = 163.4;
+  $('oxyArc').style.strokeDashoffset = C * (1 - lv / 100);
+  $('oxyArc').style.stroke = v.core;
+  $('oxyNum').textContent = lv;
+  $('glowFloor').style.opacity = 0.3 + lv / 160;
+
+  const g = GROWTH_ENV[state.growthStage] || GROWTH_ENV.seed;
+  document.querySelectorAll('.mist').forEach(m => m.style.setProperty('--mist', g.mist));
+  $('plants').innerHTML = g.plants.join(' ');
+  $('plants').style.opacity = g.plants.length ? 1 : 0;
+  $('ybSprout').setAttribute('opacity', g.sprout);
+  $('growthLabel').textContent = '· ' + g.label;
+
+  /* 漂浮小氧宝氧芯同色 */
+  const mc = $('miniCore'); if (mc) mc.setAttribute('fill', v.core);
+}
+
+/* ================================================================
+ * Identity UI 层（独立消费 personaState · 与 renderYangbao 分层不打架）
+ * ================================================================ */
+function currentPersona(){
+  return (personaState.personaType && PERSONAS[personaState.personaType]) ? PERSONAS[personaState.personaType] : null;
+}
+function renderIdentity(){
+  const p = currentPersona();
+
+  /* ① 首页身份条（未测评 / 已测评两态） */
+  const bar = $('idBar');
+  if (p){
+    bar.innerHTML = '<span class="id-dot" style="background:'+p.color+';color:'+p.color+'"></span>' +
+      '<span class="id-name" style="color:'+p.color+'">'+personaState.personaName+'</span>' +
+      '<span class="id-career">· '+personaState.careerLabel+'</span><span class="id-arrow">→</span>';
+    bar.onclick = () => alert('Demo：正式版跳转 cyb-oxygen-personality-v3.html「查看模式」（完整人格报告，无测评流程）');
+  } else {
+    bar.innerHTML = '<span class="id-dot" style="background:rgba(255,255,255,.18);color:transparent"></span>' +
+      '<span style="color:var(--sub)">尚未解锁氧人格 · 3 题快测发现你的氧系身份</span><span class="id-arrow">→</span>';
+    bar.onclick = () => switchTab('test');
+  }
+
+  /* ② 问候语人格化 */
+  const h = new Date().getHours();
+  const daypart = h < 6 ? '夜深了' : h < 12 ? '早安' : h < 18 ? '下午好' : '晚上好';
+  if (p){
+    $('greet').textContent = daypart + '，' + personaState.personaName + '的你 🫧';
+    $('greetSub').textContent = '我是氧宝，今天的氧值怎么样？';
+  } else {
+    $('greet').textContent = daypart + '，我是氧宝 🫧';
+    $('greetSub').textContent = '测测你的氧人格？· 你的氧气泡小守护者';
+  }
+
+  /* ③ 主舞台氛围人格色层（CSS 变量注入冻结 8 态色 · 仅背景晕染，不覆写氧芯情绪色） */
+  if (p){
+    $('stage').style.setProperty('--persona-c', p.color);
+    $('personaVeil').style.opacity = .08;   /* 人格氛围层 ≤ 0.10，不抢氧芯 */
+    $('personaGlow').style.opacity = .10;   /* 底座人格色仅作轻提示 */
+  } else {
+    $('personaVeil').style.opacity = 0;
+    $('personaGlow').style.opacity = 0;
+  }
+
+  /* ④ 打卡 placeholder（8 套 / 未测评通用） */
+  $('oneLine').placeholder = CHECKIN_PLACEHOLDERS[personaState.personaType] || '一句话说说今天（可选）';
+
+  /* streak 人格叙事行（组合 yangbaoState.growthStage + personaState，identity 层负责组合展示） */
+  const streak = store.get('streak', 0);
+  const g = GROWTH_ENV[yangbaoState.growthStage] || GROWTH_ENV.seed;
+  $('growthLabel').textContent = '· ' + g.label + (p && streak > 0 ? ' · ' + personaState.personaName + '之路 · 第 ' + streak + ' 天' : '');
+
+  /* 首页底部人格固定标识（与非医疗声明并列） */
+  $('homePersonaFoot').textContent = p
+    ? '你的氧人格：' + personaState.personaName + '（' + personaState.careerLabel + '）· 氧系测评 V3 认证'
+    : '你的氧人格：尚未解锁 · 测评后在此展示';
+
+  /* ⑥ 成长页人格卡片 */
+  const pc = $('personaCard');
+  if (p){
+    pc.innerHTML = '<span class="pc-dot" style="background:'+p.color+';color:'+p.color+'"></span>' +
+      '<span><span class="pc-name" style="color:'+p.color+'">'+personaState.personaName+' · '+personaState.careerLabel+'</span>' +
+      '<span class="pc-sub">你的氧系人格 V3 · ' + (personaState.assessedAt ? new Date(personaState.assessedAt).toLocaleDateString('zh-CN') : '') + ' 认证</span></span>' +
+      '<span class="pc-go" onclick="alert(\'Demo：正式版跳转 cyb-oxygen-personality-v3.html 查看模式\')">查看完整报告 →</span>';
+  } else {
+    pc.innerHTML = '<span class="pc-dot" style="background:rgba(255,255,255,.15);color:transparent"></span>' +
+      '<span><span class="pc-name" style="color:var(--sub)">尚未解锁氧人格</span>' +
+      '<span class="pc-sub">3 题快测发现你的氧系身份，解锁人格徽章与专属陪伴</span></span>' +
+      '<span class="pc-go" onclick="switchTab(\'test\')">去测评 →</span>';
+  }
+
+  /* ⑨ 呼吸引导语（未开始呼吸时展示人格化引导） */
+  if (!breathing) $('breathSub').textContent = BREATH_GUIDE[personaState.personaType] || '跟随氧宝的节奏';
+
+  /* 模块5 我的页人格标识 */
+  $('mePersona').textContent = p ? personaState.personaName + '（' + personaState.careerLabel + '）' : '未测定';
+
+  /* ⑦ 徽章 mine 高亮随人格变化 */
+  renderBadges();
+}
+
+function patchState(patch){ Object.assign(yangbaoState, patch); renderYangbao(yangbaoState); renderIdentity(); }
+
+/* ---------- 成长等级：由连续打卡天数驱动 ---------- */
+function growthFromStreak(streak){ return streak >= 7 ? 'bloom' : streak >= 3 ? 'sprout' : 'seed'; }
+
+/* ---------- 导航切换（场景即陪伴） ---------- */
+function switchTab(p){
+  document.querySelectorAll('.page').forEach(x => x.classList.remove('on'));
+  $('page-' + p).classList.add('on');
+  document.querySelectorAll('.nav button').forEach(b => b.classList.toggle('on', b.dataset.p === p));
+  $('miniYb').style.display = p === 'home' ? 'none' : 'block';
+  $('miniBubble').classList.remove('on');
+  patchState({ scene: p });
+  document.querySelector('.scroll').scrollTop = 0;
+  if (p === 'growth') drawTrend();
+}
+document.querySelectorAll('.nav button').forEach(b => b.onclick = () => switchTab(b.dataset.p));
+
+/* 漂浮氧宝点按说话 */
+$('miniYb').onclick = () => {
+  const v = EMOTION_VISUALS[yangbaoState.emotionType];
+  $('miniBubble').textContent = (SCENE_SAY[yangbaoState.scene] || v.say);
+  $('miniBubble').classList.toggle('on');
+};
+
+/* ---------- 模块1 · 打卡 ---------- */
+document.querySelectorAll('#emoSeg button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('#emoSeg button').forEach(x => x.classList.remove('on'));
+  b.classList.add('on');
+  patchState({ emotionType: b.dataset.v, oxygenLevel: EMOTION_VISUALS[b.dataset.v].oxy });
+});
+$('checkinBtn').onclick = () => {
+  const emo = document.querySelector('#emoSeg button.on').dataset.v;
+  const base = EMOTION_VISUALS[emo].oxy;
+  const prev = Math.round(yangbaoState.oxygenLevel);
+  const lv = Math.max(5, Math.min(100, base + Math.round((Math.random() - .5) * 10)));
+
+  /* 连续打卡：同日不重复累加 */
+  const today = new Date().toDateString();
+  let streak = store.get('streak', 0);
+  const last = store.get('lastDay', '');
+  if (last !== today){
+    const y = new Date(Date.now() - 864e5).toDateString();
+    streak = (last === y) ? streak + 1 : 1;
+    store.set('streak', streak); store.set('lastDay', today);
+  }
+  store.set('oxy', lv); store.set('emo', emo);
+  const hist = store.get('hist', []); hist.push({ d: today, v: lv }); store.set('hist', hist.slice(-14));
+
+  /* 人格徽章行为计数：高氧天数 / 单日最大提升 */
+  if (lv >= 80) store.set('hiOxyDays', store.get('hiOxyDays', 0) + 1);
+  if (lv - prev > store.get('maxJump', 0)) store.set('maxJump', lv - prev);
+
+  $('streakNum').textContent = streak; $('meStreak').textContent = streak;
+  patchState({ emotionType: emo, oxygenLevel: lv, growthStage: growthFromStreak(streak) });
+
+  /* ⑤ 打卡反馈：一句话优先；否则按人格 × 氧值档分发 24 条反馈语 */
+  const line = $('oneLine').value.trim();
+  const fb = CHECKIN_FEEDBACK[personaState.personaType];
+  if (line){
+    $('ybSay').textContent = '氧宝记住了：「' + line + '」';
+  } else if (fb){
+    const tier = lv >= 75 ? 'hi' : lv >= 50 ? 'mid' : 'lo';
+    $('ybSay').textContent = fb[tier] + '（今日氧值 ' + lv + '）';
+  } else {
+    $('ybSay').textContent = '打卡成功！氧值 ' + lv + '，明天也要来哦 🌿';
+  }
+  $('oneLine').value = '';
+  renderBadges();
+};
+
+/* ---------- 模块3 · 呼吸氧舱 ---------- */
+let breathing = false;
+$('breathBtn').onclick = () => {
+  if (breathing) return;
+  breathing = true;
+  $('breathBtn').disabled = true;
+  const prevEmo = yangbaoState.emotionType;
+  patchState({ emotionType: 'healing' });
+  const circle = $('breathCircle'), txt = $('breathTxt'), sub = $('breathSub');
+  const guide = BREATH_GUIDE[personaState.personaType];
+  const steps = [['吸气', 4, 'scale(1.35)'], ['屏息', 4, 'scale(1.35)'], ['呼气', 6, 'scale(1)']];
+  let round = 0;
+  function runStep(){
+    if (round >= 3){ /* 完成：氧值 +3，闭合「调节→复测」 */
+      const lv = Math.min(100, Math.round(yangbaoState.oxygenLevel) + 3);
+      store.set('oxy', lv);
+      store.set('breathed', store.get('breathed', 0) + 1);
+      store.set('regMinutes', store.get('regMinutes', 0) + 1);
+      patchState({ emotionType: prevEmo === 'low' || prevEmo === 'tense' ? 'micro' : prevEmo, oxygenLevel: lv });
+      txt.textContent = '完成'; sub.textContent = '氧值 +3，去首页看看氧宝吧';
+      $('breathBtn').disabled = false; breathing = false;
+      $('ybSay').textContent = '做完呼吸，氧宝感觉你松了一点 💜';
+      renderBadges();
+      return;
+    }
+    let i = 0;
+    function next(){
+      if (i >= steps.length){ round++; runStep(); return; }
+      const [label, secs, scale] = steps[i];
+      circle.style.transition = 'transform ' + (label === '屏息' ? .6 : secs) + 's ease-in-out';
+      circle.style.transform = scale;
+      txt.textContent = label;
+      /* ⑨ 呼吸引导语人格化：首轮展示人格引导语，其余轮次展示节奏信息 */
+      sub.textContent = (guide && round === 0 && i === 0) ? guide : ('第 ' + (round + 1) + ' / 3 轮 · ' + secs + ' 秒');
+      setTimeout(() => { i++; next(); }, secs * 1000);
+    }
+    next();
+  }
+  runStep();
+};
+
+/* ---------- 树洞（demo 回应 + 合规边界） ---------- */
+function treeholeSend(){
+  const t = $('treeholeInput').value.trim();
+  if (!t) return;
+  $('treeholeInput').value = '';
+  store.set('treeholes', store.get('treeholes', 0) + 1);
+  patchState({ emotionType: 'healing' });
+  $('miniBubble').textContent = '氧宝收到了，会一直陪着你。需要的时候，随时再来树洞 🫂';
+  $('miniBubble').classList.add('on');
+  setTimeout(() => $('miniBubble').classList.remove('on'), 4000);
+  renderBadges();
+}
+
+/* ---------- 模块4 · 趋势图 / 徽章 / 挑战 / 分享卡 ---------- */
+function drawTrend(){
+  const cv = $('trendChart'), ctx = cv.getContext('2d');
+  const W = cv.width = cv.offsetWidth * 2, H = cv.height = cv.offsetHeight * 2;
+  ctx.scale(1, 1);
+  const mock = [58, 64, 52, 70, 66, 74];
+  const vals = mock.concat([Math.round(yangbaoState.oxygenLevel)]);
+  const labels = ['一','二','三','四','五','六','今'];
+  const max = 100, pad = 24, bw = (W - pad * 2) / vals.length;
+  ctx.clearRect(0, 0, W, H);
+  vals.forEach((v, i) => {
+    const h = (H - pad * 2) * (v / max);
+    const x = pad + i * bw + bw * .18, y = H - pad - h;
+    const grad = ctx.createLinearGradient(0, y, 0, H - pad);
+    grad.addColorStop(0, '#35D6B8'); grad.addColorStop(1, 'rgba(53,214,184,.08)');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.roundRect(x, y, bw * .64, h, 8);
+    ctx.fill();
+    ctx.fillStyle = '#93A4C3'; ctx.font = '20px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText(labels[i], x + bw * .32, H - 4);
+    ctx.fillStyle = '#EAF2FF'; ctx.fillText(v, x + bw * .32, y - 8);
+  });
+}
+/* ⑦ 8 枚人格徽章：解锁逻辑 + 自己的人格徽章 mine 高亮 */
+function renderBadges(){
+  $('badgeGrid').innerHTML = PERSONA_BADGES.map(b => {
+    const got = b.ok();
+    const mine = personaState.personaType === b.id;
+    const cls = 'badge' + (mine ? ' mine' : got ? ' got' : '');
+    const style = mine ? ' style="color:' + b.color + '"' : '';
+    return '<div class="' + cls + '"' + style + '><i>' + b.icon + '</i>' + b.name +
+      '<span class="b-cond">' + (got || mine ? '已解锁' : b.cond) + '</span></div>';
+  }).join('');
+}
+function renderChallenge(){
+  const s = Math.min(7, store.get('streak', 0));
+  $('challengeFill').style.width = (s / 7 * 100) + '%';
+  $('dayDots').innerHTML = Array.from({ length: 7 }, (_, i) =>
+    '<span class="' + (i < s ? 'did' : '') + '">' + (i + 1) + '</span>').join('');
+}
+/* ⑧ 分享卡：人格签名行 + 卡面人格色渐变（CTA 条不变 · 单色 #35D6B8 · 不可移除） */
+function makeShareCard(){
+  store.set('shared', store.get('shared', 0) + 1);
+  renderBadges();
+  const cv = $('shareCanvas'), ctx = cv.getContext('2d');
+  const v = EMOTION_VISUALS[yangbaoState.emotionType];
+  const lv = Math.round(yangbaoState.oxygenLevel);
+  const p = currentPersona();
+  const W = 750, H = 1334;
+  ctx.clearRect(0, 0, W, H);
+
+  /* 750×1334 固定网格：64 外边距 / 顶部签名 176 / 主视觉 570 / 信息 300 / CTA 130 */
+  const bg = ctx.createLinearGradient(0, 0, 0, H);
+  bg.addColorStop(0, '#0B1730'); bg.addColorStop(.52, '#081122'); bg.addColorStop(1, '#060B1A');
+  ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+  if (p){
+    const pg = ctx.createRadialGradient(375, 236, 20, 375, 236, 520);
+    pg.addColorStop(0, p.color + '14'); /* 0.08 */
+    pg.addColorStop(1, p.color + '00');
+    ctx.fillStyle = pg; ctx.fillRect(0, 0, W, H);
+  }
+
+  ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+  ctx.fillStyle = 'rgba(255,255,255,.08)';
+  ctx.beginPath(); ctx.roundRect(64, 72, 622, 126, 28); ctx.fill();
+  ctx.strokeStyle = 'rgba(255,255,255,.16)'; ctx.lineWidth = 2; ctx.stroke();
+  if (p){
+    ctx.fillStyle = p.color; ctx.beginPath(); ctx.arc(118, 135, 20, 0, 7); ctx.fill();
+    ctx.fillStyle = '#EAF2FF'; ctx.font = '800 38px sans-serif';
+    ctx.fillText(personaState.personaName + ' · ' + personaState.careerLabel, 156, 122);
+    ctx.fillStyle = '#93A4C3'; ctx.font = '26px sans-serif';
+    ctx.fillText('我的氧系人格身份', 156, 160);
+  } else {
+    ctx.fillStyle = 'rgba(255,255,255,.22)'; ctx.beginPath(); ctx.arc(118, 135, 20, 0, 7); ctx.fill();
+    ctx.fillStyle = '#EAF2FF'; ctx.font = '800 38px sans-serif';
+    ctx.fillText('尚未解锁氧人格', 156, 122);
+    ctx.fillStyle = '#93A4C3'; ctx.font = '26px sans-serif';
+    ctx.fillText('先测测你属于哪种氧', 156, 160);
+  }
+
+  const halo = ctx.createRadialGradient(375, 488, 40, 375, 488, 300);
+  halo.addColorStop(0, v.core + '42'); halo.addColorStop(1, v.core + '00');
+  ctx.fillStyle = halo; ctx.beginPath(); ctx.arc(375, 488, 300, 0, 7); ctx.fill();
+  ctx.fillStyle = 'rgba(255,255,255,.075)';
+  ctx.beginPath(); ctx.roundRect(116, 266, 518, 514, 32); ctx.fill();
+  ctx.strokeStyle = 'rgba(255,255,255,.15)'; ctx.stroke();
+
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#EAF2FF'; ctx.font = '800 42px sans-serif';
+  ctx.fillText('今日氧值', 375, 354);
+  ctx.fillStyle = v.core; ctx.beginPath(); ctx.arc(375, 500, 136, 0, 7); ctx.fill();
+  ctx.fillStyle = v.core + '34'; ctx.beginPath(); ctx.arc(375, 500, 192, 0, 7); ctx.fill();
+  ctx.fillStyle = '#061B2B'; ctx.font = '900 108px sans-serif';
+  ctx.fillText(lv, 375, 524);
+  ctx.fillStyle = '#EAF2FF'; ctx.font = '800 36px sans-serif';
+  ctx.fillText(v.label, 375, 654);
+
+  /* 氧宝陪伴形象固定在右下同框，不随人格变外观 */
+  const ybX = 536, ybY = 716;
+  ctx.fillStyle = 'rgba(0,0,0,.18)'; ctx.beginPath(); ctx.ellipse(ybX, ybY + 72, 74, 18, 0, 0, 7); ctx.fill();
+  const body = ctx.createRadialGradient(ybX - 32, ybY - 54, 10, ybX, ybY, 116);
+  body.addColorStop(0, '#DFFFF3'); body.addColorStop(.55, '#6FD8C0'); body.addColorStop(1, '#3AA8C9');
+  ctx.fillStyle = body; ctx.beginPath(); ctx.ellipse(ybX, ybY, 74, 88, 0, 0, 7); ctx.fill();
+  ctx.fillStyle = 'rgba(255,255,255,.28)'; ctx.beginPath(); ctx.ellipse(ybX - 26, ybY - 40, 24, 11, -.45, 0, 7); ctx.fill();
+  ctx.fillStyle = '#0B2A26'; ctx.beginPath(); ctx.arc(ybX - 24, ybY - 18, 6, 0, 7); ctx.arc(ybX + 24, ybY - 18, 6, 0, 7); ctx.fill();
+  ctx.strokeStyle = '#0B2A26'; ctx.lineWidth = 6; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(ybX - 18, ybY + 12); ctx.quadraticCurveTo(ybX, ybY + 24, ybX + 18, ybY + 12); ctx.stroke();
+  ctx.fillStyle = v.core; ctx.beginPath(); ctx.arc(ybX, ybY + 40, 26, 0, 7); ctx.fill();
+
+  ctx.textAlign = 'left';
+  ctx.fillStyle = 'rgba(255,255,255,.075)';
+  ctx.beginPath(); ctx.roundRect(64, 846, 622, 194, 24); ctx.fill();
+  ctx.strokeStyle = 'rgba(255,255,255,.12)'; ctx.stroke();
+  ctx.fillStyle = '#EAF2FF'; ctx.font = '800 34px sans-serif';
+  ctx.fillText('氧宝陪我一起充氧', 104, 908);
+  ctx.fillStyle = '#93A4C3'; ctx.font = '28px sans-serif';
+  ctx.fillText('连续打卡 ' + store.get('streak', 0) + ' 天', 104, 962);
+  ctx.fillText(new Date().toLocaleDateString('zh-CN'), 104, 1008);
+
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#93A4C3'; ctx.font = '24px sans-serif';
+  ctx.fillText('趣味测评 · 非医疗建议', 375, 1160);
+  ctx.fillStyle = '#35D6B8'; ctx.fillRect(0, H - 130, W, 130);
+  ctx.fillStyle = '#061B2B'; ctx.font = '800 38px sans-serif';
+  ctx.fillText('去充氧宝测你的情绪氧值 ->', 375, H - 52);
+  $('shareMask').classList.add('on');
+}
+$('shareMask').onclick = e => { if (e.target === $('shareMask')) $('shareMask').classList.remove('on'); };
+
+/* ---------- 模块0 · 人格图鉴 + 演示测评（正式版由 v3 回写 personaState） ---------- */
+$('personaGrid').innerHTML = PERSONA_COLORS.map(([n, c]) =>
+  '<div class="persona-chip" style="color:' + c + '"><i style="background:' + c + '"></i><span style="color:var(--txt)">' + n + '</span></div>').join('');
+$('demoAssessBtn').onclick = () => {
+  /* Demo：随机写入测评结果；正式版由 cyb-oxygen-personality-v3 测评主流程回写 */
+  const keys = Object.keys(PERSONAS);
+  const k = keys[Math.floor(Math.random() * keys.length)];
+  personaState.personaType = k;
+  personaState.personaName = PERSONAS[k].name;
+  personaState.careerLabel = PERSONAS[k].career;
+  personaState.assessedAt = new Date().toISOString();
+  store.set('persona', personaState);
+  renderIdentity();
+  switchTab('home');
+};
+
+/* ---------- 模块2/5 · 监测授权 ---------- */
+const mon = store.get('mon', { on: false, voice: false, text: false, usage: false });
+function renderMon(){
+  $('monMaster').classList.toggle('on', mon.on);
+  $('monSubs').style.opacity = mon.on ? 1 : .45;
+  $('monSubs').style.pointerEvents = mon.on ? 'auto' : 'none';
+  document.querySelectorAll('#monSubs .switch').forEach(sw => sw.classList.toggle('on', !!mon[sw.dataset.k]));
+  const n = ['voice','text','usage'].filter(k => mon[k]).length;
+  $('monSummary').textContent = mon.on ? '已开启 · ' + n + ' 类信号' : '未开启';
+  $('monSummary').style.color = mon.on ? 'var(--cyb-oxy-yong)' : 'var(--cyb-oxy-yu)';
+}
+$('monMaster').onclick = () => { mon.on = !mon.on; store.set('mon', mon); renderMon(); };
+document.querySelectorAll('#monSubs .switch').forEach(sw => sw.onclick = () => {
+  mon[sw.dataset.k] = !mon[sw.dataset.k]; store.set('mon', mon); renderMon();
+});
+/* 其它演示开关 */
+document.querySelectorAll('#page-me .card:nth-of-type(3) .switch').forEach(sw => sw.onclick = () => sw.classList.toggle('on'));
+
+/* ---------- 初始化 ---------- */
+const streak0 = store.get('streak', 0);
+yangbaoState.growthStage = growthFromStreak(streak0);
+$('streakNum').textContent = streak0; $('meStreak').textContent = streak0;
+document.querySelectorAll('#emoSeg button').forEach(b => b.classList.toggle('on', b.dataset.v === yangbaoState.emotionType));
+renderYangbao(yangbaoState);   /* 红线：仅读 yangbaoState */
+renderIdentity();              /* Identity 层独立渲染，组合展示在 renderYangbao 之后 */
+renderChallenge(); renderMon();
+</script>
+</body>
+</html>

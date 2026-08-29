@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>氧氧宝 V0.8 - UI 原型测试</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-color: #F4F7F6;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    /* 模拟手机容器样式 */
+    .phone-container {
+      width: 375px;
+      height: 812px;
+      border-radius: 40px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+      overflow: hidden;
+      position: relative;
+      background: #FAFAFA;
+      border: 8px solid #FFFFFF;
+    }
+    /* 自定义调色盘 */
+    .bg-oxygen-main { background-color: #BDEAD7; }
+    .bg-oxygen-sub { background-color: #A6E6C0; }
+    .bg-oxygen-bg { background-color: #F6FFF8; }
+    .text-oxygen-main { color: #2C6E49; }
+    .card-shadow { box-shadow: 0 4px 16px rgba(189, 234, 215, 0.25); }
+  </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen p-6">
+
+  <!-- 页面标题与顶部说明 -->
+  <div class="text-center mb-6">
+    <h1 class="text-2xl font-bold text-gray-800">氧氧宝 V0.8 全页面 UI 原型</h1>
+    <p class="text-sm text-gray-500 mt-1">每日给自己一点氧气，轻松呼吸每一天</p>
+    
+    <!-- 主色调展示小条 -->
+    <div class="flex justify-center items-center gap-2 mt-3 text-xs text-gray-600">
+      <span class="inline-block w-4 h-4 rounded-full bg-[#BDEAD7]"></span> #BDEAD7
+      <span class="inline-block w-4 h-4 rounded-full bg-[#A6E6C0]"></span> #A6E6C0
+      <span class="inline-block w-4 h-4 rounded-full bg-[#F6FFF8]"></span> #F6FFF8
+      <span class="inline-block w-4 h-4 rounded-full bg-[#8FD3C7]"></span> #8FD3C7
+    </div>
+  </div>
+
+  <!-- 手机 Frame 渲染区域 (首页 Home 演示) -->
+  <div class="phone-container flex flex-col justify-between">
+    
+    <!-- 顶部状态栏 -->
+    <div class="px-6 pt-3 flex justify-between items-center text-xs text-gray-700 font-semibold z-10">
+      <span>9:41</span>
+      <div class="flex gap-1.5 items-center">
+        <span>📶</span>
+        <span>⚡</span>
+      </div>
+    </div>
+
+    <!-- 可滚动内容区 -->
+    <div class="flex-1 overflow-y-auto px-4 pt-3 pb-20 no-scrollbar">
+      
+      <!-- 问候卡片 -->
+      <div class="p-4 rounded-2xl bg-gradient-to-br from-[#E2F7EC] to-[#F6FFF8] card-shadow mb-4 flex justify-between items-center">
+        <div>
+          <h2 class="text-base font-bold text-gray-800">下午好，涵涵 🌿</h2>
+          <p class="text-xs text-gray-500 mt-1">今天也记得给自己一点氧气噢~</p>
+          <div class="mt-2 text-xs bg-white/80 backdrop-blur px-2.5 py-1 rounded-full text-[#3B7A57] inline-block font-medium">
+            你的氧气状态：我都看在眼里呢~
+          </div>
+        </div>
+        <!-- IP 形象占位 -->
+        <div class="w-12 h-12 rounded-full bg-[#BDEAD7] flex items-center justify-center text-xl shadow-inner">
+          💧
+        </div>
+      </div>
+
+      <!-- 今日氧气地图 -->
+      <div class="bg-white rounded-2xl p-4 card-shadow mb-4">
+        <div class="flex justify-between items-center mb-3">
+          <span class="text-xs font-bold text-gray-800 flex items-center gap-1">
+            <span class="w-2 h-2 rounded-full bg-[#A6E6C0]"></span> 今日氧气地图
+          </span>
+          <span class="text-[10px] text-gray-400">ⓘ</span>
+        </div>
+        
+        <!-- 雷达/数值仪表盘中心区 -->
+        <div class="flex justify-center items-center my-2">
+          <div class="w-28 h-28 rounded-full bg-[#F6FFF8] border-4 border-[#BDEAD7] flex flex-col items-center justify-center relative shadow-sm">
+            <span class="text-xs text-gray-400">综合状态</span>
+            <span class="text-2xl font-black text-gray-800">86</span>
+            <span class="text-[10px] text-[#2C6E49] bg-[#E2F7EC] px-2 py-0.5 rounded-full mt-0.5">良好</span>
+          </div>
+        </div>
+
+        <!-- 维度数值网格 -->
+        <div class="grid grid-cols-2 gap-2 text-center text-xs mt-3 pt-3 border-t border-gray-100">
+          <div class="bg-gray-50 p-2 rounded-lg">
+            <div class="text-gray-400 text-[10px]">情绪能量</div>
+            <div class="font-bold text-gray-700 mt-0.5">82</div>
+          </div>
+          <div class="bg-gray-50 p-2 rounded-lg">
+            <div class="text-gray-400 text-[10px]">视觉疲劳度</div>
+            <div class="font-bold text-gray-700 mt-0.5">76</div>
+          </div>
+          <div class="bg-gray-50 p-2 rounded-lg">
+            <div class="text-gray-400 text-[10px]">脑力加载</div>
+            <div class="font-bold text-gray-700 mt-0.5">85</div>
+          </div>
+          <div class="bg-gray-50 p-2 rounded-lg">
+            <div class="text-gray-400 text-[10px]">嗅觉状态</div>
+            <div class="font-bold text-gray-700 mt-0.5">70</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 今日建议 -->
+      <div class="bg-white rounded-2xl p-4 card-shadow mb-4">
+        <div class="text-xs font-bold text-gray-800 mb-1">今日建议 💡</div>
+        <p class="text-xs text-gray-500 leading-relaxed mb-3">
+          检测到脑力消耗较高，推荐为你提神 <span class="text-[#2C6E49] font-medium">脑力恢复方案</span>
+        </p>
+        <button class="w-full py-2 bg-[#A6E6C0] text-[#1D4E33] font-bold text-xs rounded-xl shadow-sm hover:opacity-90 active:scale-[0.98] transition">
+          查看方案 →
+        </button>
+      </div>
+
+      <!-- 氧气记忆 -->
+      <div class="bg-white rounded-2xl p-4 card-shadow mb-4">
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-xs font-bold text-gray-800">氧气记忆 (与昨日相比)</span>
+        </div>
+        <div class="grid grid-cols-3 gap-2 text-center">
+          <div class="p-2 rounded-xl bg-[#F6FFF8]">
+            <div class="text-[10px] text-gray-400">疲劳度</div>
+            <div class="text-xs font-bold text-emerald-600 mt-0.5">↓ 20%</div>
+          </div>
+          <div class="p-2 rounded-xl bg-[#F6FFF8]">
+            <div class="text-[10px] text-gray-400">专注度</div>
+            <div class="text-xs font-bold text-emerald-600 mt-0.5">↑ 15%</div>
+          </div>
+          <div class="p-2 rounded-xl bg-[#F6FFF8]">
+            <div class="text-[10px] text-gray-400">活力值</div>
+            <div class="text-xs font-bold text-emerald-600 mt-0.5">↑ 18%</div>
+          </div>
+        </div>
+        <a href="#" class="block text-center text-[10px] text-[#2C6E49] font-medium mt-3 hover:underline">查看完整报告 →</a>
+      </div>
+
+      <!-- 快捷入口卡片 -->
+      <div class="grid grid-cols-2 gap-3">
+        <div class="p-3 bg-gradient-to-r from-[#E2F7EC] to-white rounded-xl card-shadow flex items-center justify-between cursor-pointer">
+          <div>
+            <div class="text-xs font-bold text-gray-800">发现你的</div>
+            <div class="text-xs font-bold text-[#2C6E49]">氧气人格</div>
+          </div>
+          <span class="text-lg">🧘</span>
+        </div>
+        <div class="p-3 bg-gradient-to-r from-[#E2F7EC] to-white rounded-xl card-shadow flex items-center justify-between cursor-pointer">
+          <div>
+            <div class="text-xs font-bold text-gray-800">和氧氧聊聊</div>
+            <div class="text-xs font-bold text-[#2C6E49]">你的状态</div>
+          </div>
+          <span class="text-lg">💬</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 底部 Tab 导航栏 -->
+    <div class="absolute bottom-0 left-0 right-0 h-16 bg-white/90 backdrop-blur-md border-t border-gray-100 px-4 flex justify-around items-center text-[10px] text-gray-400">
+      <div class="flex flex-col items-center text-[#2C6E49] font-bold">
+        <span class="text-base">🏠</span>
+        <span>首页</span>
+      </div>
+      <div class="flex flex-col items-center hover:text-gray-600 cursor-pointer">
+        <span class="text-base">💬</span>
+        <span>氧氧</span>
+      </div>
+      <div class="flex flex-col items-center hover:text-gray-600 cursor-pointer">
+        <span class="text-base">🌱</span>
+        <span>氧气探索</span>
+      </div>
+      <div class="flex flex-col items-center hover:text-gray-600 cursor-pointer">
+        <span class="text-base">🎒</span>
+        <span>充氧宝</span>
+      </div>
+      <div class="flex flex-col items-center hover:text-gray-600 cursor-pointer">
+        <span class="text-base">👤</span>
+        <span>我的</span>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
