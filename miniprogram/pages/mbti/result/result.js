@@ -2,7 +2,7 @@
 const app = getApp()
 const { OXYGEN_PERSONALITIES, SIMILAR_PERSONALITIES } = require('../../../mock/data.js')
 const { PERSONALITY_DB_V2 } = require('../mock/personality-db.js')
-const { getPersonalityProduct } = require('../../share/mock/personality-product-map.js') // V0.7 氧装备推荐
+const { getPersonalityProduct } = require('../mock/personality-product-map.js') // V0.7 氧装备推荐
 const { getCreatorsByMatch } = require('../../../mock/creator-db.js') // V0.8 签约博主
 
 // V2.2 人格专属 Hero 插画映射

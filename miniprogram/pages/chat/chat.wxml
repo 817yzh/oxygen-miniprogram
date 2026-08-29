@@ -54,21 +54,7 @@
     <!-- 底部卡片容器：小课堂+正念呼吸，内容少时自动靠底部 -->
     <view class="chat-bottom-cards">
 
-    <!-- 小课堂卡片：以氧氧消息形式融入对话流 -->
-    <view class="msg-row oxygen" wx:if="{{coolTip}}">
-      <image class="msg-avatar" src="https://cdn.jsdelivr.net/gh/817yzh/oxygen-images@main/ip-standard.png" mode="aspectFit" />
-      <view class="course-card">
-        <view class="course-head">
-          <text class="course-icon">💡</text>
-          <text class="course-title">氧氧小课堂 · 清凉小贴士</text>
-        </view>
-        <view class="course-content">{{coolTip}}</view>
-        <view class="course-actions">
-          <view class="course-btn" bindtap="playWhiteNoise">🔊 听瀑布白噪音</view>
-          <view class="course-btn" bindtap="refreshCourse">换一期 ↻</view>
-        </view>
-      </view>
-    </view>
+    <!-- [移除] 常驻"氧氧小课堂"卡片：避免每句对话后都跟课堂，对话流保持清爽（小课堂入口见页面其他功能） -->
 
     <!-- 正念呼吸卡片：用户表达疲惫时推送 -->
     <view class="msg-row oxygen" wx:if="{{showBreathingCard}}">
