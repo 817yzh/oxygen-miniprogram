@@ -1,6 +1,6 @@
 // pages/scene-simulator/scene-simulator.js
 // 场景模拟器 V2.1 · 轻量Tab + Canvas原生仪表盘 + 一体化玻璃浮层
-const { SCENE_SIMULATIONS, getSimulation } = require('mock/scene-simulator-db.js)
+const { SCENE_SIMULATIONS, getSimulation } = require('mock/scene-simulator-db.js')
 
 // Tab 短名 + 场景图（高清 16:9 横滑卡用）
 const SHORT = { lasa: '拉萨', overtime: '加班', run5k: '跑步', elder: '老人' }

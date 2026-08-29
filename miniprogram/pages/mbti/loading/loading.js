@@ -1,10 +1,10 @@
 // pages/mbti/loading/loading.js
 const app = getApp()
 const { OXYGEN_PERSONALITIES } = require('../../../mock/data.js')
-const checkinService = require('../utils/checkinService.js)
-const { PERSONALITY_DB_V2, getPersonalityWithRandom } = require('../mock/personality-db.js)
-const { getZodiac, getNayin } = require('../mock/fun-db.js)
-const { getAgeProfile } = require('../mock/age-profile-db.js) // V0.8 生日→年龄画像
+const checkinService = require('../utils/checkinService.js')
+const { PERSONALITY_DB_V2, getPersonalityWithRandom } = require('../mock/personality-db.js')
+const { getZodiac, getNayin } = require('../mock/fun-db.js')
+const { getAgeProfile } = require('../mock/age-profile-db.js') // V0.8 生日→年龄画像
 
 Page({
   data: {

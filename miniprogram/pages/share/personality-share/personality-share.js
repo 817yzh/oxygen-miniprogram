@@ -1,7 +1,7 @@
 // pages/share/personality-share/personality-share.js
 // 氧系人格 · 分享预览页：展示静态高定海报 + 保存/分享
 // V5.0 静态海报方案：6 种人格对应 6 张成品海报图，零渲染失败、100% 视觉还原
-const { getPersonalityProduct } = require('../mock/personality-product-map.js)
+const { getPersonalityProduct } = require('../mock/personality-product-map.js')
 
 Page({
   data: {

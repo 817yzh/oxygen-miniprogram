@@ -1,8 +1,8 @@
 // pages/mbti/result/result.js
 const app = getApp()
 const { OXYGEN_PERSONALITIES, SIMILAR_PERSONALITIES } = require('../../../mock/data.js')
-const { PERSONALITY_DB_V2 } = require('../mock/personality-db.js)
-const { getPersonalityProduct } = require('../../share/mock/personality-product-map.js) // V0.7 氧装备推荐
+const { PERSONALITY_DB_V2 } = require('../mock/personality-db.js')
+const { getPersonalityProduct } = require('../../share/mock/personality-product-map.js') // V0.7 氧装备推荐
 const { getCreatorsByMatch } = require('../../../mock/creator-db.js') // V0.8 签约博主
 
 // V2.2 人格专属 Hero 插画映射
@@ -28,7 +28,7 @@ Page({
   onLoad() {
     let result = app.globalData.mbtiResult
     if (result) {
-      const { getPersonalityWithRandom } = require('../mock/personality-db.js)
+      const { getPersonalityWithRandom } = require('../mock/personality-db.js')
       // 数据兜底：兼容新旧字段，从 V2 人格库补齐
       const p = PERSONALITY_DB_V2[result.type] || OXYGEN_PERSONALITIES.find(x => x.id === result.type) || {}
       // 若 V2 库有人格但没有任何新字段，直接随机取一套(保证有内容)
