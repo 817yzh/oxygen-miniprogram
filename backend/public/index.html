@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>氧氧宝 · 情绪健康 AI 体验 Demo</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: linear-gradient(180deg, #EBF8F5 0%, #F5FBF9 50%, #FFFFFF 100%);
+    min-height: 100vh;
+    color: #1f2d3a;
+    padding-bottom: 40px;
+  }
+  .wrap { max-width: 480px; margin: 0 auto; padding: 24px 20px; }
+
+  /* ===== 顶部 ===== */
+  .hero { text-align:center; padding: 8px 0 18px; }
+  .hero .ip { width: 96px; height: 96px; margin: 0 auto 10px; display:block; }
+  .hero h1 { font-size: 24px; font-weight: 700; color:#0d9488; letter-spacing:1px; }
+  .hero .sub { font-size:13px; color:#5b7a74; margin-top:6px; }
+  .hero .badge { display:inline-block; margin-top:10px; padding:4px 12px; border-radius:20px;
+    background:rgba(13,148,136,.1); color:#0d9488; font-size:12px; font-weight:600; }
+
+  /* ===== 卡片 ===== */
+  .card { background:#fff; border-radius:18px; padding:20px; margin-bottom:16px;
+    box-shadow: 0 4px 20px rgba(13,148,136,.08); border:1px solid rgba(13,148,136,.06); }
+  .card h2 { font-size:16px; font-weight:700; color:#14532d; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+  .card h2 .ico { font-size:18px; }
+
+  /* 场景 chips */
+  .chips { display:flex; flex-wrap:wrap; gap:8px; }
+  .chip { padding:8px 14px; border-radius:20px; border:1px solid #d1e8e3; background:#f5fbf9;
+    font-size:13px; color:#14532d; cursor:pointer; transition:.15s; }
+  .chip.active { background:#0d9488; color:#fff; border-color:#0d9488; box-shadow:0 2px 8px rgba(13,148,136,.3); }
+
+  textarea { width:100%; border:1px solid #d1e8e3; border-radius:12px; padding:12px; font-size:14px;
+    font-family:inherit; resize:none; background:#fdfefe; color:#1f2d3a; min-height:64px; }
+  textarea:focus { outline:none; border-color:#0d9488; box-shadow:0 0 0 3px rgba(13,148,136,.12); }
+
+  .btn { width:100%; padding:13px; border:none; border-radius:12px; font-size:15px; font-weight:600;
+    cursor:pointer; transition:.18s; }
+  .btn-primary { background:#0d9488; color:#fff; box-shadow:0 4px 14px rgba(13,148,136,.35); }
+  .btn-primary:active { transform:scale(.98); }
+  .btn-primary:disabled { opacity:.5; }
+  .btn-ghost { background:#fff; color:#0d9488; border:1px solid #0d9488; margin-top:8px; }
+
+  /* 结果 */
+  .result { margin-top:16px; border-radius:14px; padding:16px; background:#f0fbf8; border:1px solid #d5f0ea; animation:fadeIn .4s; }
+  @keyframes fadeIn { from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;} }
+  .result .em { font-size:20px; font-weight:700; color:#0d9488; }
+  .result .row { margin-top:8px; font-size:13px; color:#3a5a52; line-height:1.7; }
+  .result .tag { display:inline-block; padding:2px 10px; border-radius:12px; background:#0d9488; color:#fff; font-size:12px; }
+  .energy-bar { height:8px; border-radius:6px; background:#e6f2ef; margin-top:8px; overflow:hidden; }
+  .energy-fill { height:100%; border-radius:6px; background:linear-gradient(90deg,#0d9488,#5eead4); transition:width .6s; }
+
+  /* 聊天 */
+  .chat-box { height:240px; overflow-y:auto; padding:10px; background:#f8fbfa; border-radius:12px;
+    border:1px solid #e4f0ed; margin-bottom:12px; }
+  .msg { margin-bottom:10px; display:flex; }
+  .msg .bubble { max-width:82%; padding:10px 13px; border-radius:14px; font-size:14px; line-height:1.6; white-space:pre-wrap; }
+  .msg.user { justify-content:flex-end; }
+  .msg.user .bubble { background:#0d9488; color:#fff; border-bottom-right-radius:4px; }
+  .msg.ai .bubble { background:#fff; color:#1f2d3a; border:1px solid #e0eef0; border-bottom-left-radius:4px; }
+  .msg-avatar { width:28px; height:28px; border-radius:50%; margin-right:8px; background:#0d9488; color:#fff;
+    display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; }
+  .chat-input { display:flex; gap:8px; }
+  .chat-input input { flex:1; border:1px solid #d1e8e3; border-radius:12px; padding:11px 13px; font-size:14px; }
+  .chat-input input:focus { outline:none; border-color:#0d9488; }
+  .chat-input button { width:64px; border:none; border-radius:12px; background:#0d9488; color:#fff;
+    font-size:14px; font-weight:600; cursor:pointer; }
+
+  /* 产品/场景网格 */
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .tile { border:1px solid #e0eef0; border-radius:14px; padding:14px; background:#fdfdfe; }
+  .tile .ti { font-size:24px; }
+  .tile .tn { font-weight:700; font-size:14px; margin-top:6px; color:#14532d; }
+  .tile .td { font-size:12px; color:#5b7a74; margin-top:4px; line-height:1.5; }
+  .specs { font-size:12.5px; color:#3a5a52; line-height:1.9; }
+  .specs b { color:#0d9488; }
+
+  .foot { text-align:center; font-size:11px; color:#9db8b2; margin-top:8px; }
+  .toast { position:fixed; left:50%; bottom:60px; transform:translateX(-50%);
+    background:rgba(15,40,35,.9); color:#fff; padding:10px 18px; border-radius:20px; font-size:13px;
+    opacity:0; transition:.3s; pointer-events:none; z-index:99; white-space:nowrap; }
+  .toast.show { opacity:1; }
+  .loading { color:#0d9488; font-size:13px; text-align:center; padding:6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <!-- 头部 -->
+  <div class="hero">
+    <img class="ip" src="https://cdn.jsdelivr.net/gh/817yzh/oxygen-images@main/ip-final.png" alt="氧氧宝">
+    <h1>氧氧宝</h1>
+    <div class="sub">情绪健康 AI 监测 · 为你定制每一次"补氧"</div>
+    <div class="badge">💚 多模态情绪识别 · 四大人群场景</div>
+  </div>
+
+  <!-- 登录/昵称 -->
+  <div class="card">
+    <h2><span class="ico">👋</span> 开启你的氧气陪伴</h2>
+    <textarea id="nickInput" placeholder="给自己起个昵称（可选），体验会自动保存"></textarea>
+    <button class="btn btn-primary" id="startBtn" onclick="initUser()">开始体验 →</button>
+    <div id="userInfo"></div>
+  </div>
+
+  <!-- 情绪自测打卡 -->
+  <div class="card" id="checkinCard" style="display:none">
+    <h2><span class="ico">🌤️</span> 今日情绪自测</h2>
+    <div class="chips" id="sceneChips"></div>
+    <div style="margin-top:12px">
+      <textarea id="moodText" placeholder="此刻的心情是？比如：加班到很晚有点累…"></textarea>
+    </div>
+    <div style="margin-top:12px">
+      <button class="btn btn-primary" id="checkinBtn" onclick="doCheckin()">记录此刻心情 →</button>
+    </div>
+    <div id="checkinResult"></div>
+  </div>
+
+  <!-- 氧氧聊天 -->
+  <div class="card" id="chatCard" style="display:none">
+    <h2><span class="ico">💬</span> 和氧氧聊聊</h2>
+    <div class="chat-box" id="chatBox">
+      <div class="msg ai"><div class="msg-avatar">🐙</div><div class="bubble">嗨，我是氧氧～今天过得怎么样？想吐槽、想倾诉，都可以和我说哦 💚</div></div>
+    </div>
+    <div class="chat-input">
+      <input id="chatInput" placeholder="输入你想说的话..." onkeydown="if(event.key==='Enter')sendChat()">
+      <button onclick="sendChat()">发送</button>
+    </div>
+  </div>
+
+  <!-- 人格与场景 -->
+  <div class="card" id="sceneCard" style="display:none">
+    <h2><span class="ico">🏔️</span> 四大补氧场景</h2>
+    <div class="grid" id="sceneGrid"></div>
+  </div>
+
+  <!-- 产品 -->
+  <div class="card" id="productCard" style="display:none">
+    <h2><span class="ico">🫧</span> 充氧宝 · 产品家族</h2>
+    <div class="grid" id="productGrid"></div>
+    <div style="margin-top:14px"><div class="specs" id="specsBox"></div></div>
+  </div>
+
+  <div class="foot">氧氧宝 · OPC 进化营产业场景实践 Demo · 情绪健康 AI 监测系统</div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const API = ''; // 同源（经 Cloudflare 穿透）
+let userId = null, sceneId = 'brain_fatigue';
+
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),2200); }
+
+async function api(path, opts={}){
+  const headers = {'Content-Type':'application/json'};
+  if(userId) headers['x-user-id'] = userId;
+  const r = await fetch(API+path, {...opts, headers});
+  return r.json();
+}
+
+function initUser(){
+  let nick = document.getElementById('nickInput').value.trim();
+  if(!userId) userId = 'wx_' + Date.now().toString(36) + Math.random().toString(36).slice(2,6);
+  if(!nick) nick = '氧友';
+  api('/api/user/register', {method:'POST', body:JSON.stringify({user_id:userId})}).then(()=>{
+    document.getElementById('userInfo').innerHTML =
+      `<div style="margin-top:12px;font-size:13px;color:#0d9488;font-weight:600">✅ 已开启体验（昵称：${nick}）</div>`;
+    document.getElementById('startBtn').style.display='none';
+    ['checkinCard','chatCard','sceneCard','productCard'].forEach(id=>document.getElementById(id).style.display='block');
+    loadScenes(); loadProducts();
+    toast('体验已开启，跟我聊聊吧 💚');
+  }).catch(e=>toast('连接失败，请稍后再试'));
+}
+
+function loadScenes(){
+  api('/api/scenes').then(d=>{
+    if(d.code!==0) return;
+    const chips=document.getElementById('sceneChips');
+    chips.innerHTML = d.data.scenes.map(s=>
+      `<div class="chip ${s.id===sceneId?'active':''}" data-id="${s.id}" onclick="chooseScene('${s.id}')">${s.icon} ${s.sceneName}</div>`).join('');
+    const grid=document.getElementById('sceneGrid');
+    grid.innerHTML = d.data.scenes.map(s=>
+      `<div class="tile"><div class="ti">${s.icon}</div><div class="tn">${s.sceneName}</div><div class="td">${s.suggestion}</div><div class="td" style="color:#0d9488;font-weight:600">● ${s.productName}</div></div>`).join('');
+  }).catch(()=>{});
+}
+function chooseScene(id){ sceneId=id; document.querySelectorAll('#sceneChips .chip').forEach(c=>c.classList.toggle('active', c.dataset.id===id)); }
+
+function doCheckin(){
+  const text = document.getElementById('moodText').value.trim();
+  if(!text) return toast('先说说此刻的心情吧～');
+  document.getElementById('checkinBtn').disabled=true;
+  const btn=document.getElementById('checkinBtn'); btn.textContent='分析中...';
+  api('/api/checkin', {method:'POST', body:JSON.stringify({text, scene:sceneId})}).then(d=>{
+    const r = d.data && d.data.record;
+    const box=document.getElementById('checkinResult');
+    if(r){
+      box.innerHTML = `
+        <div class="result">
+          <div class="em">${r.state} · ${r.emotionLabel} <span class="tag">${Math.round(r.confidence*100)}%</span></div>
+          <div class="energy-bar"><div class="energy-fill" style="width:${r.energy}%"></div></div>
+          <div class="row">💡 <b>洞察：</b>${r.insight}</div>
+          <div class="row">🌱 <b>建议：</b>${r.regulationTip}</div>
+          <div class="row">🫧 <b>产品提示：</b>${r.productHint}</div>
+          <div class="row">⚡ 能量指数 <b>${r.energy}</b> · 五维：冷静 ${r.indexes.calmPower} / 活力 ${r.indexes.active} / 思维 ${r.indexes.think} / 稳定 ${r.indexes.stable}</div>
+          ${d.data.newAchievements&&d.data.newAchievements.length?`<div class="row" style="color:#f59e0b">🏅 解锁成就：${d.data.newAchievements.join('、')}</div>`:''}
+        </div>`;
+    } else { box.innerHTML=`<div class="result"><div class="em">😕 ${d.message||'出错了'}</div></div>`; }
+  }).catch(e=>box.innerHTML='<div class="result"><div class="em">网络异常，请重试</div></div>')
+  .finally(()=>{ document.getElementById('checkinBtn').disabled=false; btn.textContent='记录此刻心情 →'; });
+}
+
+function loadProducts(){
+  api('/api/products').then(d=>{
+    if(d.code!==0) return;
+    const grid=document.getElementById('productGrid');
+    grid.innerHTML = d.data.models.map(m=>
+      `<div class="tile"><div class="tn">${m.name}</div><div class="td">${m.type} · ${m.status}</div><div class="td">${m.desc}</div></div>`).join('');
+    const s=d.data.specs;
+    document.getElementById('specsBox').innerHTML =
+      `<b>重量：</b>${s.weight}<br><b>富氧浓度：</b>${s.output}<br><b>续航：</b>${s.charge}<br><b>核心技术：</b>${s.core}<br><b>香氛胶囊：</b>${s.consumable}<br><b>适用：</b>${s.valid}`;
+  }).catch(()=>{});
+}
+
+function sendChat(){
+  const input=document.getElementById('chatInput');
+  const text=input.value.trim();
+  if(!text) return;
+  input.value='';
+  const box=document.getElementById('chatBox');
+  box.innerHTML += `<div class="msg user"><div class="bubble">${escapeHtml(text)}</div></div>`;
+  box.innerHTML += `<div class="msg ai"><div class="msg-avatar">🐙</div><div class="bubble"><span class="loading">氧氧思考中...</span></div></div>`;
+  box.scrollTop=box.scrollHeight;
+  api('/api/chat', {method:'POST', body:JSON.stringify({text})}).then(d=>{
+    const bubbles=box.querySelectorAll('.msg.ai .bubble');
+    const last=bubbles[bubbles.length-1];
+    if(d.data && d.data.replyText){ last.innerHTML=escapeHtml(d.data.replyText); }
+    else { last.innerHTML=escapeHtml(d.message||'我有点累，稍等一下下～'); }
+    box.scrollTop=box.scrollHeight;
+  }).catch(()=>{ const b=box.querySelectorAll('.msg.ai .bubble'); b[b.length-1].innerHTML='网络开小差了，重试一下？'; });
+}
+function escapeHtml(s){ return s.replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+</script>
+</body>
+</html>

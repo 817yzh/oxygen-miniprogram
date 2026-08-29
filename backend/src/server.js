@@ -83,6 +83,30 @@ function start(port = PORT) {
     const pathname = url.pathname
     const query = Object.fromEntries(url.searchParams)
 
+    // 静态文件服务：非 /api/ 路径时，尝试从 public/ 目录返回文件（用于网页版 demo）
+    if (!pathname.startsWith('/api/')) {
+      const publicDir = require('path').join(__dirname, '..', 'public')
+      let rel = pathname === '/' ? 'index.html' : pathname.replace(/^\/+/, '')
+      // 防目录穿越
+      const safe = require('path').normalize(rel).replace(/^(\.[\/\\])+/, '')
+      const filePath = require('path').join(publicDir, safe)
+      if (filePath.startsWith(publicDir) && require('fs').existsSync(filePath)) {
+        const fs = require('fs')
+        const mime = {
+          '.html': 'text/html; charset=utf-8',
+          '.js': 'application/javascript; charset=utf-8',
+          '.css': 'text/css; charset=utf-8',
+          '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.gif': 'image/gif',
+          '.svg': 'image/svg+xml', '.ico': 'image/x-icon', '.json': 'application/json; charset=utf-8'
+        }
+        const ext = require('path').extname(filePath).toLowerCase()
+        res.writeHead(200, { 'Content-Type': mime[ext] || 'application/octet-stream' })
+        fs.createReadStream(filePath).pipe(res)
+        console.log(`[GET] ${pathname} → static ${safe}`)
+        return
+      }
+    }
+
     // 请求日志
     const startTime = Date.now()
 
