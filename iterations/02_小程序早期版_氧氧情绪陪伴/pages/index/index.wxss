@@ -1,0 +1,219 @@
+/* P1 · 首页样式 */
+
+/* 氧氧问候条 */
+.hero-section {
+  padding: 20px 16px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, #f0faf7 0%, #f5f0ea 100%);
+  border-color: rgba(53, 214, 184, 0.2);
+}
+.hero-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.hero-left {
+  flex: 1;
+  min-width: 0;
+}
+.eyebrow {
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.hero-title {
+  display: block;
+  margin-top: 5px;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+.hero-subtitle {
+  display: block;
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.hero-avatar {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  flex: 0 0 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.oxy-face-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #B8F5E3, #6FD8C0 55%, #3AA8C9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(53, 214, 184, 0.25);
+}
+.oxy-emoji {
+  font-size: 36px;
+}
+
+/* 状态卡 */
+.status-card {
+  padding: 16px;
+}
+.status-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0;
+}
+.empty-icon-wrap {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(115, 88, 69, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.empty-icon-text {
+  font-size: 36px;
+}
+.status-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.emotion-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.confidence {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+.today-insight {
+  font-size: 13px;
+  line-height: 1.6;
+  padding: 8px 12px;
+  background: rgba(53, 214, 184, 0.06);
+  border-radius: var(--radius-sm);
+}
+.status-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+.btn-primary.small,
+.btn-secondary.small {
+  height: 36px;
+  font-size: 13px;
+  padding: 0 16px;
+  flex: 1;
+}
+
+/* 场景入口 */
+.scene-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.scene-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.scene-item {
+  padding: 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  cursor: pointer;
+}
+.scene-item:active {
+  opacity: 0.8;
+}
+.scene-icon {
+  font-size: 24px;
+}
+.scene-name {
+  font-size: 15px;
+  font-weight: 700;
+}
+.scene-desc {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+/* 历史记录 */
+.history-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.history-scroll {
+  white-space: nowrap;
+}
+.history-items {
+  display: flex;
+  gap: 12px;
+  padding: 4px 0;
+}
+.history-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 64px;
+  flex-shrink: 0;
+}
+.history-date {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+.history-dot {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+}
+/* 情绪颜色用 emotion-{label} 类名 */
+.history-dot.emo-positive {
+  border-color: var(--accent-light);
+  background: rgba(53, 214, 184, 0.2);
+}
+.history-dot.emo-warning {
+  border-color: #ffb84d;
+  background: rgba(255, 184, 77, 0.2);
+}
+.history-dot.emo-stress {
+  border-color: #ff7f73;
+  background: rgba(255, 127, 115, 0.2);
+}
+.history-dot.emo-low {
+  border-color: #8b95a7;
+  background: rgba(139, 149, 167, 0.2);
+}
+.history-label {
+  font-size: 10px;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+/* 隐私提示 */
+.privacy-tip {
+  text-align: center;
+  padding: 8px 0;
+}
+.privacy-tip .muted.small {
+  font-size: 11px;
+}

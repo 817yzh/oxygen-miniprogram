@@ -1,0 +1,26 @@
+<!-- P3 · 分析过渡页 -->
+<view class="page analyze-page">
+
+  <view class="analyze-center">
+
+    <!-- 氧氧呼吸动效 -->
+    <view class="breath-container {{phaseClass}}">
+      <view class="breath-ring outer"></view>
+      <view class="breath-ring middle"></view>
+      <view class="breath-core">
+        <text class="breath-oxy-emoji">🫧</text>
+      </view>
+    </view>
+
+    <!-- 进度文案 -->
+    <text class="phase-text">{{phaseText}}</text>
+    <text class="phase-sub">{{phaseSub}}</text>
+
+    <!-- 进度条 -->
+    <view class="progress-bar-bg">
+      <view class="progress-bar-fill" style="width: {{progress}}%"></view>
+    </view>
+
+  </view>
+
+</view>

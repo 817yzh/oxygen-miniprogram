@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="空状态占位">
+  <circle cx="60" cy="60" r="46" stroke="rgba(115,88,69,0.12)" stroke-width="2" fill="none"/>
+  <circle cx="44" cy="52" r="6" stroke="rgba(115,88,69,0.2)" stroke-width="1.5" fill="none"/>
+  <circle cx="76" cy="52" r="6" stroke="rgba(115,88,69,0.2)" stroke-width="1.5" fill="none"/>
+  <path d="M46 76 Q60 66 74 76" stroke="rgba(115,88,69,0.15)" stroke-width="2" fill="none" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,106 @@
+/* P3 · 分析过渡页样式 */
+
+.analyze-page {
+  justify-content: center;
+  align-items: center;
+}
+
+.analyze-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+/* 呼吸动效容器 */
+.breath-container {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.breath-ring {
+  position: absolute;
+  border-radius: 50%;
+  transition: all 0.5s ease;
+}
+
+.breath-ring.outer {
+  width: 180px;
+  height: 180px;
+  border: 2px solid rgba(53, 214, 184, 0.15);
+}
+
+.breath-ring.middle {
+  width: 140px;
+  height: 140px;
+  border: 2px solid rgba(53, 214, 184, 0.3);
+}
+
+.breath-core {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, rgba(53, 214, 184, 0.3), rgba(90, 167, 255, 0.15));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: breathPulse 2.2s ease-in-out infinite;
+}
+
+.breath-oxy-emoji {
+  font-size: 40px;
+}
+
+/* 在"分析中"阶段放大外层环 */
+.phase-analyzing .breath-ring.outer {
+  animation: ringExpand 2.2s ease-in-out infinite;
+}
+.phase-analyzing .breath-ring.middle {
+  animation: ringExpand 2.2s ease-in-out infinite 0.3s;
+}
+
+@keyframes breathPulse {
+  0%, 100% { transform: scale(0.9); box-shadow: 0 0 10px rgba(53, 214, 184, 0.2); }
+  50% { transform: scale(1.05); box-shadow: 0 0 25px rgba(53, 214, 184, 0.4); }
+}
+
+@keyframes ringExpand {
+  0%, 100% { transform: scale(0.85); opacity: 0.6; }
+  50% { transform: scale(1.15); opacity: 1; }
+}
+
+/* 进度文案 */
+.phase-text {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.phase-sub {
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-align: center;
+  line-height: 1.6;
+}
+
+/* 进度条 */
+.progress-bar-bg {
+  width: 70%;
+  height: 4px;
+  border-radius: 99px;
+  background: rgba(115, 88, 69, 0.1);
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--accent-light), var(--accent));
+  transition: width 0.3s ease;
+}

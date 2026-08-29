@@ -1,0 +1,77 @@
+<!-- P4 · 结果页 -->
+<view class="page">
+
+  <!-- 情绪标签 + 置信度 -->
+  <view class="emotion-hero card">
+    <view class="emotion-badge-lg {{result.emotionLabel}}">
+      <text class="emotion-icon">{{emotionIcon}}</text>
+      <text class="emotion-label-text">{{result.emotionLabel}}</text>
+      <view class="confidence-badge">
+        <text class="confidence-text">置信度 {{confidencePercent}}%</text>
+      </view>
+    </view>
+    <text class="muted confidence-note" wx:if="{{result.confidence < 0.5}}">
+      ⚠️ AI判断仅供参考，不一定完全准确哦
+    </text>
+  </view>
+
+  <!-- 趣味画像标签 -->
+  <view class="persona-card card" wx:if="{{result.personaLine}}">
+    <text class="persona-line">{{result.personaLine}}</text>
+  </view>
+
+  <!-- 情绪概率分布（拍照识别时展示，视觉彩蛋）-->
+  <view class="distribution-card card" wx:if="{{showDistribution}}">
+    <text class="section-title">识别分布</text>
+    <view class="distribution-bars">
+      <view class="dist-item" wx:for="{{distributionData}}" wx:key="index" data-label="{{item.label}}">
+        <view class="dist-bar-bg">
+          <view class="dist-bar-fill" 
+            style="width: {{item.confidence}}%; background: {{item.label === result.emotionLabel ? '#35d6b8' : '#e0d8d0'}};"></view>
+        </view>
+        <view class="dist-info">
+          <text class="dist-label {{item.label === result.emotionLabel ? 'active' : ''}}">{{item.label}}</text>
+          <text class="dist-conf" wx:if="{{item.label === result.emotionLabel}}">{{item.confidence}}%</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 状态解读 -->
+  <view class="insight-card card">
+    <text class="section-title">氧氧说</text>
+    <text class="insight-text">{{result.insight}}</text>
+  </view>
+
+  <!-- 调节建议入口 -->
+  <view class="regulation-card card" wx:if="{{result.regulationTip}}">
+    <text class="section-title">调节建议</text>
+    <text class="regulation-text">{{result.regulationTip}}</text>
+    <button class="btn-primary small" bindtap="goRegulation">
+      开始调节
+    </button>
+  </view>
+
+  <!-- 产品推荐简化版 -->
+  <view class="product-card card" wx:if="{{result.productHint}}">
+    <view class="product-content">
+      <text class="product-icon">🫧</text>
+      <view class="product-info">
+        <text class="product-title">充氧宝 · Work Air</text>
+        <text class="product-tip">{{result.productHint}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-buttons">
+    <button class="btn-secondary" bindtap="shareResult">📤 分享这张卡</button>
+    <button class="btn-secondary" bindtap="goHome">返回首页</button>
+  </view>
+
+  <!-- 合规声明 -->
+  <view class="compliance">
+    <text class="muted small">💡 情绪判断为AI辅助参考，不构成医疗诊断或健康建议</text>
+  </view>
+
+</view>

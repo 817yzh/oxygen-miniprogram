@@ -1,0 +1,124 @@
+/* 全局样式 - 浅暖色系 */
+/* 参考 core-pages.html 的浅底氧感色调 */
+
+page {
+  --page-bg: #f8f1e7;
+  --surface: #fffdf9;
+  --surface-strong: #ffffff;
+  --text-primary: #3f332b;
+  --text-secondary: #806f62;
+  --accent: #1f7a6d;
+  --accent-light: #35d6b8;
+  --accent-soft: rgba(53, 214, 184, 0.18);
+  --border: rgba(115, 88, 69, 0.14);
+  --shadow: 0 8px 18px rgba(115, 88, 69, 0.12);
+  --shadow-soft: 0 4px 10px rgba(115, 88, 69, 0.08);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-lg: 24px;
+  --radius-full: 999px;
+  --font: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
+
+  background: var(--page-bg);
+  color: var(--text-primary);
+  font-family: var(--font);
+  box-sizing: border-box;
+}
+
+/* 通用卡片 */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+}
+
+/* 主按钮 */
+.btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 46px;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.btn-primary:active {
+  opacity: 0.85;
+}
+
+/* 次要按钮 */
+.btn-secondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 46px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-strong);
+  color: var(--accent);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+/* 标题 */
+.section-title {
+  color: var(--text-primary);
+  font-size: 17px;
+  font-weight: 700;
+}
+
+/* 次要文本 */
+.muted {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* 灵活间距 */
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+.flex-1 {
+  flex: 1;
+}
+.gap-8 {
+  gap: 8px;
+}
+.gap-12 {
+  gap: 12px;
+}
+.gap-14 {
+  gap: 14px;
+}
+
+/* 标签 */
+.tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+/* 页面容器 */
+.page {
+  min-height: 100vh;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}

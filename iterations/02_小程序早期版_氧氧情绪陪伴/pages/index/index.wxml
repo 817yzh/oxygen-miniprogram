@@ -1,0 +1,95 @@
+<!-- P1 · 首页 -->
+<view class="page">
+
+  <!-- 氧氧问候条 -->
+  <view class="hero-section card">
+    <view class="hero-content">
+      <view class="hero-left">
+        <text class="eyebrow">今日陪伴</text>
+        <text class="hero-title">氧氧在这里</text>
+        <text class="hero-subtitle" wx:if="{{!hasRecord}}">今天还没有记录，先从一个轻松的感受确认开始。</text>
+        <text class="hero-subtitle" wx:else>已连续打卡 {{streak}} 天，今天继续吧！</text>
+      </view>
+      <view class="hero-avatar">
+        <view class="oxy-face-circle">
+          <text class="oxy-emoji">🫧</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 今日状态卡 -->
+  <view class="status-card card" wx:if="{{!hasRecord}}">
+    <view class="status-empty">
+      <view class="empty-icon-wrap">
+        <text class="empty-icon-text">🫧</text>
+      </view>
+      <text class="muted">还没有记录，和氧氧确认一下现在的感受吧</text>
+      <button class="btn-primary" bindtap="goCheckin">开始记录</button>
+    </view>
+  </view>
+
+  <view class="status-card card" wx:else>
+    <view class="status-summary">
+      <view class="status-row">
+        <text class="section-title">今日概览</text>
+        <view class="emotion-badge">
+          <text class="tag {{currentEmotion}}">{{currentEmotionText}}</text>
+          <text class="confidence">置信度 {{confidence}}%</text>
+        </view>
+      </view>
+      <text class="muted today-insight">{{todayInsight}}</text>
+      <view class="status-actions">
+        <button class="btn-secondary small" bindtap="goResult">查看详情</button>
+        <button class="btn-primary small" bindtap="goCheckin">重新记录</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 四场景快捷入口 -->
+  <view class="scene-section">
+    <text class="section-title">选择场景</text>
+    <view class="scene-grid">
+      <view class="scene-item card" data-scene="plateau" bindtap="selectScene">
+        <text class="scene-icon">🏔️</text>
+        <text class="scene-name">高原</text>
+        <text class="scene-desc">焦虑·紧张·安心</text>
+      </view>
+      <view class="scene-item card" data-scene="brain" bindtap="selectScene">
+        <text class="scene-icon">🧠</text>
+        <text class="scene-name">脑疲劳</text>
+        <text class="scene-desc">烦躁·疲惫·低效</text>
+      </view>
+      <view class="scene-item card" data-scene="sport" bindtap="selectScene">
+        <text class="scene-icon">🏃</text>
+        <text class="scene-name">运动</text>
+        <text class="scene-desc">疲惫·恢复·振奋</text>
+      </view>
+      <view class="scene-item card" data-scene="elder" bindtap="selectScene">
+        <text class="scene-icon">💚</text>
+        <text class="scene-name">银发</text>
+        <text class="scene-desc">孤独·低落·陪伴</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 近7天历史状态流 -->
+  <view class="history-section" wx:if="{{history.length > 0}}">
+    <text class="section-title">近7天记录</text>
+    <scroll-view class="history-scroll" scroll-x>
+      <view class="history-items">
+        <view class="history-item" wx:for="{{history}}" wx:key="index">
+          <text class="history-date">{{item.date}}</text>
+          <view class="history-dot {{item.label}}"></view>
+          <text class="history-label">{{item.text}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 隐私声明轻提示 -->
+  <view class="privacy-tip">
+    <text class="muted small">💬 情绪数据仅保存在本地，不会上传</text>
+  </view>
+
+</view>

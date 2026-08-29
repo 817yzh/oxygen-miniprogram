@@ -1,0 +1,506 @@
+      <view class="scene-chip {{selectedScene === 'elder' ? 'active' : ''}}" 
+        data-scene="elder" bindtap="pickScene">💚 银发</view>
+    </view>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="submit-section">
+    <button class="btn-primary {{canSubmit ? '' : 'disabled'}}" 
+      disabled="{{!canSubmit}}" bindtap="submitCheckin">
+      让氧氧看看
+    </button>
+  </view>
+
+  <!-- 隐私提示 -->
+  <view class="privacy-note">
+    <text class="muted small">🔒 你写的内容和照片只在本地处理，不会上传网络</text>
+    <text class="muted small">⚠️ 情绪判断为AI辅助参考，不构成医疗诊断</text>
+  </view>
+
+</view>
+
+
+============================================================
+十一、分析过渡页：pages/analyze/analyze.js（★核心流程编排）
+============================================================
+
+// P3 · 分析过渡页
+const app = getApp()
+
+// 引入情绪分析引擎
+const emotionEngine = require('../../utils/emotionEngine')
+
+Page({
+  data: {
+    phase: 'analyzing', // analyzing | done
+    phaseClass: 'phase-analyzing',
+    progress: 0,
+    phaseText: '氧氧正在感受你的状态',
+    phaseSub: '深呼吸，等一等就好'
+  },
+
+  onLoad() {
+    // 开始分析模拟
+    this.startAnalysis()
+  },
+
+  startAnalysis() {
+    const pending = app.globalData.pendingCheckin || {}
+    const userText = pending.text || ''
+    const scene = pending.scene || ''
+
+    const phases = [
+      { text: '氧氧正在感受你的状态', sub: '深呼吸，等一等就好', progress: 15 },
+      { text: '捕捉到了你的情绪信号', sub: '它在一点点理解你说的话', progress: 35 },
+      { text: '氧氧正在匹配场景信息', sub: '结合场景给你更贴切的回应', progress: 55 },
+      { text: '生成状态解读中', sub: '再加入一点点温暖', progress: 75 },
+      { text: '最后一步，准备你的专属卡片', sub: '氧氧马上就好', progress: 90 }
+    ]
+
+    let step = 0
+    const stepInterval = setInterval(() => {
+      if (step < phases.length) {
+        const p = phases[step]
+        this.setData({
+          phaseText: p.text,
+          phaseSub: p.sub,
+          progress: p.progress
+        })
+        step++
+      } else {
+        clearInterval(stepInterval)
+        // 分析完成，调用 emotion engine
+        this.doAnalyze(userText, scene)
+      }
+    }, 400)
+  },
+
+  doAnalyze(text, scene) {
+    // 调用情绪分析
+    const result = emotionEngine.analyze(text, scene)
+
+    // 保存结果
+    const today = new Date().toDateString()
+    const record = {
+      date: today,
+      text: text,
+      scene: scene,
+      ...result
+    }
+
+    // 写入历史
+    let history = wx.getStorageSync('emotionHistory') || []
+    // 如果今天已有记录，替换
+    const existingIdx = history.findIndex(h => h.date === today)
+    if (existingIdx >= 0) {
+      history[existingIdx] = record
+    } else {
+      history.push(record)
+    }
+    // 最多保留30天
+    if (history.length > 30) {
+      history = history.slice(-30)
+    }
+    wx.setStorageSync('emotionHistory', history)
+
+    // 保存到全局
+    app.globalData.lastResult = result
+    app.globalData.lastRecord = record
+    app.globalData.pendingCheckin = null
+
+    // 跳转到结果页
+    this.setData({
+      phaseText: '完成！氧氧已经准备好了',
+      phaseSub: '',
+      progress: 100,
+      phase: 'done'
+    })
+
+    setTimeout(() => {
+      wx.redirectTo({
+        url: '/pages/result/result'
+      })
+    }, 500)
+  }
+})
+
+
+============================================================
+十二、分析过渡页模板：pages/analyze/analyze.wxml
+============================================================
+
+<!-- P3 · 分析过渡页 -->
+<view class="page analyze-page">
+
+  <view class="analyze-center">
+
+    <!-- 氧氧呼吸动效 -->
+    <view class="breath-container {{phaseClass}}">
+      <view class="breath-ring outer"></view>
+      <view class="breath-ring middle"></view>
+      <view class="breath-core">
+        <text class="breath-oxy-emoji">🫧</text>
+      </view>
+    </view>
+
+    <!-- 进度文案 -->
+    <text class="phase-text">{{phaseText}}</text>
+    <text class="phase-sub">{{phaseSub}}</text>
+
+    <!-- 进度条 -->
+    <view class="progress-bar-bg">
+      <view class="progress-bar-fill" style="width: {{progress}}%"></view>
+    </view>
+
+  </view>
+
+</view>
+
+
+============================================================
+十三、结果页：pages/result/result.js
+============================================================
+
+// P4 · 结果页
+const app = getApp()
+
+const EMOTION_ICONS = {
+  '开心': '😄',
+  '平静': '😌',
+  '放松': '😊',
+  '焦虑': '😟',
+  '烦躁': '😤',
+  '疲惫': '😩',
+  '低落': '😢',
+  '紧张': '😰',
+  '孤独': '🥺'
+}
+
+Page({
+  data: {
+    result: {},
+    emotionIcon: '😌',
+    confidencePercent: 0
+  },
+
+  onLoad() {
+    const result = app.globalData.lastResult || {}
+    if (!result.emotionLabel) {
+      // 没有结果时兜底
+      this.setData({
+        result: {
+          emotionLabel: '平静',
+          confidence: 0.5,
+          insight: '氧氧正在倾听，试着记录点什么吧',
+          regulationTip: '试试做3次深呼吸，吸气4秒、屏息4秒、呼气6秒',
+          productHint: '给自己充充氧，让身心都轻松一点',
+          personaLine: '今日是稳稳的湖泊，风平浪静 🌊'
+        },
+        emotionIcon: '😌',
+        confidencePercent: 50
+      })
+      return
+    }
+
+    this.setData({
+      result: result,
+      emotionIcon: EMOTION_ICONS[result.emotionLabel] || '😌',
+      confidencePercent: Math.round((result.confidence || 0.5) * 100)
+    })
+  },
+
+  goRegulation() {
+    wx.navigateTo({ url: '/pages/regulation/regulation' })
+  },
+
+  shareResult() {
+    const result = this.data.result
+    const shareText = `【氧氧情绪卡片】\n${result.personaLine || ''}\n\n氧氧说：${result.insight}\n\n${result.regulationTip || ''}\n\n—— 来自氧氧情绪陪伴 💚`
+
+    wx.setClipboardData({
+      data: shareText,
+      success() {
+        wx.showToast({
+          title: '文案已复制，去分享吧',
+          icon: 'none',
+          duration: 2000
+        })
+      }
+    })
+  },
+
+  goHome() {
+    wx.reLaunch({ url: '/pages/index/index' })
+  }
+})
+
+
+============================================================
+十四、结果页模板：pages/result/result.wxml
+============================================================
+
+<!-- P4 · 结果页 -->
+<view class="page">
+
+  <!-- 情绪标签 + 置信度 -->
+  <view class="emotion-hero card">
+    <view class="emotion-badge-lg {{result.emotionLabel}}">
+      <text class="emotion-icon">{{emotionIcon}}</text>
+      <text class="emotion-label-text">{{result.emotionLabel}}</text>
+      <view class="confidence-badge">
+        <text class="confidence-text">置信度 {{confidencePercent}}%</text>
+      </view>
+    </view>
+    <text class="muted confidence-note" wx:if="{{result.confidence < 0.5}}">
+      ⚠️ AI判断仅供参考，不一定完全准确哦
+    </text>
+  </view>
+
+  <!-- 趣味画像标签 -->
+  <view class="persona-card card" wx:if="{{result.personaLine}}">
+    <text class="persona-line">{{result.personaLine}}</text>
+  </view>
+
+  <!-- 状态解读 -->
+  <view class="insight-card card">
+    <text class="section-title">氧氧说</text>
+    <text class="insight-text">{{result.insight}}</text>
+  </view>
+
+  <!-- 调节建议入口 -->
+  <view class="regulation-card card" wx:if="{{result.regulationTip}}">
+    <text class="section-title">调节建议</text>
+    <text class="regulation-text">{{result.regulationTip}}</text>
+    <button class="btn-primary small" bindtap="goRegulation">
+      开始调节
+    </button>
+  </view>
+
+  <!-- 产品推荐简化版 -->
+  <view class="product-card card" wx:if="{{result.productHint}}">
+    <view class="product-content">
+      <text class="product-icon">🫧</text>
+      <view class="product-info">
+        <text class="product-title">充氧宝 · Work Air</text>
+        <text class="product-tip">{{result.productHint}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-buttons">
+    <button class="btn-secondary" bindtap="shareResult">📤 分享这张卡</button>
+    <button class="btn-secondary" bindtap="goHome">返回首页</button>
+  </view>
+
+  <!-- 合规声明 -->
+  <view class="compliance">
+    <text class="muted small">💡 情绪判断为AI辅助参考，不构成医疗诊断或健康建议</text>
+  </view>
+
+</view>
+
+
+============================================================
+十五、调节建议页：pages/regulation/regulation.js
+============================================================
+
+// P5 · 调节内容页
+const app = getApp()
+
+// 按场景组织的行动建议
+const SCENE_ACTIONS = {
+  'plateau': [
+    { title: '阶梯式休息原则', desc: '每上升500米，给自己半天适应时间，不要急着冲高' },
+    { title: '少量多次补水', desc: '比平时多喝30%的水，每次一小口，不要猛灌' },
+    { title: '保证睡眠质量', desc: '高原第一晚尤其重要，提前1小时放下手机' }
+  ],
+  'brain': [
+    { title: '番茄工作法', desc: '集中25分钟，休息5分钟。重复4轮后休息15分钟' },
+    { title: '桌面整理仪式', desc: '花2分钟整理桌面，这个物理动作也能整理思路' },
+    { title: '蓝光过滤', desc: '睡前1小时开启屏幕的暖色模式，帮助大脑准备休息' }
+  ],
+  'sport': [
+    { title: '冷热交替浴', desc: '训练后先温水淋浴2分钟，再冷水冲30秒，重复3轮' },
+    { title: '泡沫轴放松', desc: '花5分钟用泡沫轴滚动大腿前侧和小腿，缓解肌肉紧张' },
+    { title: '补充蛋白质窗口', desc: '运动后30分钟内补充蛋白质，吸收效率最高' }
+  ],
+  'elder': [
+    { title: '每日温和散步', desc: '每天15分钟户外散步，慢走即可，重点是坚持' },
+    { title: '和家人分享三件小事', desc: '每天给家人发一段语音，说说今天遇到的三件小事' },
+    { title: '简易手指操', desc: '双手握拳再张开，重复20次，促进末梢血液循环' }
+  ],
+  'all': [
+    { title: '呼吸调节', desc: '4-4-6呼吸法：吸气4秒→屏息4秒→呼气6秒，做3轮' },
+    { title: '身体扫描', desc: '从头顶到脚尖，依次感受身体每个部位，遇到紧张处深呼吸' },
+    { title: '情绪命名', desc: '给自己的情绪起个名字，承认它的存在有时就已经足够' }
+  ]
+}
+
+// 科普知识库
+const SCIENTIFIC_TIPS = [
+  '深呼吸会激活副交感神经系统，帮助心率下降，这就是为什么"先深呼吸"总是有效。',
+  '脑疲劳的本质是前额叶皮层能量耗尽，休息不是偷懒，是让大脑重建资源。',
+  '高原环境血氧饱和度每下降1%，心率平均上升5-8次/分钟，这是身体在自动代偿。',
+  '运动后30分钟是身体修复的黄金窗口，此时补充营养效率最高。',
+  '孤独感（loneliness）和独处（alone）不是一回事；感到孤独时，和信任的人聊10分钟就能有效缓解。',
+  '人的注意力单次最长维持约25分钟，之后效率会明显下降，这不是意志力的问题。',
+  '高原地区建议每天的液体摄入量比平原多500-1000毫升，但不要一次喝太多。'
+]
+
+Page({
+  data: {
+    activeScene: 'all',
+    isBreathing: false,
+    filteredActions: SCENE_ACTIONS['all'],
+    scientificTip: ''
+  },
+
+  onLoad() {
+    // 获取上次的结果场景
+    const lastRecord = app.globalData.lastRecord
+    const scene = lastRecord && lastRecord.scene ? lastRecord.scene : 'all'
+    
+    // 随机选一条科普
+    const tip = SCIENTIFIC_TIPS[Math.floor(Math.random() * SCIENTIFIC_TIPS.length)]
+
+    this.setData({
+      activeScene: scene,
+      filteredActions: SCENE_ACTIONS[scene] || SCENE_ACTIONS['all'],
+      scientificTip: tip
+    })
+  },
+
+  filterScene(e) {
+    const scene = e.currentTarget.dataset.scene
+    this.setData({
+      activeScene: scene,
+      filteredActions: SCENE_ACTIONS[scene]
+    })
+  },
+
+  startBreathing() {
+    if (this.data.isBreathing) return
+    this.setData({ isBreathing: true })
+
+    // 简单呼吸计时：3轮 4-4-6
+    // 每轮 4+4+6 = 14秒，3轮 = 42秒
+    setTimeout(() => {
+      this.setData({ isBreathing: false })
+      wx.showToast({
+        title: '呼吸完成 🌿',
+        icon: 'none',
+        duration: 2000
+      })
+    }, 42000)
+  }
+})
+
+
+============================================================
+十六、调节建议页模板：pages/regulation/regulation.wxml
+============================================================
+
+<!-- P5 · 调节内容页 -->
+<view class="page">
+
+  <view class="regulation-header">
+    <text class="section-title">调节建议</text>
+    <text class="muted">按场景过滤，找到最适合你的调节方式</text>
+  </view>
+
+  <!-- 场景过滤 tab -->
+  <view class="scene-tabs">
+    <view class="scene-tab {{activeScene === 'all' ? 'active' : ''}}" 
+      data-scene="all" bindtap="filterScene">全部</view>
+    <view class="scene-tab {{activeScene === 'plateau' ? 'active' : ''}}" 
+      data-scene="plateau" bindtap="filterScene">🏔️ 高原</view>
+    <view class="scene-tab {{activeScene === 'brain' ? 'active' : ''}}" 
+      data-scene="brain" bindtap="filterScene">🧠 脑疲劳</view>
+    <view class="scene-tab {{activeScene === 'sport' ? 'active' : ''}}" 
+      data-scene="sport" bindtap="filterScene">🏃 运动</view>
+    <view class="scene-tab {{activeScene === 'elder' ? 'active' : ''}}" 
+      data-scene="elder" bindtap="filterScene">💚 银发</view>
+  </view>
+
+  <!-- 呼吸引导（4-4-6 已有素材） -->
+  <view class="regulation-card card">
+    <view class="card-header">
+      <text class="card-title">🫧 呼吸氧舱</text>
+      <text class="card-tag">推荐</text>
+    </view>
+    <text class="card-desc">4-4-6 呼吸法。吸气 4 秒 → 屏息 4 秒 → 呼气 6 秒</text>
+    <button class="btn-primary small" bindtap="startBreathing">
+      {{isBreathing ? '呼吸中...' : '开始 3 轮呼吸'}}
+    </button>
+  </view>
+
+  <!-- 行动建议清单 -->
+  <view class="action-list">
+    <text class="section-title">行动建议</text>
+    
+    <view class="action-item card" wx:for="{{filteredActions}}" wx:key="index">
+      <view class="action-number">{{index + 1}}</view>
+      <view class="action-content">
+        <text class="action-title">{{item.title}}</text>
+        <text class="action-desc">{{item.desc}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 科普小贴士 -->
+  <view class="tip-card card">
+    <text class="card-title">💡 氧氧的知识小站</text>
+    <text class="card-desc tiny">{{scientificTip}}</text>
+  </view>
+
+  <!-- 合规提示 -->
+  <view class="compliance-note">
+    <text class="muted small">💡 以上建议不构成医疗建议或心理治疗，如有专业需要请咨询医生</text>
+  </view>
+
+</view>
+
+
+============================================================
+十七、设计说明
+============================================================
+
+色彩系统（CSS变量）：
+  --page-bg: #f8f1e7        （浅暖米色背景）
+  --surface: #fffdf9         （卡片表面）
+  --text-primary: #3f332b    （深棕文字）
+  --text-secondary: #806f62  （灰棕辅助文字）
+  --accent: #1f7a6d          （深青绿强调色）
+  --accent-light: #35d6b8    （亮青绿点缀）
+  --border: rgba(115,88,69,0.14)
+
+页面流转：
+  首页 (index)
+    ├─ 已打卡 → 今日概览（情绪标签 + 置信度 + 氧氧说）
+    └─ 未打卡 → 打卡页 (checkin)
+                  ├─ 文字输入（带示例引导）
+                  └─ 拍照模式
+                 → 分析页 (analyze)
+                     ├─ 5步渐进动画（400ms步进）
+                     ├─ 调用 emotionEngine.analyze()
+                     └─ 本地存储 + 跳转
+                   → 结果页 (result)
+                       ├─ 情绪标签 + 置信度
+                       ├─ 趣味画像 + 氧氧说
+                       ├─ 调节建议入口
+                       └─ 产品推荐
+                     → 调节页 (regulation)
+                         ├─ 场景过滤tab
+                         ├─ 呼吸训练（42秒计时）
+                         ├─ 行动建议清单
+                         └─ 科普小贴士
+
+数据流：
+  wx.getStorageSync('emotionHistory') ← 永久本地存储
+    → [{ date, text, scene, emotionLabel, confidence, personaLine, insight, regulationTip, productHint }]
+    → 最多保留30天，同一天覆盖
+
+============================================================
+EOF — 氧氧情绪陪伴小程序 · 完整核心代码
+============================================================

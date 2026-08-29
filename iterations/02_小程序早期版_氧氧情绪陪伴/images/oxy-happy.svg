@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="氧氧开心表情">
+  <defs>
+    <radialGradient id="bodyGrad" cx="38%" cy="30%" r="80%">
+      <stop offset="0%" stop-color="#B8F5E3"/><stop offset="55%" stop-color="#6FD8C0"/><stop offset="100%" stop-color="#3AA8C9"/>
+    </radialGradient>
+  </defs>
+  <circle cx="60" cy="62" r="48" fill="url(#bodyGrad)"/>
+  <circle cx="46" cy="54" r="5.5" fill="#0B2A26"/>
+  <circle cx="74" cy="54" r="5.5" fill="#0B2A26"/>
+  <circle cx="47.5" cy="52" r="2" fill="#fff"/>
+  <circle cx="75.5" cy="52" r="2" fill="#fff"/>
+  <path d="M48 72 Q60 82 72 72" stroke="#0B2A26" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <ellipse cx="36" cy="64" rx="6" ry="4" fill="#FF8FB1" opacity=".55"/>
+  <ellipse cx="84" cy="64" rx="6" ry="4" fill="#FF8FB1" opacity=".55"/>
+</svg>

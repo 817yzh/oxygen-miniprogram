@@ -1,0 +1,18 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/checkin/checkin",
+    "pages/analyze/analyze",
+    "pages/result/result",
+    "pages/regulation/regulation"
+  ],
+  "window": {
+    "navigationBarTitleText": "氧氧情绪陪伴",
+    "navigationBarBackgroundColor": "#f8f1e7",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f8f1e7",
+    "backgroundTextStyle": "light"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}
