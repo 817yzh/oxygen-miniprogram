@@ -85,7 +85,7 @@ function buildIndexes(emotion, scene) {
  * @returns {object} report
  */
 function buildStateReport(opts) {
-  const emotionEngine = require('./emotionEngine')
+  const emotionEngine = require('../../../utils/emotionEngine')
   const emo = emotionEngine.analyze(opts.text || '', opts.scene || '')
   const emotion = emo.emotionLabel || '平静'
 

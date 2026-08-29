@@ -1,7 +1,7 @@
 // pages/mbti/form/form.js
 const app = getApp()
 // 路径: form.js 在 pages/mbti/form/，上三层 = 氧氧宝根 → utils/faceApi.js
-const faceApi = require('../../../utils/faceApi.js')
+const faceApi = require('../utils/faceApi.js')
 
 Page({
   data: {

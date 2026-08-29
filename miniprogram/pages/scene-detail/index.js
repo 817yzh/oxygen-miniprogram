@@ -1,7 +1,7 @@
 // pages/scene-detail/index.js
 const app = getApp()
 const { SCENE_HEALTH_CONFIG } = require('../../mock/health-scene-db.js')
-const { getEvidence } = require('../../mock/evidence-db.js') // V0.7 数据背书
+const { getEvidence } = require('mock/evidence-db.js) // V0.7 数据背书
 
 Page({
   data: {

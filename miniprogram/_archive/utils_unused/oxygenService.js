@@ -10,7 +10,7 @@
  */
 
 const { getUserProfile } = require('../mock/user-profile-db.js')
-const { getPersonalityProduct } = require('../mock/personality-product-map.js')
+const { getPersonalityProduct } = require('../../pages/share/mock/personality-product-map.js)
 const { SCENE_SOUNDS } = require('../mock/sound-therapy-db.js')
 
 /** 场景 → 音疗建议 */

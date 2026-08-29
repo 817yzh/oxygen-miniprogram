@@ -252,7 +252,7 @@ function getMockResult() {
 function recognizeFace(tempFilePath, scene) {
   return new Promise((resolve, reject) => {
     console.log('[FaceAPI] 识别照片:', tempFilePath.slice(0, 40) + '...', '场景:', scene)
-    const config = require('../config.js')
+    const config = require('../../../config.js')
     const apiCfg = (config && config.api) || {}
 
     // 先读图片转 base64

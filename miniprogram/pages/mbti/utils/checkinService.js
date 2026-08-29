@@ -4,11 +4,11 @@
  * V0.4: 接入 stateEngine 生成完整氧气状态报告 + mock 面部感知
  */
 const app = getApp()
-const emotionEngine = require('./emotionEngine')
+const emotionEngine = require('../../../utils/emotionEngine')
 const faceApi = require('./faceApi')
 const stateEngine = require('./stateEngine')
-const { RECIPE_DB } = require('../mock/recipe-db.js')
-const { matchSceneByChat } = require('../mock/health-scene-db.js')
+const { RECIPE_DB } = require('../../../mock/recipe-db.js')
+const { matchSceneByChat } = require('../../../mock/health-scene-db.js')
 
 /**
  * 根据情绪+场景推荐食谱(V0.8)
