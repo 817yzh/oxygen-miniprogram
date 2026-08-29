@@ -23,7 +23,7 @@ Page({
 
     // 人格 id：决定静态海报；兜底用 explorer
     const type = this.normalizeType(persona.type)
-    const src = '/images/posters/poster_' + type + '.jpg'
+    const src = '/pages/share/posters/poster_' + type + '.jpg'
     const productPick = getPersonalityProduct(type)
 
     this.setData({

@@ -5,10 +5,10 @@ const { SCENE_SIMULATIONS, getSimulation } = require('../../mock/scene-simulator
 // Tab 短名 + 场景图（高清 16:9 横滑卡用）
 const SHORT = { lasa: '拉萨', overtime: '加班', run5k: '跑步', elder: '老人' }
 const SCENE_IMG = {
-  lasa: '/images/scene-thumbs/scene_lasa.jpg',
-  overtime: '/images/scene-thumbs/scene_overtime.jpg',
-  run5k: '/images/scene-thumbs/scene_run5k.jpg',
-  elder: '/images/scene-thumbs/scene_elder.jpg'
+  lasa: '/pages/scene-simulator/scene-thumbs/scene_lasa.jpg',
+  overtime: '/pages/scene-simulator/scene-thumbs/scene_overtime.jpg',
+  run5k: '/pages/scene-simulator/scene-thumbs/scene_run5k.jpg',
+  elder: '/pages/scene-simulator/scene-thumbs/scene_elder.jpg'
 }
 
 Page({

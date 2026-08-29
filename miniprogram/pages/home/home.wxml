@@ -5,6 +5,22 @@
 -->
 <view class="home-v2">
 
+  <!-- ========== 0. 品牌视频位（config 配置 URL 后展示；留空/已看过/加载失效均不渲染） ========== -->
+  <view class="intro-video" wx:if="{{showIntroVideo && introVideoUrl}}">
+    <video
+      class="intro-video-el"
+      src="{{introVideoUrl}}"
+      autoplay
+      loop
+      muted
+      object-fit="cover"
+      show-play-btn="{{false}}"
+      controls="{{false}}"
+      binderror="onIntroVideoError"
+    />
+    <view class="intro-video-close" catchtap="closeIntroVideo">✕</view>
+  </view>
+
   <!-- ========== 1. 顶部问候区 ========== -->
   <view class="greeting-area">
     <text class="greeting-title">{{greetMain}}</text>

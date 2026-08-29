@@ -18,6 +18,40 @@
   overflow: hidden;
 }
 
+/* ========== 0. 品牌视频位（config 配置 URL 后展示；默认隐藏，零布局影响） ========== */
+.intro-video {
+  width: 100%;
+  height: 280rpx;
+  border-radius: 28rpx;
+  margin-top: 24rpx;
+  overflow: hidden;
+  position: relative;
+  z-index: 6;
+  background: #0A3D30;
+  box-shadow: 0 8rpx 24rpx rgba(16, 185, 129, 0.15);
+}
+
+.intro-video-el {
+  width: 100%;
+  height: 100%;
+}
+
+.intro-video-close {
+  position: absolute;
+  top: 16rpx;
+  right: 16rpx;
+  width: 52rpx;
+  height: 52rpx;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  color: #ffffff;
+  font-size: 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
 /* ========== 1. 顶部问候区 ========== */
 .greeting-area {
   width: 100%;

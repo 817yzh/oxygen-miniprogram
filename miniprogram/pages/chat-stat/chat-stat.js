@@ -67,6 +67,6 @@ Page({
 
   // 静默统计展示(无趋势图, 用分布文字代替, 保持轻量)
   goChat() {
-    wx.switchTab({ url: '/pages/chat/chat' })
+    wx.navigateTo({ url: '/pages/chat/chat' })
   }
 })

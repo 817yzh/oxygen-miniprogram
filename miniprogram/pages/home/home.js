@@ -8,6 +8,7 @@
  */
 
 const app = getApp()
+const config = require('../../config')
 const { GREETING_LIST } = require('../../mock/data.js')
 const { getOxygenMap } = require('../../mock/oxygen-map-db.js')
 const { getComfortWord, detectSceneByScore } = require('../../mock/comfort-words-db.js')
@@ -46,12 +47,37 @@ Page({
     noteText: '',               // 手账文字
     photoPath: '',              // 氧气瞬间照片
     statusBarText: '',          // 顶部常驻状态条文案
-    statusBarDone: false        // 状态条是否已完成态
+    statusBarDone: false,       // 状态条是否已完成态
+    // 品牌视频位（URL 来自配置项；留空或已看过时不展示，避免黑屏）
+    introVideoUrl: '',          // config.introVideoUrl 的线上 HTTPS 地址
+    showIntroVideo: false       // 是否渲染视频块
   },
 
   onLoad() {
     this.setGreeting()
     this.loadOxygenData()
+    this.initIntroVideo()
+  },
+
+  // ========== 品牌视频位（回归守卫: 空/失效 URL 不得黑屏） ==========
+  initIntroVideo() {
+    const introVideoUrl = (config.introVideoUrl || '').trim()
+    const seen = wx.getStorageSync('oxygen_intro_seen')
+    this.setData({
+      introVideoUrl,
+      showIntroVideo: !!introVideoUrl && !seen
+    })
+  },
+
+  // 视频加载失败兜底：隐藏视频块，避免残留黑屏
+  onIntroVideoError() {
+    this.setData({ showIntroVideo: false })
+  },
+
+  // 用户主动关闭：记住已看过，下次不再自动播
+  closeIntroVideo() {
+    wx.setStorageSync('oxygen_intro_seen', true)
+    this.setData({ showIntroVideo: false })
   },
 
   onShow() {

@@ -1,7 +1,21 @@
 {
   "description": "氧氧宝 · 氧系MBTI AI情绪陪伴小程序",
   "packOptions": {
-    "ignore": [],
+    "ignore": [
+      { "type": "folder", "value": "tests" },
+      { "type": "folder", "value": "docs" },
+      { "type": "folder", "value": "_archive" },
+      { "type": "folder", "value": "images/ip-actions" },
+      { "type": "folder", "value": "images/mbti" },
+      { "type": "folder", "value": "images/persona" },
+      { "type": "folder", "value": "images/scene" },
+      { "type": "file", "value": "_verify.js" },
+      { "type": "file", "value": "mock/oxygen-change-db.js" },
+      { "type": "file", "value": "mock/oxygen-suggestion-db.js" },
+      { "type": "suffix", "value": ".md" },
+      { "type": "suffix", "value": ".py" },
+      { "type": "suffix", "value": ".docx" }
+    ],
     "include": []
   },
   "setting": {

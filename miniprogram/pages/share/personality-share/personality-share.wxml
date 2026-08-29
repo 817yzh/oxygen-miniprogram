@@ -10,7 +10,7 @@
     <view class="poster-glow"></view>
     <image
       class="poster-img"
-      src="/images/posters/poster_{{type}}.jpg"
+      src="/pages/share/posters/poster_{{type}}.jpg"
       mode="widthFix"
       show-menu-by-longpress
       binderror="onPosterError"

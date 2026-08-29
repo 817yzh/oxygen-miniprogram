@@ -8,22 +8,33 @@
     "pages/product-center/product-center",
     "pages/profile/profile",
     "pages/oxygen-profile/oxygen-profile",
-    "pages/mbti/index/index",
-    "pages/mbti/form/form",
-    "pages/mbti/loading/loading",
-    "pages/mbti/result/result",
     "pages/checkin/checkin",
     "pages/report/report",
     "pages/growth/growth",
     "pages/emotion-log/emotion-log",
-    "pages/scene-detail/index",
     "pages/chat-stat/chat-stat",
     "pages/oxygen-test/oxygen-test",
-    "pages/scene-simulator/scene-simulator",
-    "pages/share/personality-share/personality-share",
     "pages/health-disclaimer/health-disclaimer",
     "pages/sound-therapy/sound-therapy",
     "pages/soulmate/soulmate"
+  ],
+  "subPackages": [
+    {
+      "root": "pages/mbti",
+      "pages": ["index/index", "form/form", "loading/loading", "result/result"]
+    },
+    {
+      "root": "pages/share",
+      "pages": ["personality-share/personality-share"]
+    },
+    {
+      "root": "pages/scene-simulator",
+      "pages": ["scene-simulator"]
+    },
+    {
+      "root": "pages/scene-detail",
+      "pages": ["index"]
+    }
   ],
   "window": {
     "navigationBarTitleText": "氧氧宝",
