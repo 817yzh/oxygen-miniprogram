@@ -22,8 +22,7 @@
     <!-- 呼呼身后 · 超大晨曦薄荷呼吸光晕 -->
     <view class="lg-back-glow"></view>
 
-    <!-- 悬浮 IP（宇航员小人 · 放大为主视觉） -->
-    <view class="lg-halo"></view>
+    <!-- 悬浮 IP（宇航员小人 · 放大为主视觉，无边框直接悬浮） -->
     <view class="lg-ip-float">
       <image
         class="lg-ip-img"
