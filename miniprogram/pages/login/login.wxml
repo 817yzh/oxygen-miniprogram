@@ -26,7 +26,7 @@
     <view class="lg-ip-float">
       <image
         class="lg-ip-img"
-        src="/images/ip/login-astronaut.png"
+        src="/images/ip/login-ip.webp"
         mode="aspectFit"
       />
     </view>
