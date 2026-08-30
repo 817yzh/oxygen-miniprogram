@@ -35,6 +35,14 @@
     <!-- 核心标语区 -->
     <text class="lg-slogan">吸一口气，开启美好能量</text>
     <text class="lg-slogan-sub">把生活风浪，交给呼呼守护</text>
+
+    <!-- 微光地平线（填充留白） -->
+    <view class="lg-horizon">
+      <view class="lg-hz-line"></view>
+      <view class="lg-hz-dot d1"></view>
+      <view class="lg-hz-dot d2"></view>
+      <view class="lg-hz-dot d3"></view>
+    </view>
   </view>
 
   <!-- ===== 极简交互落脚点 ===== -->

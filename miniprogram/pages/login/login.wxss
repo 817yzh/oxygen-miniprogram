@@ -109,13 +109,14 @@
 /* ===== 顶部清爽视觉 ===== */
 .lg-hero {
   flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   position: relative;
   z-index: 1;
-  padding-top: 40rpx;
+  padding-top: 120rpx;
 }
 /* 呼呼身后 · 超大晨曦薄荷呼吸光晕 */
 .lg-back-glow {
@@ -188,28 +189,65 @@
   padding-bottom: 64rpx;
   position: relative;
   z-index: 2;
+  display: flex;
+  flex-direction: column;
+}
+/* ---- 微光地平线（填充留白） ---- */
+.lg-horizon {
+  position: relative;
+  width: 300rpx;
+  height: 60rpx;
+  margin-top: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+.lg-hz-line {
+  position: absolute;
+  left: 0; top: 50%;
+  width: 100%; height: 2rpx;
+  transform: translateY(-50%);
+  background: linear-gradient(90deg, transparent, rgba(46,196,182,0.35), transparent);
+}
+.lg-hz-dot {
+  position: absolute;
+  top: 50%;
+  width: 12rpx; height: 12rpx;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  background: radial-gradient(circle, rgba(255,255,255,0.95), rgba(46,196,182,0.5));
+  box-shadow: 0 0 14rpx rgba(46,196,182,0.7);
+}
+.lg-hz-dot.d1 { left: 30%; animation: hzPulse 2.6s ease-in-out infinite; }
+.lg-hz-dot.d2 { left: 50%; width: 16rpx; height: 16rpx; animation: hzPulse 2.6s ease-in-out infinite 0.4s; }
+.lg-hz-dot.d3 { left: 70%; animation: hzPulse 2.6s ease-in-out infinite 0.8s; }
+@keyframes hzPulse {
+  0%,100% { transform: translateY(-50%) scale(1); opacity: 0.7; }
+  50% { transform: translateY(-50%) scale(1.25); opacity: 1; }
 }
 /* ---- 纯净微信登录按钮（单一高光胶囊） ---- */
 .lg-auth-btn {
   position: relative;
   width: 100%;
-  height: 116rpx;
-  border-radius: 32px;
+  height: 88rpx;
+  border-radius: 26px;
   background: linear-gradient(135deg, #2EC4B6 0%, #209E92 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 20rpx;
+  gap: 16rpx;
   overflow: hidden;
   box-shadow:
-    0 16rpx 36rpx rgba(46,196,182,0.35),
+    0 12rpx 28rpx rgba(46,196,182,0.32),
     inset 0 2rpx 0 rgba(255,255,255,0.35);
   border: 1rpx solid rgba(255,255,255,0.35);
+  margin-top: 44rpx;
 }
 .lg-auth-btn::before {
   content: '';
   position: absolute; inset: 0;
-  border-radius: 32px;
+  border-radius: 26px;
   padding: 2rpx;
   background: linear-gradient(135deg, rgba(255,255,255,0.6), transparent 40%, rgba(255,255,255,0.3));
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -218,15 +256,15 @@
   pointer-events: none;
 }
 .lg-wechat-ico {
-  width: 46rpx; height: 46rpx;
+  width: 36rpx; height: 36rpx;
   position: relative; z-index: 2;
   opacity: 0.98;
 }
 .lg-auth-txt {
-  font-size: 34rpx;
+  font-size: 30rpx;
   font-weight: 700;
   color: #fff;
-  letter-spacing: 4rpx;
+  letter-spacing: 3rpx;
   position: relative; z-index: 2;
 }
 .lg-auth-shine {
@@ -248,7 +286,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 28rpx;
+  margin-top: 24rpx;
 }
 .lg-agree-box {
   width: 32rpx; height: 32rpx;
