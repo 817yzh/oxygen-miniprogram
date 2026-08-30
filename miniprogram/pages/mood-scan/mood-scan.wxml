@@ -7,6 +7,9 @@
   <view class="ms-aura aura-3"></view>
   <view class="ms-grain"></view>
 
+  <!-- ===== 结束高光闪光（第三阶段） ===== -->
+  <view wx:if="{{scanFlash}}" class="scan-flash"></view>
+
   <!-- ========== STEP 0 · 开始扫描（杂志高定排版） ========== -->
   <view wx:if="{{step === 0}}" class="ms-scan">
     <!-- 顶部 · 杂志级大排版标题 -->
@@ -23,13 +26,29 @@
       <!-- 扇束光（保留轻微科技感） -->
       <view class="ms-radar"></view>
       <view class="ms-radar-faint"></view>
+
+      <!-- ===== 扫描能量外环（第二阶段：高速旋转） ===== -->
+      <view wx:if="{{scanning}}" class="scan-ring"></view>
+      <view wx:if="{{scanning}}" class="scan-ring scan-ring-2"></view>
+
+      <!-- ===== 声纳波纹（第二阶段：从中心扩散） ===== -->
+      <view wx:if="{{scanning}}" class="sonar-wave"></view>
+      <view wx:if="{{scanning}}" class="sonar-wave sonar-2"></view>
+
       <!-- 毛玻璃浮岛 -->
       <view class="ms-glass-card">
         <view class="ms-glass-shine"></view>
         <image wx:if="{{photoPath}}" class="ms-glass-photo" src="{{photoPath}}" mode="aspectFill"></image>
-        <view wx:else class="ms-glass-fox {{scanDone ? 'fox-idle' : 'fox-breathe'}}">
-          <text class="ms-glass-fox-ico">🦊</text>
+        <view wx:else class="ms-glass-fox {{scanning ? 'fox-thinking' : (scanDone ? 'fox-awake' : 'fox-breathe')}}">
+          <image class="ms-glass-fox-img" src="/images/ip/fox-reference.webp" mode="aspectFill"></image>
         </view>
+        <!-- ===== 发光扫描线（第二阶段：从上扫到下） ===== -->
+        <view wx:if="{{scanning}}" class="scan-line"></view>
+        <!-- ===== 气泡粒子（第二阶段：扫描线经过处上浮） ===== -->
+        <view wx:if="{{scanning}}" class="scan-bubble b1"></view>
+        <view wx:if="{{scanning}}" class="scan-bubble b2"></view>
+        <view wx:if="{{scanning}}" class="scan-bubble b3"></view>
+        <view wx:if="{{scanning}}" class="scan-bubble b4"></view>
       </view>
       <!-- 状态提示 · 紧贴浮岛下方的极薄药丸 -->
       <view class="ms-pill">
@@ -40,6 +59,7 @@
     <!-- 底部操作区 · 主按钮 + 低调返回 -->
     <view class="ms-actions-btm">
       <view class="ms-primary {{scanDone ? 'ms-primary--ready' : ''}}" bindtap="startScan" hover-class="ms-primary--press">
+        <view wx:if="{{btnRipple}}" class="ripple"></view>
         <text class="ms-primary-ico">{{scanDone ? '📸' : '🚀'}}</text>
         <text class="ms-primary-text">{{scanDone ? '对准镜头，拍下此刻' : '开启 3 秒充氧扫描'}}</text>
         <text class="ms-primary-glow"></text>
@@ -51,15 +71,34 @@
     </view>
   </view>
 
-  <!-- ========== STEP 1 · 识别中 ========== -->
+  <!-- ========== STEP 1 · 识别中（沉浸扫描，无原生弹窗） ========== -->
   <view wx:if="{{step === 1}}" class="ms-analyzing">
-    <view class="ms-halo halo-sm"></view>
+    <view class="ms-aura aura-1"></view>
+    <view class="ms-aura aura-2"></view>
+
+    <!-- 扫描能量外环（无限旋转） -->
+    <view class="scan-ring a1-ring"></view>
+    <view class="scan-ring scan-ring-2 a1-ring-2"></view>
+
+    <!-- 声纳波纹 -->
+    <view class="sonar-wave"></view>
+    <view class="sonar-wave sonar-2"></view>
+
+    <!-- 毛玻璃浮岛 + 狐狸 -->
     <view class="ms-glass-card glass-analyzing">
       <view class="ms-glass-shine"></view>
-      <view class="ms-glass-fox fox-breathe">
-        <text class="ms-glass-fox-ico">🦊</text>
+      <view class="ms-glass-fox fox-thinking-loop">
+        <image class="ms-glass-fox-img" src="/images/ip/fox-reference.webp" mode="aspectFill"></image>
       </view>
+      <!-- 来回扫描线 -->
+      <view class="scan-line scan-line-loop"></view>
+      <!-- 气泡粒子 -->
+      <view class="scan-bubble b1"></view>
+      <view class="scan-bubble b2"></view>
+      <view class="scan-bubble b3"></view>
+      <view class="scan-bubble b4"></view>
     </view>
+
     <text class="ms-analyzing-text">灵狐正在读取你的心灵气象…</text>
     <text class="ms-analyzing-sub">眨眨眼，让 AI 读懂你的疲惫</text>
     <view class="ms-analyzing-dots">
@@ -67,50 +106,79 @@
     </view>
   </view>
 
-  <!-- ========== STEP 2 · 结果（四维度） ========== -->
-  <view wx:if="{{step === 2 && moodBand}}" class="ms-result">
-    <view class="ms-result-head">
-      <text class="ms-result-tag">📸 面部能量扫描结果</text>
-    </view>
+  <!-- ========== STEP 2 · 结果（终极高定治愈海报 · 单胶囊聚合） ========== -->
+  <view wx:if="{{step === 2 && moodBand}}" class="ms-result poster-page">
 
-    <!-- 主波段 -->
-    <view class="ms-band" style="background: {{moodBand.grad}};">
-      <view class="ms-band-emoji">{{moodBand.emoji}}</view>
-      <text class="ms-band-name">今日 · {{moodBand.name}}</text>
-      <text class="ms-band-desc">{{moodBand.desc}}</text>
-      <view class="ms-band-wave"><view class="wave w1"></view><view class="wave w2"></view><view class="wave w3"></view></view>
-    </view>
-
-    <!-- 维度一 · 心理微解析 -->
-    <view class="ms-card">
-      <text class="ms-section-title">🧠 心理微解析</text>
-      <text class="ms-psych-text">{{psychText}}</text>
-    </view>
-
-    <!-- 微表情雷达 -->
-    <view class="ms-card">
-      <text class="ms-section-title">🧬 微表情雷达</text>
-      <view class="ms-micro-item" wx:for="{{microExp}}" wx:key="key">
-        <text class="ms-micro-icon">{{item.icon}}</text>
-        <text class="ms-micro-label">{{item.label}}</text>
-        <view class="ms-micro-bar"><view class="ms-micro-fill" style="width:{{item.value}}%"></view></view>
-        <text class="ms-micro-val">{{item.value}}</text>
+    <!-- 顶部流动感标题（今日心灵波段 + WORK AIR） -->
+    <view class="poster-header">
+      <text class="poster-h-title">今日 · 心灵波段</text>
+      <view class="poster-h-flow">
+        <view class="flow-line"></view>
+        <text class="poster-h-en">WORK AIR · OXYGEN FREQUENCY</text>
+        <view class="flow-line right"></view>
       </view>
     </view>
 
-    <!-- 能量指数 -->
-    <view class="ms-meter-row">
-      <view class="ms-meter">
-        <view class="ms-meter-top"><text>💛 能量指数</text><text class="ms-meter-num">{{energy}}</text></view>
-        <view class="ms-meter-bg"><view class="ms-meter-fill joy" style="width:{{energy}}%"></view></view>
+    <!-- 核心治愈报告舱（中心毛玻璃浮岛 · 解药胶囊） -->
+    <view class="healing-capsule">
+
+      <!-- IP 破框：灵狐从右下角溢出 -->
+      <view class="ip-breakout">
+        <image class="ip-breakout-img" src="/images/ip/fox-reference.webp" mode="aspectFill"></image>
       </view>
-      <view class="ms-meter">
-        <view class="ms-meter-top"><text>🫁 状态/氧气</text><text class="ms-meter-num">{{oxygen}}</text></view>
-        <view class="ms-meter-bg"><view class="ms-meter-fill {{moodBand.risk ? 'risk' : 'oxy'}}" style="width:{{oxygen}}%"></view></view>
+
+      <!-- 顶部暗色流光签（深墨绿 + 人格渐变色光晕） -->
+      <view class="capsule-head">
+        <view class="capsule-head-glow" style="background: {{moodBand.grad}};"></view>
+        <view class="capsule-head-row">
+          <text class="capsule-weather">🌤️ {{moodBand.name}}</text>
+          <text class="capsule-emoji">{{moodBand.emoji}}</text>
+        </view>
+        <text class="capsule-title">今日 · {{moodBand.name}}</text>
+        <text class="capsule-desc">{{moodBand.desc}}</text>
+      </view>
+
+      <!-- 双生能量舱（泪滴/果冻仿生形状 · 高定呼吸液滴） -->
+      <view class="capsule-body">
+        <view class="droplets-container">
+
+          <!-- 左泪滴：心灵氧 -->
+          <view class="droplet-item">
+            <view class="liquid-droplet amber-glow">
+              <text class="droplet-num">{{energy}}</text>
+            </view>
+            <text class="droplet-label">心灵氧</text>
+          </view>
+
+          <!-- 右泪滴：身体氧 -->
+          <view class="droplet-item">
+            <view class="liquid-droplet cyan-glow">
+              <text class="droplet-num">{{oxygen}}</text>
+            </view>
+            <text class="droplet-label">身体氧</text>
+          </view>
+        </view>
+
+        <!-- 灵狐洞察（大引号 · 衬线手写信） -->
+        <view class="insight-section">
+          <view class="insight-title-row">
+            <text class="insight-title">灵狐洞察</text>
+            <text class="paw-icon">🐾</text>
+          </view>
+          <text class="insight-quote-mark open">"</text>
+          <text class="insight-text">{{psychText}}</text>
+          <text class="insight-quote-mark close">"</text>
+        </view>
       </view>
     </view>
 
-    <!-- 维度四 · 灵狐彩蛋（稀有盲盒） -->
+    <!-- 底部金句（沉浸式留白 · 卡片外） -->
+    <view wx:if="{{quote}}" class="poster-quote">
+      <text class="quote-text">{{quote.text}}</text>
+      <text class="quote-warm">{{quote.warm}}</text>
+    </view>
+
+    <!-- 灵狐彩蛋（稀有盲盒 · 保留精简） -->
     <view wx:if="{{egg && egg.type === 'talisman'}}" class="ms-egg egg-pop">
       <view class="ms-egg-head">
         <text class="ms-egg-rare {{egg.talisman.rare}}">{{egg.talisman.rare}}</text>
@@ -123,32 +191,19 @@
       </view>
     </view>
 
-    <!-- 维度二 · 文学治愈 -->
-    <view wx:if="{{quote}}" class="ms-card quote">
-      <text class="ms-quote-text">“ {{quote.text}} ”</text>
-      <text class="ms-quote-warm">{{quote.warm}}</text>
-    </view>
-
-    <!-- 维度三 · 天气互文 + 双氧 -->
-    <view class="ms-weather">
-      <text class="ms-weather-emoji">🌦️</text>
-      <text class="ms-weather-text">{{weatherText}}</text>
-    </view>
+    <!-- 双氧彩蛋（保留） -->
     <view wx:if="{{showDualEgg}}" class="ms-dual egg-pop">
       <text class="ms-dual-emoji">🥚</text>
       <text class="ms-dual-text">{{dualText}}</text>
     </view>
 
-    <!-- 行动 -->
-    <view class="ms-actions">
-      <view class="ms-btn ghost" hover-class="btn-hover" bindtap="rescan">🔄 再扫一次</view>
-      <view class="ms-btn solid" hover-class="btn-hover" bindtap="goCard">💊 生成治愈解药卡</view>
-    </view>
-    <view class="ms-actions-sub">
-      <view class="ms-link" bindtap="goBreath">🫁 去吸一口氧</view>
-      <view class="ms-link" bindtap="goChat">💬 和灵狐聊聊</view>
+    <!-- 底部黄金双操作区（仅两个按钮 · 大呼吸感） -->
+    <view class="poster-actions">
+      <view class="poster-btn secondary" hover-class="btn-hover" bindtap="goCard">📤 分享今日解药</view>
+      <view class="poster-btn primary" hover-class="btn-hover" bindtap="goHome">🏠 返回氧氧宝首页</view>
     </view>
   </view>
+
 
   <!-- ========== STEP 3 · 治愈解药卡 ========== -->
   <view wx:if="{{step === 3 && moodBand}}" class="ms-card-page">
@@ -173,3 +228,4 @@
   </view>
 
 </view>
+
