@@ -211,34 +211,9 @@
   pointer-events: none;
 }
 .lg-wechat-ico {
-  width: 44rpx; height: 44rpx;
+  width: 40rpx; height: 40rpx;
   position: relative; z-index: 2;
 }
-.wc-bubble {
-  position: absolute;
-  background: #fff;
-}
-.wc-b1 {
-  width: 26rpx; height: 22rpx;
-  border-radius: 10rpx;
-  left: 2rpx; top: 4rpx;
-  transform: rotate(-8deg);
-}
-.wc-b2 {
-  width: 26rpx; height: 22rpx;
-  border-radius: 10rpx;
-  right: 2rpx; bottom: 4rpx;
-  transform: rotate(-8deg);
-  opacity: 0.92;
-}
-.wc-eye {
-  position: absolute;
-  width: 5rpx; height: 5rpx;
-  border-radius: 50%;
-  background: #13A89A;
-}
-.wc-e1 { left: 8rpx; top: 9rpx; }
-.wc-e2 { right: 8rpx; top: 9rpx; }
 .lg-auth-txt {
   font-size: 30rpx;
   font-weight: 700;
@@ -283,3 +258,4 @@
 .lg-agree-check { color: #fff; font-size: 20rpx; font-weight: 700; }
 .lg-agree-text { font-size: 22rpx; color: #8BA89F; }
 .lg-agree-link { font-size: 22rpx; color: #2E8B7A; font-weight: 600; }
+
