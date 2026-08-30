@@ -40,7 +40,7 @@
         <view class="ms-glass-shine"></view>
         <image wx:if="{{photoPath}}" class="ms-glass-photo" src="{{photoPath}}" mode="aspectFill"></image>
         <view wx:else class="ms-glass-fox {{scanning ? 'fox-thinking' : (scanDone ? 'fox-awake' : 'fox-breathe')}}">
-          <image class="ms-glass-fox-img" src="/images/ip/fox-reference.webp" mode="aspectFill"></image>
+          <image class="ms-glass-fox-img" src="/images/ip/fox-reference.png" mode="aspectFill"></image>
         </view>
         <!-- ===== 发光扫描线（第二阶段：从上扫到下） ===== -->
         <view wx:if="{{scanning}}" class="scan-line"></view>
@@ -88,7 +88,7 @@
     <view class="ms-glass-card glass-analyzing">
       <view class="ms-glass-shine"></view>
       <view class="ms-glass-fox fox-thinking-loop">
-        <image class="ms-glass-fox-img" src="/images/ip/fox-reference.webp" mode="aspectFill"></image>
+        <image class="ms-glass-fox-img" src="/images/ip/fox-reference.png" mode="aspectFill"></image>
       </view>
       <!-- 来回扫描线 -->
       <view class="scan-line scan-line-loop"></view>
@@ -124,7 +124,7 @@
 
       <!-- IP 破框：灵狐从右下角溢出 -->
       <view class="ip-breakout">
-        <image class="ip-breakout-img" src="/images/ip/fox-reference.webp" mode="aspectFill"></image>
+        <image class="ip-breakout-img" src="/images/ip/fox-reference.png" mode="aspectFill"></image>
       </view>
 
       <!-- 顶部暗色流光签（深墨绿 + 人格渐变色光晕） -->
