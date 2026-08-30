@@ -22,12 +22,12 @@
     <!-- 呼呼身后 · 超大晨曦薄荷呼吸光晕 -->
     <view class="lg-back-glow"></view>
 
-    <!-- 悬浮 IP（放大为主视觉） -->
+    <!-- 悬浮 IP（宇航员小人 · 放大为主视觉） -->
     <view class="lg-halo"></view>
     <view class="lg-ip-float">
       <image
         class="lg-ip-img"
-        src="https://cdn.jsdelivr.net/gh/817yzh/oxygen-images@main/oxy-ip.png"
+        src="/images/ip/login-astronaut.png"
         mode="aspectFit"
       />
     </view>
@@ -36,12 +36,14 @@
     <text class="lg-slogan">吸一口气，开启美好能量</text>
     <text class="lg-slogan-sub">把生活风浪，交给呼呼守护</text>
 
-    <!-- 微光地平线（填充留白） -->
-    <view class="lg-horizon">
-      <view class="lg-hz-line"></view>
-      <view class="lg-hz-dot d1"></view>
-      <view class="lg-hz-dot d2"></view>
-      <view class="lg-hz-dot d3"></view>
+    <!-- 玻璃质感装饰圆（相机 + 叶子 + 灵狐） -->
+    <view class="lg-glass-orb">
+      <view class="orb-inner">
+        <text class="orb-icon orb-cam">📷</text>
+        <text class="orb-icon orb-leaf">🌿</text>
+        <image class="orb-icon orb-fox" src="/images/ip/fox-reference.webp" mode="aspectFill"></image>
+      </view>
+      <view class="orb-shine"></view>
     </view>
   </view>
 
@@ -50,10 +52,12 @@
     <!-- 纯净微信登录按钮（单一高光胶囊 + 白色微信图标） -->
     <view class="lg-auth-btn" bindtap="onWechatLogin" hover-class="lg-auth-btn--press">
       <view class="lg-auth-shine"></view>
-      <image
-        class="lg-wechat-ico"
-        src="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PScwIDAgMTAyNCAxMDI0JyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnPjxwYXRoIGZpbGw9JyNmZmZmZmYnIGQ9J00zNTIgMjU2Yy0xMDYgMC0xOTIgNzctMTkyIDE3MiAwIDU0IDI3IDEwMyA3MyAxMzRsLTE4IDU2IDY2LTMyYzIyIDEyIDQ1IDE4IDcxIDE4IDIyIDAgNDMtNSA2My0xNS00LTEwLTYtMjAtNi0zMSAwLTk1IDg2LTE3MiAxOTItMTcyczE5MiA3NyAxOTIgMTcyLTg2IDE3Mi0xOTIgMTcyYy0xMCAwLTIwLTEtMzAtMi0zMCAyMi02NyAzNS0xMDcgMzUgMCAwIDkgMTMgMTggMzIgOTAgMiAxNzMtMjggMjM3LTgxIDU4LTQ3IDkyLTEwOCA5Mi0xNzRDNzA0IDMzMyA2MTggMjU2IDUxMiAyNTZoLTc4em0tNDIgNjJjMTUgMCAyOC0xMyAyOC0yOHMtMTMtMjgtMjgtMjgtMjggMTMtMjggMjggMTMgMjggMjggMjh6bTE0MCAwYzE1IDAgMjgtMTMgMjgtMjhzLTEzLTI4LTI4LTI4LTI4IDEzLTI4IDI4IDEzIDI4IDI4IDI4em0yODYgMTc4Yy0xMyAwLTIzIDExLTIzIDIzczEwIDIzIDIzIDIzIDIzLTEwIDIzLTIzLTEwLTIzLTIzLTIzem0tMTAwIDBjLTEzIDAtMjMgMTAtMjMgMjNzMTAgMjMgMjMgMjMgMjMtMTAgMjMtMjMtMTAtMjMtMjMtMjN6bTc0LTc0Yy04MiAwLTE0OSA2Mi0xNDkgMTM5IDAgNDMgMjAgODEgNTMgMTA2bC0xMiA0MCA0OC0yMmMxNCA2IDI5IDEwIDQ1IDEwIDgyIDAgMTQ5LTYyIDE0OS0xMzlzLTY3LTEzOS0xNDktMTM5eiIvPjwvc3ZnPg=="
-      />
+      <view class="lg-wechat-ico">
+  <view class="wc-bubble wc-b1"></view>
+  <view class="wc-bubble wc-b2"></view>
+  <view class="wc-eye wc-e1"></view>
+  <view class="wc-eye wc-e2"></view>
+</view>
       <text class="lg-auth-txt">微信登录</text>
     </view>
 

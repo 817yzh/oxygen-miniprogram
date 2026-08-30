@@ -116,7 +116,7 @@
   justify-content: flex-start;
   position: relative;
   z-index: 1;
-  padding-top: 120rpx;
+  padding-top: 60rpx;
 }
 /* 呼呼身后 · 超大晨曦薄荷呼吸光晕 */
 .lg-back-glow {
@@ -152,7 +152,7 @@
 /* 悬浮 IP（放大为主视觉） */
 .lg-ip-float {
   position: relative;
-  width: 390rpx; height: 390rpx;
+  width: 400rpx; height: 400rpx;
   display: flex; align-items: center; justify-content: center;
   z-index: 2;
 }
@@ -167,8 +167,8 @@
 }
 /* 核心标语区 */
 .lg-slogan {
-  margin-top: 8rpx;
-  font-size: 40rpx;
+  margin-top: 16rpx;
+  font-size: 42rpx;
   font-weight: 700;
   color: #123C33;
   letter-spacing: 4rpx;
@@ -192,40 +192,64 @@
   display: flex;
   flex-direction: column;
 }
-/* ---- 微光地平线（填充留白） ---- */
-.lg-horizon {
+/* ---- 玻璃质感装饰圆（相机 + 叶子 + 灵狐） ---- */
+.lg-glass-orb {
   position: relative;
-  width: 300rpx;
-  height: 60rpx;
-  margin-top: 40rpx;
+  width: 240rpx;
+  height: 240rpx;
+  margin-top: 60rpx;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.7), rgba(200,235,225,0.3) 50%, rgba(160,210,195,0.2) 100%);
+  border: 2rpx solid rgba(255,255,255,0.6);
+  box-shadow:
+    0 12rpx 32rpx rgba(46,196,182,0.15),
+    inset 0 4rpx 12rpx rgba(255,255,255,0.6),
+    inset 0 -4rpx 12rpx rgba(46,196,182,0.1);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 2;
+  animation: orbFloat 4s ease-in-out infinite;
 }
-.lg-hz-line {
-  position: absolute;
-  left: 0; top: 50%;
-  width: 100%; height: 2rpx;
-  transform: translateY(-50%);
-  background: linear-gradient(90deg, transparent, rgba(46,196,182,0.35), transparent);
+@keyframes orbFloat {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-12rpx); }
 }
-.lg-hz-dot {
-  position: absolute;
-  top: 50%;
-  width: 12rpx; height: 12rpx;
+.orb-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16rpx;
+  position: relative;
+}
+.orb-icon {
+  font-size: 44rpx;
+  opacity: 0.9;
+}
+.orb-cam {
+  transform: translateY(-8rpx);
+}
+.orb-leaf {
+  transform: translateY(6rpx);
+}
+.orb-fox {
+  width: 64rpx;
+  height: 64rpx;
   border-radius: 50%;
-  transform: translateY(-50%);
-  background: radial-gradient(circle, rgba(255,255,255,0.95), rgba(46,196,182,0.5));
-  box-shadow: 0 0 14rpx rgba(46,196,182,0.7);
+  border: 1.5rpx solid rgba(255,255,255,0.7);
+  box-shadow: 0 4rpx 10rpx rgba(46,196,182,0.2);
 }
-.lg-hz-dot.d1 { left: 30%; animation: hzPulse 2.6s ease-in-out infinite; }
-.lg-hz-dot.d2 { left: 50%; width: 16rpx; height: 16rpx; animation: hzPulse 2.6s ease-in-out infinite 0.4s; }
-.lg-hz-dot.d3 { left: 70%; animation: hzPulse 2.6s ease-in-out infinite 0.8s; }
-@keyframes hzPulse {
-  0%,100% { transform: translateY(-50%) scale(1); opacity: 0.7; }
-  50% { transform: translateY(-50%) scale(1.25); opacity: 1; }
+.orb-shine {
+  position: absolute;
+  top: 15%;
+  left: 20%;
+  width: 50rpx;
+  height: 30rpx;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(255,255,255,0.8), transparent 70%);
+  pointer-events: none;
 }
+
 /* ---- 纯净微信登录按钮（单一高光胶囊） ---- */
 .lg-auth-btn {
   position: relative;
@@ -256,10 +280,34 @@
   pointer-events: none;
 }
 .lg-wechat-ico {
-  width: 36rpx; height: 36rpx;
+  width: 44rpx; height: 44rpx;
   position: relative; z-index: 2;
-  opacity: 0.98;
 }
+.wc-bubble {
+  position: absolute;
+  background: #fff;
+}
+.wc-b1 {
+  width: 26rpx; height: 22rpx;
+  border-radius: 10rpx;
+  left: 2rpx; top: 4rpx;
+  transform: rotate(-8deg);
+}
+.wc-b2 {
+  width: 26rpx; height: 22rpx;
+  border-radius: 10rpx;
+  right: 2rpx; bottom: 4rpx;
+  transform: rotate(-8deg);
+  opacity: 0.92;
+}
+.wc-eye {
+  position: absolute;
+  width: 5rpx; height: 5rpx;
+  border-radius: 50%;
+  background: #13A89A;
+}
+.wc-e1 { left: 8rpx; top: 9rpx; }
+.wc-e2 { right: 8rpx; top: 9rpx; }
 .lg-auth-txt {
   font-size: 30rpx;
   font-weight: 700;
