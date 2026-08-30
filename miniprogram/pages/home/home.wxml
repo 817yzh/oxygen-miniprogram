@@ -29,9 +29,7 @@
 
   <!-- 今日氧气记录入口（点击唤起状态轻选抽屉） -->
   <view class="status-bar {{statusBarDone ? 'status-bar--done' : ''}}" bindtap="onIpTap" hover-class="status-bar--press">
-    <view class="status-bar-icon">{{statusBarDone ? '✓' : '✍️'}}</view>
     <text class="status-bar-text">{{statusBarText}}</text>
-    <view class="status-bar-arrow">{{statusBarDone ? '' : '→'}}</view>
   </view>
 
   <!-- ========== 2. 主视觉区：IP + 氧气球（物理重叠） ========== -->
@@ -89,19 +87,13 @@
   <text class="ball-hint">{{showDimBubbles ? '点击球体收起维度' : '点击球体查看详细数据'}}</text>
 
   <!-- ========== 4. 底部按钮区：吸氧 + AI陪伴 聊一聊 ========== -->
-<!-- 【面部能量扫描】主入口卡片 -->
-  <view class="mood-snap-card" bindtap="onMoodSnap" hover-class="mood-snap-card--press">
-    <view class="mood-snap-cam">📸</view>
-    <view class="mood-snap-mid">
-      <text class="mood-snap-title">拍照看今天心情</text>
-      <text class="mood-snap-sub">3秒扫描 · 测测今日心灵波段 ✨</text>
-    </view>
-    <view class="mood-snap-go">去扫描 →</view>
-  </view>
+  <!-- ========== 【核心玩法·企业重点】拍照看今天心情 / 缺氧检测 ========== -->
+<!-- 底部三合一黄金闭环：主按钮（面部充氧）+ 次按钮（聊一聊） -->
   <view class="action-area">
-    <view class="oxygen-btn breathing-glow" bindtap="startOxygenTherapy" hover-class="btn-hover">
-      <text class="btn-icon">🫁</text>
-      <text class="btn-text">开启1分钟吸氧</text>
+    <view class="main-oxygen-btn" bindtap="onMoodSnap" hover-class="btn-hover">
+      <text class="main-btn-icon">✨</text>
+      <text class="main-btn-text">开启今日面部充氧</text>
+      <text class="main-btn-sub">3秒扫脸 · 测测今日心灵波段</text>
     </view>
     <view class="chat-link" bindtap="goChat" hover-class="btn-hover">
       <text class="chat-link-ico">💬</text>
