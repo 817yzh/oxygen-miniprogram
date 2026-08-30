@@ -32,19 +32,9 @@
       />
     </view>
 
-    <!-- 核心标语区 -->
+    <!-- 核心标语区（唯一文案） -->
     <text class="lg-slogan">吸一口气，开启美好能量</text>
     <text class="lg-slogan-sub">把生活风浪，交给呼呼守护</text>
-
-    <!-- 玻璃质感装饰圆（相机 + 叶子 + 灵狐） -->
-    <view class="lg-glass-orb">
-      <view class="orb-inner">
-        <text class="orb-icon orb-cam">📷</text>
-        <text class="orb-icon orb-leaf">🌿</text>
-        <image class="orb-icon orb-fox" src="/images/ip/fox-reference.webp" mode="aspectFill"></image>
-      </view>
-      <view class="orb-shine"></view>
-    </view>
   </view>
 
   <!-- ===== 极简交互落脚点 ===== -->
