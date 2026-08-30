@@ -607,48 +607,91 @@
    ================================================================ */
 
 .poster-page {
+  min-height: 100vh;
   padding: 20rpx 28rpx 40rpx;
   box-sizing: border-box;
+  background: linear-gradient(180deg, #EBF5F1 0%, #D4EBE3 50%, #C5E4D8 100%);
+}
+
+/* IP 破框：灵狐从右下角溢出 */
+.ip-breakout {
+  position: absolute;
+  bottom: -30rpx;
+  right: -20rpx;
+  width: 180rpx;
+  height: 180rpx;
+  border-radius: 50%;
+  overflow: hidden;
+  z-index: 10;
+  filter: drop-shadow(0 8rpx 20rpx rgba(40,116,90,0.25));
+  pointer-events: none;
+  border: 2rpx solid rgba(255,255,255,0.7);
+}
+.ip-breakout-img {
+  width: 100%;
+  height: 100%;
 }
 
 /* ---------- 顶部氛围区（极简留白 · 艺术化标题） ---------- */
 .poster-header {
   text-align: center;
-  padding: 30rpx 0 36rpx;
+  padding: 36rpx 0 28rpx;
 }
 .poster-h-title {
   display: block;
-  font-size: 34rpx;
-  font-weight: 300;
-  color: #3D6B5E;
-  letter-spacing: 6rpx;
-  margin-bottom: 10rpx;
+  font-size: 46rpx;
+  font-weight: 800;
+  color: #1F4A3E;
+  letter-spacing: 10rpx;
+  text-shadow: 0 2rpx 8rpx rgba(255,255,255,0.8);
+  margin-bottom: 14rpx;
 }
-.poster-h-sub {
-  display: block;
+.poster-h-flow {
+  display: flex; align-items: center; justify-content: center;
+  gap: 16rpx;
+}
+.flow-line {
+  width: 60rpx;
+  height: 2rpx;
+  background: linear-gradient(90deg, transparent, rgba(46,196,182,0.6));
+  border-radius: 2rpx;
+}
+.flow-line.right {
+  background: linear-gradient(90deg, rgba(46,196,182,0.6), transparent);
+}
+.poster-h-en {
   font-size: 18rpx;
-  color: #8BA89E;
-  letter-spacing: 4rpx;
+  color: #5A8A7C;
+  letter-spacing: 3rpx;
   font-weight: 500;
+  font-style: italic;
+  opacity: 0.85;
 }
 
 /* ---------- 核心治愈报告舱（毛玻璃解药胶囊） ---------- */
 .healing-capsule {
-  background: rgba(255,255,255,0.55);
+  position: relative;
+  background: rgba(255,255,255,0.72);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border-radius: 44rpx;
-  border: 1.5rpx solid rgba(255,255,255,0.75);
-  box-shadow: 0 24rpx 60rpx rgba(0,50,40,0.10);
-  overflow: hidden;
+  border-radius: 56rpx;
+  border: 2rpx solid rgba(255,255,255,0.9);
+  box-shadow:
+    0 20rpx 50rpx rgba(40,116,90,0.15),
+    0 8rpx 20rpx rgba(40,116,90,0.08),
+    inset 0 2rpx 4rpx rgba(255,255,255,0.9),
+    inset 0 -2rpx 6rpx rgba(40,116,90,0.06);
+  overflow: visible;
   margin-bottom: 32rpx;
 }
 
-/* 顶部暗色流光签 */
+/* 顶部暗色流光签（独立圆角矩形） */
 .capsule-head {
   position: relative;
   background: linear-gradient(135deg, #1A3D34 0%, #0D211B 100%);
-  padding: 32rpx 32rpx 36rpx;
+  border-radius: 28rpx;
+  padding: 28rpx 32rpx;
+  margin: 24rpx 24rpx 0;
   overflow: hidden;
 }
 .capsule-head-glow {
@@ -697,61 +740,99 @@
 .capsule-body {
   padding: 36rpx 28rpx 32rpx;
 }
-.oxygen-rings {
+/* 双生能量舱（泪滴/果冻仿生形状） */
+.droplets-container {
   display: flex; align-items: center; justify-content: center;
-  gap: 20rpx;
-  margin-bottom: 32rpx;
+  gap: 80rpx;
+  padding: 36rpx 0 24rpx;
 }
-.ring-cell {
+.droplet-item {
   display: flex; flex-direction: column; align-items: center;
-  flex: 1;
 }
-.ring-wrap {
-  width: 150rpx; height: 150rpx;
-  border-radius: 50%;
+.liquid-droplet {
+  width: 130rpx;
+  height: 150rpx;
+  border-radius: 50% 50% 50% 12% / 55% 55% 45% 45%;
   display: flex; align-items: center; justify-content: center;
-  margin-bottom: 14rpx;
-  transition: all 0.6s ease;
+  margin-bottom: 16rpx;
+  position: relative;
 }
-.ring-inner {
-  width: 118rpx; height: 118rpx;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.9);
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: inset 0 2rpx 8rpx rgba(0,0,0,0.06);
+.amber-glow {
+  background: radial-gradient(circle at 38% 32%, rgba(255,255,255,0.95) 0%, rgba(255,240,200,0.7) 35%, rgba(246,210,150,0.55) 70%, rgba(230,180,100,0.4) 100%);
+  border: 1.5rpx solid rgba(255,255,255,0.75);
+  box-shadow:
+    inset 0 4rpx 12rpx rgba(255,255,255,0.8),
+    inset 0 -6rpx 16rpx rgba(230,180,100,0.3),
+    0 10rpx 28rpx rgba(220,160,80,0.2);
+  animation: dropletBreathe 3s ease-in-out infinite;
 }
-.ring-num {
-  font-size: 40rpx;
-  font-weight: 800;
-  color: #1F4A3E;
+.cyan-glow {
+  background: radial-gradient(circle at 38% 32%, rgba(255,255,255,0.95) 0%, rgba(210,245,235,0.7) 35%, rgba(150,225,210,0.55) 70%, rgba(80,190,170,0.4) 100%);
+  border: 1.5rpx solid rgba(255,255,255,0.75);
+  box-shadow:
+    inset 0 4rpx 12rpx rgba(255,255,255,0.8),
+    inset 0 -6rpx 16rpx rgba(80,190,170,0.3),
+    0 10rpx 28rpx rgba(50,160,140,0.2);
+  animation: dropletBreathe 3s ease-in-out infinite 0.5s;
 }
-.ring-label {
-  font-size: 24rpx;
-  font-weight: 700;
-  color: #2D5A4D;
-  margin-bottom: 4rpx;
+@keyframes dropletBreathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
 }
-.ring-sub {
-  font-size: 18rpx;
-  color: #8BA89E;
-  font-weight: 500;
-  text-align: center;
-}
-.rings-middle {
-  display: flex; flex-direction: column; align-items: center;
-  gap: 6rpx;
-  width: 120rpx;
-}
-.rings-dot {
-  font-size: 16rpx;
-  color: rgba(114,216,196,0.6);
-}
-.rings-text {
-  font-size: 18rpx;
-  color: #7A958C;
+.droplet-num {
+  font-size: 42rpx;
   font-weight: 600;
-  text-align: center;
-  line-height: 1.4;
+  color: #16362E;
+  z-index: 1;
+}
+.droplet-label {
+  font-size: 26rpx;
+  color: #5A7E72;
+  font-weight: 600;
+}
+
+/* 灵狐洞察（大引号 · 衬线手写信） */
+.insight-section {
+  padding: 24rpx 40rpx 20rpx;
+  position: relative;
+}
+.insight-title-row {
+  display: flex; align-items: center;
+  margin-bottom: 16rpx;
+}
+.insight-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #16362E;
+  letter-spacing: 2rpx;
+}
+.paw-icon {
+  font-size: 24rpx;
+  margin-left: 10rpx;
+  opacity: 0.7;
+}
+.insight-quote-mark {
+  font-size: 48rpx;
+  color: rgba(46,196,182,0.35);
+  font-family: Georgia, serif;
+  line-height: 1;
+}
+.insight-quote-mark.open {
+  display: block;
+  margin-bottom: -10rpx;
+}
+.insight-quote-mark.close {
+  display: block;
+  text-align: right;
+  margin-top: -10rpx;
+}
+.insight-text {
+  display: block;
+  font-size: 27rpx;
+  color: #33544A;
+  line-height: 1.85;
+  font-family: serif;
+  padding: 0 12rpx;
 }
 
 /* 心理洞察 */
@@ -777,25 +858,27 @@
   font-weight: 500;
 }
 
-/* ---------- 底部金句（沉浸式留白 · 卡片外） ---------- */
+/* ---------- 底部金句（微光淡金 · 巨大留白） ---------- */
 .poster-quote {
   text-align: center;
-  padding: 20rpx 40rpx 36rpx;
+  padding: 36rpx 50rpx 40rpx;
 }
 .poster-quote .quote-text {
   display: block;
-  font-size: 28rpx;
-  color: #2D5A4D;
+  font-size: 27rpx;
+  color: #B8956A;
   font-style: italic;
-  font-weight: 600;
-  line-height: 1.8;
-  margin-bottom: 12rpx;
+  font-weight: 500;
+  line-height: 1.9;
+  margin-bottom: 14rpx;
+  text-shadow: 0 1rpx 6rpx rgba(184,149,106,0.2);
 }
 .poster-quote .quote-warm {
   display: block;
-  font-size: 22rpx;
-  color: #7A958C;
+  font-size: 21rpx;
+  color: #9A7B55;
   font-weight: 500;
+  opacity: 0.85;
 }
 
 /* ---------- 底部黄金双操作区（仅两个按钮 · 大呼吸感） ---------- */
@@ -806,22 +889,27 @@
 }
 .poster-btn {
   flex: 1;
-  height: 92rpx;
-  border-radius: 46rpx;
+  height: 88rpx;
+  border-radius: 44rpx;
   display: flex; align-items: center; justify-content: center;
-  font-size: 28rpx;
-  font-weight: 700;
+  font-size: 27rpx;
+  font-weight: 600;
   letter-spacing: 1rpx;
   transition: all 0.2s ease;
 }
 .poster-btn.secondary {
-  background: rgba(255,255,255,0.6);
-  color: #2EC4B6;
-  border: 1.5rpx solid rgba(46,196,182,0.5);
+  background: rgba(255,255,255,0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #209E92;
+  border: 1.5rpx solid rgba(46,196,182,0.4);
 }
 .poster-btn.primary {
-  background: linear-gradient(135deg, #2EC4B6 0%, #1FA89A 100%);
-  color: #fff;
-  box-shadow: 0 12rpx 28rpx rgba(46,196,182,0.35);
+  background: rgba(255,255,255,0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #1F4A3E;
+  border: 1.5rpx solid rgba(46,196,182,0.4);
+  box-shadow: 0 6rpx 16rpx rgba(46,196,182,0.12);
 }
 .btn-hover { opacity: 0.85; transform: scale(0.97); }

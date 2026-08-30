@@ -47,8 +47,8 @@ Page({
     noteText: '',               // 手账文字
     photoPath: '',              // 氧气瞬间照片
     statusBarText: '',          // 顶部常驻状态条文案
-    statusBarDone: false,       // 状态条是否已完成态
-    // 品牌视频位（URL 来自配置项；留空或已看过时不展示，避免黑屏）
+    statusBarDone: false,
+    // 品牌视频占位URL（可能为空；视频已开关时展示，暂无则不渲染）
     introVideoUrl: '',          // config.introVideoUrl 的线上 HTTPS 地址
     showIntroVideo: false       // 是否渲染视频块
   },
@@ -111,7 +111,7 @@ Page({
 
   // 今日氧气记录入口文案（未记录 → 明确引导记录；已记录 → 完成态）
   buildStatusBar(done) {
-    if (done) return '今日氧气已记录 · 明天也要好好呼吸 💚'
+    if (done) return '今日充氧已完成 · 状态温润平稳 ✨'
     const h = new Date().getHours()
     if (h >= 6 && h < 11) return '早呀，记一笔今天的氧气状态'
     if (h >= 18 || h < 4) return '夜深了，存好今天这一口氧气'
@@ -296,7 +296,13 @@ Page({
 
   goCheckin() { wx.navigateTo({ url: '/pages/checkin/checkin' }) },
   goGrowth() { wx.navigateTo({ url: '/pages/growth/growth' }) },
-  onMoodSnap() { wx.navigateTo({ url: '/pages/mood-scan/mood-scan' }) },
-    goChat() { wx.navigateTo({ url: '/pages/chat/chat' }) },
+    // ===== capture mood (core) =====
+  // =====================================
+  // 【核心玩法·企业重点】拍照看今天心情 / 缺氧检测
+  // =====================================
+  onMoodSnap() {
+    wx.navigateTo({ url: '/pages/mood-scan/mood-scan' })
+  },
+goChat() { wx.navigateTo({ url: '/pages/chat/chat' }) },
   goProfile() { wx.switchTab({ url: '/pages/profile/profile' }) }
 })
