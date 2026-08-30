@@ -1,0 +1,172 @@
+/* pages/mood-scan/mood-scan.wxss · 面部能量扫描仪（四维度） */
+.ms-page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #EBF8F5 0%, #F5FBF9 50%, #FFFFFF 100%);
+  padding: 0 40rpx;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+.btn-hover { transform: scale(0.97); opacity: 0.9; }
+
+/* ===== STEP 0 扫描开始 ===== */
+.ms-scan { padding-top: 60rpx; display: flex; flex-direction: column; align-items: center; }
+.ms-scan-head { width: 100%; }
+.ms-scan-title { font-size: 48rpx; font-weight: 700; color: #21453C; }
+.ms-scan-sub { display: block; margin-top: 12rpx; font-size: 26rpx; color: #8BA89F; }
+.ms-scan-stage {
+  width: 520rpx; height: 520rpx; margin: 60rpx auto 50rpx;
+  position: relative; display: flex; align-items: center; justify-content: center;
+}
+.ms-scan-ring { position: absolute; border-radius: 50%; border: 2rpx solid rgba(16,185,129,0.5); animation: ringPulse 2.2s ease-out infinite; }
+.ring-1 { width: 260rpx; height: 260rpx; }
+.ring-2 { width: 380rpx; height: 380rpx; animation-delay: 0.7s; }
+.ring-3 { width: 500rpx; height: 500rpx; animation-delay: 1.4s; }
+@keyframes ringPulse { 0% { transform: scale(0.85); opacity: 0.7; } 100% { transform: scale(1.1); opacity: 0; } }
+.ms-scan-radar {
+  position: absolute; width: 500rpx; height: 500rpx; border-radius: 50%;
+  background: conic-gradient(from 0deg, rgba(114,216,196,0.25) 0deg, transparent 90deg);
+  animation: radarSpin 2s linear infinite;
+}
+@keyframes radarSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.ms-scan-face {
+  width: 200rpx; height: 200rpx; border-radius: 50%;
+  background: rgba(255,255,255,0.85);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 8rpx 24rpx rgba(16,185,129,0.25); z-index: 2; overflow: hidden;
+  border: 4rpx solid rgba(16,185,129,0.4);
+}
+.ms-scan-photo { width: 100%; height: 100%; }
+.ms-scan-face-ico { font-size: 110rpx; }
+.ms-scan-tip {
+  position: absolute; bottom: -10rpx; left: 50%; transform: translateX(-50%);
+  font-size: 28rpx; color: #1E8E6F; font-weight: 600; z-index: 3; white-space: nowrap;
+  background: rgba(255,255,255,0.9); padding: 10rpx 28rpx; border-radius: 30rpx;
+}
+.ms-scan-btn {
+  width: 100%; max-width: 600rpx; height: 100rpx; border-radius: 50rpx;
+  background: linear-gradient(135deg, #2BA882, #1E8E6F);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 32rpx; font-weight: 600; letter-spacing: 2rpx;
+  box-shadow: 0 8rpx 24rpx rgba(30,142,111,0.35);
+}
+.ms-scan-skip { margin-top: 30rpx; font-size: 24rpx; color: #9FBEB3; }
+
+/* ===== STEP 1 识别中 ===== */
+.ms-analyzing { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.ms-analyzing-ball { position: relative; width: 200rpx; height: 200rpx; display: flex; align-items: center; justify-content: center; }
+.ms-analyzing-pulse { position: absolute; width: 200rpx; height: 200rpx; border-radius: 50%; background: rgba(16,185,129,0.25); animation: ballPulse 1.2s ease-in-out infinite; }
+@keyframes ballPulse { 0%,100% { transform: scale(0.7); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 0.3; } }
+.ms-analyzing-emoji { font-size: 90rpx; z-index: 2; }
+.ms-analyzing-text { margin-top: 40rpx; font-size: 30rpx; color: #21453C; font-weight: 600; }
+.ms-analyzing-dots { display: flex; gap: 14rpx; margin-top: 30rpx; }
+.ms-analyzing-dots .dot { width: 16rpx; height: 16rpx; border-radius: 50%; background: #2BA882; animation: dotB 1.2s infinite; }
+.ms-analyzing-dots .dot:nth-child(2) { animation-delay: 0.2s; }
+.ms-analyzing-dots .dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes dotB { 0%,100% { opacity: 0.3; transform: translateY(0); } 50% { opacity: 1; transform: translateY(-10rpx); } }
+
+/* ===== STEP 2 结果 ===== */
+.ms-result { padding-top: 40rpx; padding-bottom: 60rpx; }
+.ms-result-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24rpx; }
+.ms-result-tag { font-size: 30rpx; font-weight: 700; color: #21453C; }
+.ms-band {
+  border-radius: 36rpx; padding: 40rpx 34rpx;
+  display: flex; flex-direction: column; align-items: center;
+  position: relative; overflow: hidden; box-shadow: 0 12rpx 30rpx rgba(0,0,0,0.08);
+}
+.ms-band-emoji { font-size: 90rpx; }
+.ms-band-name { margin-top: 16rpx; font-size: 40rpx; font-weight: 800; color: #21453C; letter-spacing: 2rpx; }
+.ms-band-desc { margin-top: 14rpx; font-size: 26rpx; color: #3F5A52; text-align: center; line-height: 1.6; }
+.ms-band-wave { display: flex; align-items: center; gap: 10rpx; margin-top: 24rpx; }
+.ms-band-wave .wave { width: 40rpx; border-radius: 6rpx; background: rgba(255,255,255,0.7); }
+.w1 { height: 24rpx; } .w2 { height: 48rpx; } .w3 { height: 32rpx; }
+
+/* 通用卡片 */
+.ms-card { background: #fff; border-radius: 30rpx; padding: 30rpx; margin-top: 24rpx; box-shadow: 0 6rpx 18rpx rgba(0,0,0,0.04); }
+.ms-section-title { display: block; font-size: 28rpx; font-weight: 700; color: #21453C; margin-bottom: 18rpx; }
+.ms-psych-text { display: block; font-size: 26rpx; color: #4A675E; line-height: 1.75; }
+
+/* 微表情 */
+.ms-micro-item { display: flex; align-items: center; margin-bottom: 18rpx; }
+.ms-micro-icon { font-size: 34rpx; width: 50rpx; }
+.ms-micro-label { font-size: 24rpx; color: #718C84; width: 130rpx; }
+.ms-micro-bar { flex: 1; height: 16rpx; background: #EAF3EF; border-radius: 8rpx; overflow: hidden; margin: 0 16rpx; }
+.ms-micro-fill { height: 100%; border-radius: 8rpx; background: linear-gradient(90deg, #72D8C4, #2BA882); transition: width 0.8s ease; }
+.ms-micro-val { font-size: 24rpx; font-weight: 700; color: #21453C; width: 60rpx; text-align: right; }
+
+.ms-meter-row { display: flex; gap: 16rpx; margin-top: 24rpx; }
+.ms-meter { flex: 1; background: #fff; border-radius: 26rpx; padding: 24rpx; box-shadow: 0 6rpx 18rpx rgba(0,0,0,0.04); }
+.ms-meter-top { display: flex; justify-content: space-between; font-size: 24rpx; color: #8BA89F; margin-bottom: 14rpx; }
+.ms-meter-num { font-weight: 700; color: #21453C; }
+.ms-meter-bg { height: 18rpx; background: #EAF3EF; border-radius: 10rpx; overflow: hidden; }
+.ms-meter-fill { height: 100%; border-radius: 10rpx; transition: width 0.8s ease; }
+.joy { background: linear-gradient(90deg, #FFD28A, #FF9E5E); }
+.oxy { background: linear-gradient(90deg, #7FD1F5, #38A9E8); }
+.risk { background: linear-gradient(90deg, #FF9A8B, #FF5E72); }
+
+/* 维度四 · 彩蛋 */
+.ms-egg {
+  margin-top: 24rpx; border-radius: 30rpx; padding: 30rpx;
+  background: linear-gradient(135deg, #2A1E4D, #4A2D7A);
+  border: 2rpx solid #8B6FD8; color: #fff;
+}
+.egg-pop { animation: eggPop 0.6s ease; }
+@keyframes eggPop { 0% { transform: scale(0.85); opacity: 0; } 60% { transform: scale(1.05); } 100% { transform: scale(1); opacity: 1; } }
+.ms-egg-head { display: flex; align-items: center; justify-content: space-between; }
+.ms-egg-rare { font-size: 20rpx; font-weight: 800; padding: 4rpx 14rpx; border-radius: 20rpx; }
+.ms-egg-rare.R { background: #3E8BFF; }
+.ms-egg-rare.SR { background: #B36BFF; }
+.ms-egg-rare.SSR { background: linear-gradient(90deg,#FFB347,#FF6B6B); }
+.ms-egg-title { font-size: 28rpx; font-weight: 700; }
+.ms-egg-body { display: flex; flex-direction: column; align-items: center; margin-top: 20rpx; }
+.ms-egg-emoji { font-size: 90rpx; }
+.ms-egg-name { margin-top: 12rpx; font-size: 32rpx; font-weight: 700; }
+.ms-egg-desc { margin-top: 8rpx; font-size: 24rpx; color: rgba(255,255,255,0.85); }
+
+/* 维度二 · 文学 */
+.ms-card.quote { background: linear-gradient(135deg,#FDF6EF,#FAF3E6); }
+.ms-quote-text { display: block; font-size: 27rpx; color: #7A5B3A; font-weight: 600; line-height: 1.7; }
+.ms-quote-warm { display: block; margin-top: 16rpx; font-size: 24rpx; color: #A5815C; line-height: 1.6; }
+
+/* 维度三 · 天气互文 */
+.ms-weather {
+  margin-top: 24rpx; padding: 24rpx 26rpx; border-radius: 26rpx;
+  background: #F0FAFF; border: 1rpx solid #D3ECF7;
+  display: flex; align-items: center;
+}
+.ms-weather-emoji { font-size: 44rpx; margin-right: 16rpx; }
+.ms-weather-text { font-size: 24rpx; color: #2B6CB0; line-height: 1.6; flex: 1; }
+
+.ms-dual {
+  margin-top: 24rpx; padding: 24rpx 26rpx; border-radius: 26rpx;
+  background: #FFF8F0; border: 1rpx solid #FFE0C2;
+  display: flex; align-items: center;
+}
+.ms-dual-emoji { font-size: 44rpx; margin-right: 16rpx; }
+.ms-dual-text { font-size: 24rpx; color: #B0732C; line-height: 1.6; flex: 1; }
+
+.ms-actions { display: flex; gap: 16rpx; margin-top: 30rpx; }
+.ms-btn { flex: 1; text-align: center; padding: 22rpx 0; border-radius: 40rpx; font-size: 28rpx; font-weight: 600; }
+.ms-btn.ghost { background: #fff; color: #1E8E6F; border: 1.5rpx solid rgba(30,142,111,0.35); }
+.ms-btn.solid { background: linear-gradient(135deg, #2BA882, #1E8E6F); color: #fff; }
+.ms-actions-sub { display: flex; justify-content: center; gap: 40rpx; margin-top: 26rpx; }
+.ms-link { font-size: 26rpx; color: #5A8A7C; font-weight: 600; }
+
+/* ===== STEP 3 治愈解药卡 ===== */
+.ms-card-page { padding-top: 50rpx; display: flex; flex-direction: column; align-items: center; }
+.ms-card-title { font-size: 40rpx; font-weight: 700; color: #21453C; margin-bottom: 30rpx; }
+.ms-card {
+  width: 100%; max-width: 620rpx; border-radius: 40rpx;
+  padding: 60rpx 40rpx; display: flex; flex-direction: column; align-items: center;
+  box-shadow: 0 16rpx 40rpx rgba(0,0,0,0.12);
+}
+.ms-card-emoji { font-size: 120rpx; }
+.ms-card-band { margin-top: 20rpx; font-size: 44rpx; font-weight: 800; color: #21453C; }
+.ms-card-divider { width: 120rpx; height: 4rpx; background: rgba(33,69,60,0.2); border-radius: 2rpx; margin: 30rpx 0; }
+.ms-card-persona { font-size: 30rpx; font-weight: 700; color: #21453C; text-align: center; }
+.ms-card-psych { margin-top: 18rpx; font-size: 24rpx; color: #3F5A52; text-align: center; line-height: 1.7; }
+.ms-card-quote { margin-top: 18rpx; font-size: 22rpx; color: #5A6E66; text-align: center; font-style: italic; line-height: 1.6; }
+.ms-card-foot { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 50rpx; }
+.ms-card-ip { font-size: 22rpx; color: #4A675E; font-weight: 600; }
+.ms-card-date { font-size: 22rpx; color: #7A958C; }
+.ms-card-hint { margin-top: 26rpx; font-size: 22rpx; color: #9FBEB3; }

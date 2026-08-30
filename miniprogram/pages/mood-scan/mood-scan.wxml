@@ -1,0 +1,144 @@
+<!-- pages/mood-scan/mood-scan.wxml · 面部能量扫描仪（四维度丰富版） -->
+<view class="ms-page">
+
+  <!-- ========== STEP 0 · 开始扫描（3秒雷达动效） ========== -->
+  <view wx:if="{{step === 0}}" class="ms-scan">
+    <view class="ms-scan-head">
+      <text class="ms-scan-title">🧊 面部能量扫描</text>
+      <text class="ms-scan-sub">扫描你的微表情，测测今日心灵波段 ✨</text>
+    </view>
+    <view class="ms-scan-stage">
+      <view class="ms-scan-ring ring-1"></view>
+      <view class="ms-scan-ring ring-2"></view>
+      <view class="ms-scan-ring ring-3"></view>
+      <view class="ms-scan-radar"></view>
+      <view class="ms-scan-face">
+        <image wx:if="{{photoPath}}" class="ms-scan-photo" src="{{photoPath}}" mode="aspectFill"></image>
+        <view wx:else class="ms-scan-face-ico">😊</view>
+      </view>
+      <view class="ms-scan-tip">{{scanTips[scanTipIdx]}}</view>
+    </view>
+    <view class="ms-scan-btn" bindtap="startScan" hover-class="btn-hover">
+      {{scanDone ? '📸 对准镜头，拍下此刻' : '🚀 开启 3 秒充氧扫描'}}
+    </view>
+    <view class="ms-scan-skip" bindtap="goHome">暂不扫描，先回首页 ›</view>
+  </view>
+
+  <!-- ========== STEP 1 · 识别中 ========== -->
+  <view wx:if="{{step === 1}}" class="ms-analyzing">
+    <view class="ms-analyzing-ball">
+      <view class="ms-analyzing-pulse"></view>
+      <text class="ms-analyzing-emoji">🦊</text>
+    </view>
+    <text class="ms-analyzing-text">灵狐正在分析你的微表情…</text>
+    <view class="ms-analyzing-dots">
+      <view class="dot"></view><view class="dot"></view><view class="dot"></view>
+    </view>
+  </view>
+
+  <!-- ========== STEP 2 · 结果（四维度） ========== -->
+  <view wx:if="{{step === 2 && moodBand}}" class="ms-result">
+    <view class="ms-result-head">
+      <text class="ms-result-tag">📸 面部能量扫描结果</text>
+    </view>
+
+    <!-- 主波段 -->
+    <view class="ms-band" style="background: {{moodBand.grad}};">
+      <view class="ms-band-emoji">{{moodBand.emoji}}</view>
+      <text class="ms-band-name">今日 · {{moodBand.name}}</text>
+      <text class="ms-band-desc">{{moodBand.desc}}</text>
+      <view class="ms-band-wave"><view class="wave w1"></view><view class="wave w2"></view><view class="wave w3"></view></view>
+    </view>
+
+    <!-- 维度一 · 心理微解析 -->
+    <view class="ms-card">
+      <text class="ms-section-title">🧠 心理微解析</text>
+      <text class="ms-psych-text">{{psychText}}</text>
+    </view>
+
+    <!-- 微表情雷达 -->
+    <view class="ms-card">
+      <text class="ms-section-title">🧬 微表情雷达</text>
+      <view class="ms-micro-item" wx:for="{{microExp}}" wx:key="key">
+        <text class="ms-micro-icon">{{item.icon}}</text>
+        <text class="ms-micro-label">{{item.label}}</text>
+        <view class="ms-micro-bar"><view class="ms-micro-fill" style="width:{{item.value}}%"></view></view>
+        <text class="ms-micro-val">{{item.value}}</text>
+      </view>
+    </view>
+
+    <!-- 能量指数 -->
+    <view class="ms-meter-row">
+      <view class="ms-meter">
+        <view class="ms-meter-top"><text>💛 能量指数</text><text class="ms-meter-num">{{energy}}</text></view>
+        <view class="ms-meter-bg"><view class="ms-meter-fill joy" style="width:{{energy}}%"></view></view>
+      </view>
+      <view class="ms-meter">
+        <view class="ms-meter-top"><text>🫁 状态/氧气</text><text class="ms-meter-num">{{oxygen}}</text></view>
+        <view class="ms-meter-bg"><view class="ms-meter-fill {{moodBand.risk ? 'risk' : 'oxy'}}" style="width:{{oxygen}}%"></view></view>
+      </view>
+    </view>
+
+    <!-- 维度四 · 灵狐彩蛋（稀有盲盒） -->
+    <view wx:if="{{egg && egg.type === 'talisman'}}" class="ms-egg egg-pop">
+      <view class="ms-egg-head">
+        <text class="ms-egg-rare {{egg.talisman.rare}}">{{egg.talisman.rare}}</text>
+        <text class="ms-egg-title">✨ 灵狐送上稀有盲盒！</text>
+      </view>
+      <view class="ms-egg-body">
+        <text class="ms-egg-emoji">{{egg.talisman.emoji}}</text>
+        <text class="ms-egg-name">{{egg.talisman.name}}</text>
+        <text class="ms-egg-desc">{{egg.talisman.desc}}</text>
+      </view>
+    </view>
+
+    <!-- 维度二 · 文学治愈 -->
+    <view wx:if="{{quote}}" class="ms-card quote">
+      <text class="ms-quote-text">“ {{quote.text}} ”</text>
+      <text class="ms-quote-warm">{{quote.warm}}</text>
+    </view>
+
+    <!-- 维度三 · 天气互文 + 双氧 -->
+    <view class="ms-weather">
+      <text class="ms-weather-emoji">🌦️</text>
+      <text class="ms-weather-text">{{weatherText}}</text>
+    </view>
+    <view wx:if="{{showDualEgg}}" class="ms-dual egg-pop">
+      <text class="ms-dual-emoji">🥚</text>
+      <text class="ms-dual-text">{{dualText}}</text>
+    </view>
+
+    <!-- 行动 -->
+    <view class="ms-actions">
+      <view class="ms-btn ghost" hover-class="btn-hover" bindtap="rescan">🔄 再扫一次</view>
+      <view class="ms-btn solid" hover-class="btn-hover" bindtap="goCard">💊 生成治愈解药卡</view>
+    </view>
+    <view class="ms-actions-sub">
+      <view class="ms-link" bindtap="goBreath">🫁 去吸一口氧</view>
+      <view class="ms-link" bindtap="goChat">💬 和灵狐聊聊</view>
+    </view>
+  </view>
+
+  <!-- ========== STEP 3 · 治愈解药卡 ========== -->
+  <view wx:if="{{step === 3 && moodBand}}" class="ms-card-page">
+    <text class="ms-card-title">今日治愈解药卡</text>
+    <view class="ms-card" style="background: {{moodBand.grad}};">
+      <view class="ms-card-emoji">{{moodBand.emoji}}</view>
+      <text class="ms-card-band">{{moodBand.name}}</text>
+      <view class="ms-card-divider"></view>
+      <text class="ms-card-persona">{{moodBand.persona}}</text>
+      <text class="ms-card-psych">{{psychText}}</text>
+      <text class="ms-card-quote" wx:if="{{quote}}">{{quote.text}}</text>
+      <view class="ms-card-foot">
+        <text class="ms-card-ip">🦊 氧氧宝 · 陪你好好呼吸</text>
+        <text class="ms-card-date">{{cardDate}}</text>
+      </view>
+    </view>
+    <view class="ms-card-hint">长按卡片区域可保存 / 分享到朋友圈 · 抖音</view>
+    <view class="ms-actions">
+      <view class="ms-btn ghost" hover-class="btn-hover" bindtap="rescan">🔄 再扫一次</view>
+      <view class="ms-btn solid" hover-class="btn-hover" bindtap="goHome">🏠 回首页</view>
+    </view>
+  </view>
+
+</view>

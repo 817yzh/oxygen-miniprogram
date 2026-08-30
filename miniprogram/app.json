@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/mood-scan/mood-scan",
     "pages/login/login",
     "pages/home/home",
     "pages/breathing/breathing",

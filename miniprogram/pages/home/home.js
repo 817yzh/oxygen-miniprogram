@@ -296,6 +296,7 @@ Page({
 
   goCheckin() { wx.navigateTo({ url: '/pages/checkin/checkin' }) },
   goGrowth() { wx.navigateTo({ url: '/pages/growth/growth' }) },
-  goChat() { wx.navigateTo({ url: '/pages/chat/chat' }) },
+  onMoodSnap() { wx.navigateTo({ url: '/pages/mood-scan/mood-scan' }) },
+    goChat() { wx.navigateTo({ url: '/pages/chat/chat' }) },
   goProfile() { wx.switchTab({ url: '/pages/profile/profile' }) }
 })

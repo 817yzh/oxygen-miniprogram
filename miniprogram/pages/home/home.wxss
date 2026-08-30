@@ -802,3 +802,52 @@
   font-weight: 600;
 }
 .status-bar--done .status-bar-arrow { display: none; }
+
+/* ========== 【面部能量扫描】主入口卡片 ========== */
+.mood-snap-card {
+  width: 100%;
+  max-width: 640rpx;
+  display: flex;
+  align-items: center;
+  margin: 24rpx auto 8rpx;
+  padding: 26rpx 26rpx;
+  border-radius: 32rpx;
+  background: linear-gradient(135deg, #2BA882 0%, #1E8E6F 100%);
+  box-shadow: 0 10rpx 26rpx rgba(30, 142, 111, 0.32);
+  position: relative;
+  overflow: hidden;
+  z-index: 5;
+  transition: transform 0.15s ease;
+}
+.mood-snap-card::after {
+  content: '';
+  position: absolute;
+  right: -36rpx;
+  top: -36rpx;
+  width: 170rpx;
+  height: 170rpx;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.14);
+}
+.mood-snap-card--press { transform: scale(0.97); opacity: 0.92; }
+.mood-snap-cam {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 26rpx;
+  background: rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48rpx;
+  box-shadow: inset 0 0 0 2rpx rgba(255,255,255,0.32);
+  flex-shrink: 0;
+  animation: moodPulse 2.4s ease-in-out infinite;
+}
+@keyframes moodPulse {
+  0%,100% { transform: scale(1); box-shadow: inset 0 0 0 2rpx rgba(255,255,255,0.32), 0 0 0 0 rgba(255,255,255,0.4); }
+  50% { transform: scale(1.07); box-shadow: inset 0 0 0 2rpx rgba(255,255,255,0.32), 0 0 0 16rpx rgba(255,255,255,0); }
+}
+.mood-snap-mid { flex: 1; display: flex; flex-direction: column; margin-left: 22rpx; }
+.mood-snap-title { font-size: 34rpx; font-weight: 700; color: #fff; letter-spacing: 1rpx; }
+.mood-snap-sub { margin-top: 6rpx; font-size: 22rpx; color: rgba(255,255,255,0.92); }
+.mood-snap-go { font-size: 24rpx; font-weight: 600; color: #fff; }

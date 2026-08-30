@@ -89,6 +89,15 @@
   <text class="ball-hint">{{showDimBubbles ? '点击球体收起维度' : '点击球体查看详细数据'}}</text>
 
   <!-- ========== 4. 底部按钮区：吸氧 + AI陪伴 聊一聊 ========== -->
+<!-- 【面部能量扫描】主入口卡片 -->
+  <view class="mood-snap-card" bindtap="onMoodSnap" hover-class="mood-snap-card--press">
+    <view class="mood-snap-cam">📸</view>
+    <view class="mood-snap-mid">
+      <text class="mood-snap-title">拍照看今天心情</text>
+      <text class="mood-snap-sub">3秒扫描 · 测测今日心灵波段 ✨</text>
+    </view>
+    <view class="mood-snap-go">去扫描 →</view>
+  </view>
   <view class="action-area">
     <view class="oxygen-btn breathing-glow" bindtap="startOxygenTherapy" hover-class="btn-hover">
       <text class="btn-icon">🫁</text>
