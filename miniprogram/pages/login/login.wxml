@@ -41,7 +41,7 @@
     <!-- 纯净微信登录按钮（单一高光胶囊 + 白色微信图标） -->
     <view class="lg-auth-btn" bindtap="onWechatLogin" hover-class="lg-auth-btn--press">
       <view class="lg-auth-shine"></view>
-      <image class="lg-wechat-ico" src="/images/icon-wechat.svg" mode="aspectFit" />
+      <image class="lg-wechat-ico" src="/images/icon-wechat.png" mode="aspectFit" />
       <text class="lg-auth-txt">微信登录</text>
     </view>
 
