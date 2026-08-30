@@ -1,4 +1,4 @@
-<!-- pages/login/login.wxml · 晨曦微光中的心灵引力场（极简高定登录） -->
+<!-- pages/login/login.wxml · 晨曦微光中的心灵引力场（饱满高定版） -->
 <view class="login-page">
 
   <!-- ===== 全屏晨曦微光渐变背景 + 流动光影 ===== -->
@@ -9,18 +9,35 @@
   <view class="lg-lights light-1"></view>
   <view class="lg-lights light-2"></view>
 
-  <!-- ===== 核心视觉焦点：悬浮 IP（呼呼 · 戴氧气面罩抱能量瓶） ===== -->
+  <!-- ===== 全屏微光悬浮粒子（氧气泡泡 · 填满真空感） ===== -->
+  <view class="lg-bubble-lg bubble-p1"></view>
+  <view class="lg-bubble-lg bubble-p2"></view>
+  <view class="lg-bubble-lg bubble-p3"></view>
+  <view class="lg-bubble-sm bubble-p4"></view>
+  <view class="lg-bubble-sm bubble-p5"></view>
+  <view class="lg-bubble-sm bubble-p6"></view>
+
+  <!-- ===== 核心视觉焦点：毛玻璃浮岛 ===== -->
   <view class="lg-hero">
-    <view class="lg-halo"></view>
-    <view class="lg-ip-float">
-      <image
-        class="lg-ip-img"
-        src="https://cdn.jsdelivr.net/gh/817yzh/oxygen-images@main/oxy-ip.png"
-        mode="aspectFit"
-      />
+    <!-- 呼呼身后 · 超大晨曦薄荷呼吸光晕 -->
+    <view class="lg-back-glow"></view>
+
+    <!-- 极光玻璃底座：装住 IP + 标语 -->
+    <view class="lg-island">
+      <view class="lg-island-shine"></view>
+      <view class="lg-island-inner">
+        <view class="lg-halo"></view>
+        <view class="lg-ip-float">
+          <image
+            class="lg-ip-img"
+            src="https://cdn.jsdelivr.net/gh/817yzh/oxygen-images@main/oxy-ip.png"
+            mode="aspectFit"
+          />
+        </view>
+        <text class="lg-slogan">吸一口气，开启美好能量</text>
+        <text class="lg-slogan-sub">把生活的风浪，交给呼呼守护</text>
+      </view>
     </view>
-    <text class="lg-slogan">吸一口气，开启美好能量</text>
-    <text class="lg-slogan-sub">把生活的风浪，交给呼呼守护</text>
   </view>
 
   <!-- ===== 极简交互落脚点 ===== -->

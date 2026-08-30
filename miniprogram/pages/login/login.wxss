@@ -1,4 +1,4 @@
-/* pages/login/login.wxss · 晨曦微光中的心灵引力场（极简高定登录） */
+/* pages/login/login.wxss · 晨曦微光中的心灵引力场（饱满高定版） */
 
 .login-page {
   min-height: 100vh;
@@ -76,6 +76,36 @@
   50% { transform: rotate(-18deg) translateX(40rpx); opacity: 0.9; }
 }
 
+/* ===== 微光悬浮粒子（氧气泡泡） ===== */
+.lg-bubble-lg,
+.lg-bubble-sm {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(circle at 32% 28%,
+    rgba(255,255,255,0.75),
+    rgba(205,255,240,0.35) 55%,
+    rgba(205,255,240,0.12) 78%,
+    transparent 100%);
+  box-shadow:
+    inset 0 2rpx 6rpx rgba(255,255,255,0.85),
+    0 6rpx 16rpx rgba(46,196,182,0.12);
+  border: 1rpx solid rgba(255,255,255,0.6);
+}
+.lg-bubble-lg { width: 90rpx; height: 90rpx; }
+.lg-bubble-sm { width: 46rpx; height: 46rpx; opacity: 0.85; }
+.bubble-p1 { left: 12%; top: 30%; animation: bobUp 7s ease-in-out infinite; }
+.bubble-p2 { right: 14%; top: 24%; width: 64rpx; height: 64rpx; animation: bobUp 9s ease-in-out infinite 1.5s; }
+.bubble-p3 { left: 20%; top: 55%; animation: bobUp 8s ease-in-out infinite 0.8s; }
+.bubble-p4 { right: 22%; top: 58%; animation: bobUp 6.5s ease-in-out infinite 2s; }
+.bubble-p5 { left: 30%; top: 20%; animation: bobUp 7.5s ease-in-out infinite 3s; }
+.bubble-p6 { right: 10%; top: 46%; animation: bobUp 8.5s ease-in-out infinite 0.4s; }
+@keyframes bobUp {
+  0%,100% { transform: translateY(0); opacity: 0.6; }
+  50% { transform: translateY(-34rpx); opacity: 1; }
+}
+
 /* ===== 核心视觉焦点 ===== */
 .lg-hero {
   flex: 1;
@@ -85,14 +115,63 @@
   justify-content: center;
   position: relative;
   z-index: 1;
-  padding-top: 60rpx;
+  padding-top: 40rpx;
 }
-/* IP 呼吸光晕 */
+/* 呼呼身后 · 超大晨曦薄荷呼吸光晕 */
+.lg-back-glow {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 760rpx; height: 760rpx;
+  transform: translate(-50%,-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(114,216,196,0.5), rgba(152,235,215,0.2) 45%, transparent 72%);
+  filter: blur(16rpx);
+  animation: backGlow 4.5s ease-in-out infinite;
+}
+@keyframes backGlow {
+  0%,100% { transform: translate(-50%,-50%) scale(0.9); opacity: 0.7; }
+  50% { transform: translate(-50%,-50%) scale(1.14); opacity: 1; }
+}
+
+/* ===== 极光玻璃底座（毛玻璃浮岛容器） ===== */
+.lg-island {
+  position: relative;
+  width: 100%;
+  max-width: 560rpx;
+  border-radius: 56rpx;
+  background: rgba(255,255,255,0.52);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border: 1.5rpx solid rgba(255,255,255,0.7);
+  box-shadow:
+    0 24rpx 60rpx rgba(40,116,90,0.10),
+    inset 0 0 30rpx rgba(255,255,255,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 46rpx 30rpx 52rpx;
+  box-sizing: border-box;
+  overflow: hidden;
+  z-index: 2;
+}
+.lg-island-shine {
+  position: absolute; inset: 0;
+  background: linear-gradient(160deg, rgba(255,255,255,0.6), transparent 40%);
+  pointer-events: none;
+}
+.lg-island-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+/* IP 呼吸光晕（浮岛内） */
 .lg-halo {
   position: absolute;
-  top: 26%;
+  top: 20%;
   left: 50%;
-  width: 440rpx; height: 440rpx;
+  width: 400rpx; height: 400rpx;
   transform: translate(-50%,-50%);
   border-radius: 50%;
   background: radial-gradient(circle, rgba(114,216,196,0.28), transparent 68%);
@@ -105,7 +184,7 @@
 }
 .lg-ip-float {
   position: relative;
-  width: 340rpx; height: 340rpx;
+  width: 300rpx; height: 300rpx;
   display: flex; align-items: center; justify-content: center;
   z-index: 2;
 }
@@ -120,26 +199,28 @@
 }
 /* 品牌标语 */
 .lg-slogan {
-  margin-top: 20rpx;
-  font-size: 40rpx;
+  margin-top: 8rpx;
+  font-size: 38rpx;
   font-weight: 700;
   color: #123C33;
   letter-spacing: 4rpx;
   z-index: 2;
+  text-align: center;
 }
 .lg-slogan-sub {
-  margin-top: 16rpx;
-  font-size: 24rpx;
+  margin-top: 14rpx;
+  font-size: 23rpx;
   color: #6B8F82;
   letter-spacing: 3rpx;
   z-index: 2;
+  text-align: center;
 }
 
 /* ===== 极简交互落脚点 ===== */
 .lg-footer {
   padding-bottom: 70rpx;
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 /* 高定授权主按钮 */
 .lg-auth-btn {
