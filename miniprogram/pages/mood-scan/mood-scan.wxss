@@ -8,57 +8,221 @@
   overflow: hidden;
 }
 .btn-hover { transform: scale(0.97); opacity: 0.9; }
+/* ===== 背景呼吸光晕层 ===== */
+.ms-aura {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(60rpx);
+  pointer-events: none;
+  z-index: 0;
+}
+.aura-1 {
+  width: 560rpx; height: 560rpx;
+  left: -140rpx; top: -80rpx;
+  background: radial-gradient(circle, rgba(114,216,196,0.45), transparent 70%);
+  animation: auraFloat 8s ease-in-out infinite;
+}
+.aura-2 {
+  width: 480rpx; height: 480rpx;
+  right: -120rpx; top: 30%;
+  background: radial-gradient(circle, rgba(255,248,235,0.75), transparent 70%);
+  animation: auraFloat 11s ease-in-out infinite reverse;
+}
+.aura-3 {
+  width: 620rpx; height: 620rpx;
+  left: 20%; bottom: -160rpx;
+  background: radial-gradient(circle, rgba(163,230,214,0.35), transparent 70%);
+  animation: auraFloat 13s ease-in-out infinite;
+}
+@keyframes auraFloat {
+  0%,100% { transform: translate(0,0) scale(1); opacity: 0.9; }
+  50% { transform: translate(24rpx,-28rpx) scale(1.08); opacity: 0.6; }
+}
 
 /* ===== STEP 0 扫描开始 ===== */
-.ms-scan { padding-top: 60rpx; display: flex; flex-direction: column; align-items: center; }
-.ms-scan-head { width: 100%; }
-.ms-scan-title { font-size: 48rpx; font-weight: 700; color: #21453C; }
-.ms-scan-sub { display: block; margin-top: 12rpx; font-size: 26rpx; color: #8BA89F; }
+.ms-scan {
+  padding-top: 64rpx;
+  display: flex; flex-direction: column; align-items: center;
+  position: relative; z-index: 1;
+}
+.ms-scan-head { width: 100%; padding: 0 8rpx; }
+.ms-scan-title { font-size: 44rpx; font-weight: 700; color: #21453C; letter-spacing: 2rpx; }
+.ms-scan-sub {
+  display: block; margin-top: 14rpx;
+  font-size: 24rpx; color: #7BA294; letter-spacing: 1rpx;
+}
+
+/* 雷达扫描盘 */
 .ms-scan-stage {
-  width: 520rpx; height: 520rpx; margin: 60rpx auto 50rpx;
+  width: 560rpx; height: 560rpx; margin: 48rpx auto 44rpx;
   position: relative; display: flex; align-items: center; justify-content: center;
 }
-.ms-scan-ring { position: absolute; border-radius: 50%; border: 2rpx solid rgba(16,185,129,0.5); animation: ringPulse 2.2s ease-out infinite; }
-.ring-1 { width: 260rpx; height: 260rpx; }
-.ring-2 { width: 380rpx; height: 380rpx; animation-delay: 0.7s; }
-.ring-3 { width: 500rpx; height: 500rpx; animation-delay: 1.4s; }
-@keyframes ringPulse { 0% { transform: scale(0.85); opacity: 0.7; } 100% { transform: scale(1.1); opacity: 0; } }
+.ms-scan-ring {
+  position: absolute; border-radius: 50%;
+  border: 2rpx solid rgba(16,185,129,0.4);
+  animation: ringPulse 2.4s ease-out infinite;
+}
+.ring-1 { width: 280rpx; height: 280rpx; }
+.ring-2 { width: 420rpx; height: 420rpx; animation-delay: 0.8s; }
+.ring-3 { width: 540rpx; height: 540rpx; animation-delay: 1.6s; }
+@keyframes ringPulse {
+  0% { transform: scale(0.85); opacity: 0.7; border-color: rgba(16,185,129,0.5); }
+  100% { transform: scale(1.12); opacity: 0; border-color: rgba(114,216,196,0.08); }
+}
+/* 扫描盘外圈微光 */
+.ms-scan-stage::before {
+  content: '';
+  position: absolute; width: 540rpx; height: 540rpx; border-radius: 50%;
+  background: radial-gradient(circle, rgba(163,230,214,0.18), transparent 65%);
+  filter: blur(8rpx);
+}
+/* 主扇束（薄荷绿荧光渐变 + 旋转） */
 .ms-scan-radar {
   position: absolute; width: 500rpx; height: 500rpx; border-radius: 50%;
-  background: conic-gradient(from 0deg, rgba(114,216,196,0.25) 0deg, transparent 90deg);
-  animation: radarSpin 2s linear infinite;
+  background: conic-gradient(from 0deg,
+    rgba(114,216,196,0.0) 0deg,
+    rgba(114,216,196,0.06) 40deg,
+    rgba(163,230,214,0.35) 78deg,
+    rgba(255,255,255,0) 100deg);
+  animation: radarSpin 2.6s linear infinite;
+  z-index: 1;
+}
+/* 扇束残影（延迟一层，制造柔和拖尾） */
+.ms-scan-radar-faint {
+  position: absolute; width: 500rpx; height: 500rpx; border-radius: 50%;
+  background: conic-gradient(from 0deg,
+    rgba(163,230,214,0) 0deg,
+    rgba(163,230,214,0.05) 50deg,
+    rgba(163,230,214,0.18) 88deg,
+    transparent 100deg);
+  animation: radarSpin 2.6s linear infinite;
+  animation-delay: 0.45s;
+  z-index: 1;
 }
 @keyframes radarSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-.ms-scan-face {
-  width: 200rpx; height: 200rpx; border-radius: 50%;
-  background: rgba(255,255,255,0.85);
+
+/* 中央核心（微光立体盲盒球体 / 灵狐） */
+.ms-scan-core {
+  width: 216rpx; height: 216rpx; border-radius: 50%;
+  z-index: 2;
   display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 8rpx 24rpx rgba(16,185,129,0.25); z-index: 2; overflow: hidden;
-  border: 4rpx solid rgba(16,185,129,0.4);
+  background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.98), rgba(224,247,239,0.95) 55%, rgba(178,235,216,0.9));
+  box-shadow:
+    0 12rpx 34rpx rgba(16,185,129,0.3),
+    inset 0 0 24rpx rgba(255,255,255,0.6),
+    inset 0 -8rpx 20rpx rgba(114,216,196,0.35);
+  border: 3rpx solid rgba(255,255,255,0.85);
+  overflow: hidden;
+  position: relative;
 }
-.ms-scan-photo { width: 100%; height: 100%; }
-.ms-scan-face-ico { font-size: 110rpx; }
+.ms-scan-core::after {
+  content: '';
+  position: absolute; inset: 0; border-radius: 50%;
+  background: radial-gradient(circle at 32% 26%, rgba(255,255,255,0.85), transparent 42%);
+  pointer-events: none;
+}
+.ms-scan-photo { width: 100%; height: 100%; border-radius: 50%; position: relative; z-index: 1; }
+.ms-scan-orb { display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; }
+.ms-scan-orb-ico { font-size: 110rpx; filter: drop-shadow(0 6rpx 14rpx rgba(30,142,111,0.35)); }
+/* 识别前呼吸缩放 */
+.orb-breathe { animation: orbBreathe 2.2s ease-in-out infinite; }
+@keyframes orbBreathe {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+.orb-idle { animation: orbIdle 0.4s ease; }
+@keyframes orbIdle { 0% { transform: scale(0.92); } 100% { transform: scale(1); } }
+
+/* 状态提示（沉浸式胶囊） */
 .ms-scan-tip {
-  position: absolute; bottom: -10rpx; left: 50%; transform: translateX(-50%);
-  font-size: 28rpx; color: #1E8E6F; font-weight: 600; z-index: 3; white-space: nowrap;
-  background: rgba(255,255,255,0.9); padding: 10rpx 28rpx; border-radius: 30rpx;
+  position: absolute; bottom: -6rpx; left: 50%; transform: translateX(-50%);
+  z-index: 3; white-space: nowrap;
+  background: rgba(255,255,255,0.72);
+  backdrop-filter: blur(10rpx);
+  padding: 14rpx 30rpx; border-radius: 34rpx;
+  box-shadow: 0 6rpx 20rpx rgba(16,185,129,0.12);
+  border: 1rpx solid rgba(114,216,196,0.35);
 }
+.ms-scan-tip-main {
+  font-size: 26rpx; color: #1E8E6F; font-weight: 600; letter-spacing: 1rpx;
+}
+
+/* 主按钮（内发光高定胶囊） */
 .ms-scan-btn {
-  width: 100%; max-width: 600rpx; height: 100rpx; border-radius: 50rpx;
+  width: 100%; max-width: 620rpx; height: 104rpx; border-radius: 52rpx;
   background: linear-gradient(135deg, #2BA882, #1E8E6F);
   display: flex; align-items: center; justify-content: center;
-  color: #fff; font-size: 32rpx; font-weight: 600; letter-spacing: 2rpx;
-  box-shadow: 0 8rpx 24rpx rgba(30,142,111,0.35);
+  position: relative;
+  box-shadow:
+    0 12rpx 30rpx rgba(30,142,111,0.38),
+    inset 0 2rpx 0 rgba(255,255,255,0.28);
+  overflow: hidden;
 }
-.ms-scan-skip { margin-top: 30rpx; font-size: 24rpx; color: #9FBEB3; }
+.ms-scan-btn-ico { font-size: 32rpx; margin-right: 14rpx; position: relative; z-index: 2; }
+.ms-scan-btn-text { color: #fff; font-size: 32rpx; font-weight: 700; letter-spacing: 2rpx; position: relative; z-index: 2; }
+/* 内发光流光 */
+.ms-scan-btn-glow {
+  position: absolute; top: -40rpx; left: -40%;
+  width: 60%; height: 200%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,0.35), transparent);
+  transform: rotate(20deg);
+  animation: btnShine 2.8s ease-in-out infinite;
+}
+@keyframes btnShine {
+  0% { left: -60%; }
+  60%,100% { left: 130%; }
+}
+.ms-scan-btn--press { transform: scale(0.97); }
+.ms-scan-btn--ready { animation: readyPulse 1.6s ease-in-out infinite; }
+@keyframes readyPulse {
+  0%,100% { box-shadow: 0 12rpx 30rpx rgba(30,142,111,0.38), inset 0 2rpx 0 rgba(255,255,255,0.28); }
+  50% { box-shadow: 0 12rpx 40rpx rgba(30,142,111,0.55), 0 0 0 12rpx rgba(114,216,196,0.18), inset 0 2rpx 0 rgba(255,255,255,0.28); }
+}
+
+/* 副按钮（优雅文字链 + 微光箭头） */
+.ms-scan-skip {
+  margin-top: 32rpx;
+  display: flex; align-items: center;
+  padding: 10rpx 16rpx;
+}
+.ms-scan-skip-txt { font-size: 22rpx; color: #9FBEB3; letter-spacing: 1rpx; }
+.ms-scan-skip-arrow {
+  font-size: 28rpx; color: #7BA294; margin-left: 4rpx;
+  opacity: 0.7;
+  transition: transform 0.2s ease;
+}
+.ms-scan-skip--press .ms-scan-skip-arrow { transform: translateX(4rpx); opacity: 1; }
+
+
 
 /* ===== STEP 1 识别中 ===== */
 .ms-analyzing { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-.ms-analyzing-ball { position: relative; width: 200rpx; height: 200rpx; display: flex; align-items: center; justify-content: center; }
-.ms-analyzing-pulse { position: absolute; width: 200rpx; height: 200rpx; border-radius: 50%; background: rgba(16,185,129,0.25); animation: ballPulse 1.2s ease-in-out infinite; }
-@keyframes ballPulse { 0%,100% { transform: scale(0.7); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 0.3; } }
-.ms-analyzing-emoji { font-size: 90rpx; z-index: 2; }
-.ms-analyzing-text { margin-top: 40rpx; font-size: 30rpx; color: #21453C; font-weight: 600; }
+.ms-analyzing-ball { position: relative; width: 220rpx; height: 220rpx; display: flex; align-items: center; justify-content: center; }
+.ms-analyzing-pulse { position: absolute; width: 200rpx; height: 200rpx; border-radius: 50%; background: rgba(16,185,129,0.22); animation: ballPulse 1.4s ease-in-out infinite; }
+.ms-analyzing-pulse.pulse-2 { width: 220rpx; height: 220rpx; animation-delay: 0.7s; opacity: 0.6; }
+@keyframes ballPulse { 0%,100% { transform: scale(0.72); opacity: 0.8; } 50% { transform: scale(1.12); opacity: 0.25; } }
+.ms-analyzing-orb {
+  width: 132rpx; height: 132rpx; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.98), rgba(224,247,239,0.95) 55%, rgba(178,235,216,0.9));
+  box-shadow: 0 12rpx 30rpx rgba(16,185,129,0.3), inset 0 0 20rpx rgba(255,255,255,0.6), inset 0 -8rpx 16rpx rgba(114,216,196,0.35);
+  border: 3rpx solid rgba(255,255,255,0.85);
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+}
+.ms-analyzing-orb::after {
+  content: '';
+  position: absolute; inset: 0; border-radius: 50%;
+  background: radial-gradient(circle at 32% 26%, rgba(255,255,255,0.85), transparent 42%);
+  pointer-events: none;
+}
+.ms-analyzing-emoji { font-size: 64rpx; z-index: 1; filter: drop-shadow(0 4rpx 10rpx rgba(30,142,111,0.3)); }
+.ms-analyzing-text { margin-top: 44rpx; font-size: 30rpx; color: #21453C; font-weight: 700; letter-spacing: 1rpx; }
+.ms-analyzing-sub {
+  margin-top: 12rpx; font-size: 22rpx; color: #8BA89F; letter-spacing: 1rpx;
+}
+
 .ms-analyzing-dots { display: flex; gap: 14rpx; margin-top: 30rpx; }
 .ms-analyzing-dots .dot { width: 16rpx; height: 16rpx; border-radius: 50%; background: #2BA882; animation: dotB 1.2s infinite; }
 .ms-analyzing-dots .dot:nth-child(2) { animation-delay: 0.2s; }
