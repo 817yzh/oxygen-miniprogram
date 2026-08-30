@@ -1,4 +1,4 @@
-<!-- pages/login/login.wxml · 晨曦微光心灵引力场（全新架构：通透大背景 + 悬浮IP + 关键词徽章矩阵） -->
+<!-- pages/login/login.wxml · 晨曦微光心灵引力场（高定纯净版：大背景 + 大IP + 单按钮） -->
 <view class="login-page">
 
   <!-- ===== 全屏晨曦微光渐变背景 + 流动光影 ===== -->
@@ -17,12 +17,12 @@
   <view class="lg-bubble-sm bubble-p5"></view>
   <view class="lg-bubble-sm bubble-p6"></view>
 
-  <!-- ===== 顶部清爽视觉 ===== -->
+  <!-- ===== 顶部主视觉 ===== -->
   <view class="lg-hero">
     <!-- 呼呼身后 · 超大晨曦薄荷呼吸光晕 -->
     <view class="lg-back-glow"></view>
 
-    <!-- 悬浮 IP（偏上黄金点） -->
+    <!-- 悬浮 IP（放大为主视觉） -->
     <view class="lg-halo"></view>
     <view class="lg-ip-float">
       <image
@@ -39,30 +39,14 @@
 
   <!-- ===== 极简交互落脚点 ===== -->
   <view class="lg-footer">
-    <!-- 关键词微缩徽章矩阵 -->
-    <view class="lg-badges">
-      <view class="lg-badge">
-        <text class="lg-badge-ico">🌿</text>
-        <text class="lg-badge-txt">AI 情绪解药</text>
-      </view>
-      <view class="lg-badge">
-        <text class="lg-badge-ico">📷</text>
-        <text class="lg-badge-txt">3秒面部充氧</text>
-      </view>
-      <view class="lg-badge">
-        <text class="lg-badge-ico">🦊</text>
-        <text class="lg-badge-txt">灵狐陪伴守护</text>
-      </view>
-    </view>
-
-    <!-- 高定授权主按钮 -->
-    <view class="lg-auth-btn {{agreed ? '' : ''}}" bindtap="onWechatLogin" hover-class="lg-auth-btn--press">
+    <!-- 纯净微信登录按钮（单一高光胶囊 + 白色微信图标） -->
+    <view class="lg-auth-btn" bindtap="onWechatLogin" hover-class="lg-auth-btn--press">
       <view class="lg-auth-shine"></view>
-      <text class="lg-auth-ico">✨</text>
-      <view class="lg-auth-texts">
-        <text class="lg-auth-main">微信一键授权登录</text>
-        <text class="lg-auth-sub">开启充氧之旅</text>
-      </view>
+      <image
+        class="lg-wechat-ico"
+        src="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PScwIDAgMTAyNCAxMDI0JyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnPjxwYXRoIGZpbGw9JyNmZmZmZmYnIGQ9J00zNTIgMjU2Yy0xMDYgMC0xOTIgNzctMTkyIDE3MiAwIDU0IDI3IDEwMyA3MyAxMzRsLTE4IDU2IDY2LTMyYzIyIDEyIDQ1IDE4IDcxIDE4IDIyIDAgNDMtNSA2My0xNS00LTEwLTYtMjAtNi0zMSAwLTk1IDg2LTE3MiAxOTItMTcyczE5MiA3NyAxOTIgMTcyLTg2IDE3Mi0xOTIgMTcyYy0xMCAwLTIwLTEtMzAtMi0zMCAyMi02NyAzNS0xMDcgMzUgMCAwIDkgMTMgMTggMzIgOTAgMiAxNzMtMjggMjM3LTgxIDU4LTQ3IDkyLTEwOCA5Mi0xNzRDNzA0IDMzMyA2MTggMjU2IDUxMiAyNTZoLTc4em0tNDIgNjJjMTUgMCAyOC0xMyAyOC0yOHMtMTMtMjgtMjgtMjgtMjggMTMtMjggMjggMTMgMjggMjggMjh6bTE0MCAwYzE1IDAgMjgtMTMgMjgtMjhzLTEzLTI4LTI4LTI4LTI4IDEzLTI4IDI4IDEzIDI4IDI4IDI4em0yODYgMTc4Yy0xMyAwLTIzIDExLTIzIDIzczEwIDIzIDIzIDIzIDIzLTEwIDIzLTIzLTEwLTIzLTIzLTIzem0tMTAwIDBjLTEzIDAtMjMgMTAtMjMgMjNzMTAgMjMgMjMgMjMgMjMtMTAgMjMtMjMtMTAtMjMtMjMtMjN6bTc0LTc0Yy04MiAwLTE0OSA2Mi0xNDkgMTM5IDAgNDMgMjAgODEgNTMgMTA2bC0xMiA0MCA0OC0yMmMxNCA2IDI5IDEwIDQ1IDEwIDgyIDAgMTQ5LTYyIDE0OS0xMzlzLTY3LTEzOS0xNDktMTM5eiIvPjwvc3ZnPg=="
+      />
+      <text class="lg-auth-txt">微信登录</text>
     </view>
 
     <!-- 协议勾选 -->

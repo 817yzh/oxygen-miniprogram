@@ -112,10 +112,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   position: relative;
   z-index: 1;
-  padding-top: 110rpx;
+  padding-top: 40rpx;
 }
 /* 呼呼身后 · 超大晨曦薄荷呼吸光晕 */
 .lg-back-glow {
@@ -148,10 +148,10 @@
   0%,100% { transform: translate(-50%,-50%) scale(0.92); opacity: 0.6; }
   50% { transform: translate(-50%,-50%) scale(1.1); opacity: 1; }
 }
-/* 悬浮 IP */
+/* 悬浮 IP（放大为主视觉） */
 .lg-ip-float {
   position: relative;
-  width: 300rpx; height: 300rpx;
+  width: 390rpx; height: 390rpx;
   display: flex; align-items: center; justify-content: center;
   z-index: 2;
 }
@@ -189,35 +189,7 @@
   position: relative;
   z-index: 2;
 }
-/* ---- 关键词微缩徽章矩阵 ---- */
-.lg-badges {
-  display: flex;
-  justify-content: center;
-  gap: 18rpx;
-  margin-bottom: 36rpx;
-}
-.lg-badge {
-  display: flex;
-  align-items: center;
-  gap: 8rpx;
-  padding: 14rpx 24rpx;
-  border-radius: 40rpx;
-  background: rgba(255,255,255,0.55);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1rpx solid rgba(255,255,255,0.8);
-  box-shadow:
-    0 8rpx 22rpx rgba(40,116,90,0.08),
-    inset 0 1rpx 0 rgba(255,255,255,0.8);
-}
-.lg-badge-ico { font-size: 26rpx; }
-.lg-badge-txt {
-  font-size: 22rpx;
-  font-weight: 600;
-  color: #2A5E52;
-  letter-spacing: 1rpx;
-}
-/* ---- 高定授权主按钮 ---- */
+/* ---- 纯净微信登录按钮（单一高光胶囊） ---- */
 .lg-auth-btn {
   position: relative;
   width: 100%;
@@ -227,7 +199,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16rpx;
+  gap: 20rpx;
   overflow: hidden;
   box-shadow:
     0 16rpx 36rpx rgba(46,196,182,0.35),
@@ -245,10 +217,18 @@
   mask-composite: exclude;
   pointer-events: none;
 }
-.lg-auth-ico { font-size: 34rpx; position: relative; z-index: 2; }
-.lg-auth-texts { display: flex; flex-direction: column; align-items: flex-start; position: relative; z-index: 2; }
-.lg-auth-main { font-size: 32rpx; font-weight: 700; color: #fff; letter-spacing: 2rpx; line-height: 1.3; }
-.lg-auth-sub { font-size: 20rpx; color: rgba(255,255,255,0.8); letter-spacing: 1rpx; }
+.lg-wechat-ico {
+  width: 46rpx; height: 46rpx;
+  position: relative; z-index: 2;
+  opacity: 0.98;
+}
+.lg-auth-txt {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 4rpx;
+  position: relative; z-index: 2;
+}
 .lg-auth-shine {
   position: absolute; top: -40rpx; left: -40%;
   width: 56%; height: 200%;
