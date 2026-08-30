@@ -1,236 +1,287 @@
-/* pages/mood-scan/mood-scan.wxss · 面部能量扫描仪（四维度） */
+/* pages/mood-scan/mood-scan.wxss · 面部能量扫描仪（杂志高定风 · Grade A） */
+
+/* ===== 全屏沉浸：极光薄荷渐变底（告别死白） ===== */
 .ms-page {
   min-height: 100vh;
-  background: linear-gradient(180deg, #EBF8F5 0%, #F5FBF9 50%, #FFFFFF 100%);
-  padding: 0 40rpx;
+  background: linear-gradient(180deg, #EAF4F0 0%, #D9EDE5 42%, #C8E4DA 100%);
+  padding: 0 0;
   box-sizing: border-box;
   position: relative;
   overflow: hidden;
 }
 .btn-hover { transform: scale(0.97); opacity: 0.9; }
-/* ===== 背景呼吸光晕层 ===== */
+
+/* ===== 极光光晕层（通透呼吸感） ===== */
 .ms-aura {
   position: fixed;
   border-radius: 50%;
-  filter: blur(60rpx);
+  filter: blur(70rpx);
   pointer-events: none;
   z-index: 0;
 }
 .aura-1 {
-  width: 560rpx; height: 560rpx;
-  left: -140rpx; top: -80rpx;
-  background: radial-gradient(circle, rgba(114,216,196,0.45), transparent 70%);
-  animation: auraFloat 8s ease-in-out infinite;
+  width: 600rpx; height: 600rpx;
+  left: -160rpx; top: -120rpx;
+  background: radial-gradient(circle, rgba(96,205,180,0.5), transparent 72%);
+  animation: auraFloat 9s ease-in-out infinite;
 }
 .aura-2 {
-  width: 480rpx; height: 480rpx;
-  right: -120rpx; top: 30%;
-  background: radial-gradient(circle, rgba(255,248,235,0.75), transparent 70%);
-  animation: auraFloat 11s ease-in-out infinite reverse;
+  width: 540rpx; height: 540rpx;
+  right: -150rpx; top: 22%;
+  background: radial-gradient(circle, rgba(255,252,240,0.85), transparent 72%);
+  animation: auraFloat 12s ease-in-out infinite reverse;
 }
 .aura-3 {
-  width: 620rpx; height: 620rpx;
-  left: 20%; bottom: -160rpx;
-  background: radial-gradient(circle, rgba(163,230,214,0.35), transparent 70%);
-  animation: auraFloat 13s ease-in-out infinite;
+  width: 680rpx; height: 680rpx;
+  left: 18%; bottom: -180rpx;
+  background: radial-gradient(circle, rgba(120,224,200,0.4), transparent 72%);
+  animation: auraFloat 14s ease-in-out infinite;
 }
 @keyframes auraFloat {
   0%,100% { transform: translate(0,0) scale(1); opacity: 0.9; }
-  50% { transform: translate(24rpx,-28rpx) scale(1.08); opacity: 0.6; }
+  50% { transform: translate(26rpx,-30rpx) scale(1.07); opacity: 0.55; }
+}
+/* 细腻噪点（杂志纸感） */
+.ms-grain {
+  position: fixed; inset: 0;
+  background-image: radial-gradient(rgba(20,60,50,0.05) 1px, transparent 1px);
+  background-size: 22rpx 22rpx;
+  opacity: 0.55;
+  pointer-events: none; z-index: 0;
 }
 
-/* ===== STEP 0 扫描开始 ===== */
+/* ========== STEP 0 · 杂志高定排版 ========== */
 .ms-scan {
-  padding-top: 64rpx;
+  min-height: 100vh;
   display: flex; flex-direction: column; align-items: center;
   position: relative; z-index: 1;
-}
-.ms-scan-head { width: 100%; padding: 0 8rpx; }
-.ms-scan-title { font-size: 44rpx; font-weight: 700; color: #21453C; letter-spacing: 2rpx; }
-.ms-scan-sub {
-  display: block; margin-top: 14rpx;
-  font-size: 24rpx; color: #7BA294; letter-spacing: 1rpx;
+  padding: 0 48rpx;
+  box-sizing: border-box;
 }
 
-/* 雷达扫描盘 */
-.ms-scan-stage {
-  width: 560rpx; height: 560rpx; margin: 48rpx auto 44rpx;
-  position: relative; display: flex; align-items: center; justify-content: center;
+/* 顶部 · 艺术展览级大排版标题 */
+.ms-hero {
+  width: 100%;
+  display: flex; flex-direction: column; align-items: center;
+  margin-top: 100rpx;
 }
-.ms-scan-ring {
-  position: absolute; border-radius: 50%;
-  border: 2rpx solid rgba(16,185,129,0.4);
-  animation: ringPulse 2.4s ease-out infinite;
+.ms-hero-title {
+  font-size: 54rpx; font-weight: 800;
+  color: #123C33; letter-spacing: 6rpx;
+  text-shadow: 0 2rpx 0 rgba(255,255,255,0.6);
 }
-.ring-1 { width: 280rpx; height: 280rpx; }
-.ring-2 { width: 420rpx; height: 420rpx; animation-delay: 0.8s; }
-.ring-3 { width: 540rpx; height: 540rpx; animation-delay: 1.6s; }
-@keyframes ringPulse {
-  0% { transform: scale(0.85); opacity: 0.7; border-color: rgba(16,185,129,0.5); }
-  100% { transform: scale(1.12); opacity: 0; border-color: rgba(114,216,196,0.08); }
+.ms-hero-sub {
+  margin-top: 14rpx;
+  font-size: 19rpx;
+  color: #7BA294;
+  letter-spacing: 4rpx;
+  text-transform: uppercase;
 }
-/* 扫描盘外圈微光 */
-.ms-scan-stage::before {
-  content: '';
-  position: absolute; width: 540rpx; height: 540rpx; border-radius: 50%;
-  background: radial-gradient(circle, rgba(163,230,214,0.18), transparent 65%);
-  filter: blur(8rpx);
+.ms-hero-divider {
+  width: 120rpx; height: 2rpx;
+  margin-top: 34rpx;
+  background: linear-gradient(90deg, transparent, rgba(30,142,111,0.5), transparent);
 }
-/* 主扇束（薄荷绿荧光渐变 + 旋转） */
-.ms-scan-radar {
-  position: absolute; width: 500rpx; height: 500rpx; border-radius: 50%;
+.ms-hero-cn {
+  margin-top: 20rpx;
+  font-size: 24rpx; color: #3F6B5E;
+  letter-spacing: 6rpx;
+}
+
+/* 核心 · 毛玻璃水晶浮岛 */
+.ms-stage {
+  width: 560rpx; height: 620rpx;
+  margin: 30rpx auto 0;
+  position: relative;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+/* 呼吸薄荷光晕（代替生硬线条） */
+.ms-halo {
+  position: absolute; top: 50%; left: 50%;
+  width: 480rpx; height: 480rpx;
+  transform: translate(-50%,-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(114,216,196,0.28), transparent 68%);
+  filter: blur(10rpx);
+  animation: haloBreathe 3.2s ease-in-out infinite;
+}
+.halo-sm { width: 360rpx; height: 360rpx; top: 40%; }
+@keyframes haloBreathe {
+  0%,100% { transform: translate(-50%,-50%) scale(0.92); opacity: 0.6; }
+  50% { transform: translate(-50%,-50%) scale(1.1); opacity: 1; }
+}
+/* 轻微扫描扇束（科技感保留，极淡） */
+.ms-radar {
+  position: absolute; top: 50%; left: 50%;
+  width: 460rpx; height: 460rpx;
+  transform: translate(-50%,-50%);
+  border-radius: 50%;
   background: conic-gradient(from 0deg,
-    rgba(114,216,196,0.0) 0deg,
-    rgba(114,216,196,0.06) 40deg,
-    rgba(163,230,214,0.35) 78deg,
-    rgba(255,255,255,0) 100deg);
-  animation: radarSpin 2.6s linear infinite;
-  z-index: 1;
+    rgba(96,205,180,0) 0deg,
+    rgba(96,205,180,0.05) 45deg,
+    rgba(163,230,214,0.28) 85deg,
+    transparent 105deg);
+  animation: radarSpin 3.4s linear infinite;
 }
-/* 扇束残影（延迟一层，制造柔和拖尾） */
-.ms-scan-radar-faint {
-  position: absolute; width: 500rpx; height: 500rpx; border-radius: 50%;
+.ms-radar-faint {
+  position: absolute; top: 50%; left: 50%;
+  width: 460rpx; height: 460rpx;
+  transform: translate(-50%,-50%);
+  border-radius: 50%;
   background: conic-gradient(from 0deg,
     rgba(163,230,214,0) 0deg,
-    rgba(163,230,214,0.05) 50deg,
-    rgba(163,230,214,0.18) 88deg,
-    transparent 100deg);
-  animation: radarSpin 2.6s linear infinite;
-  animation-delay: 0.45s;
-  z-index: 1;
+    rgba(163,230,214,0.04) 55deg,
+    rgba(163,230,214,0.14) 95deg,
+    transparent 118deg);
+  animation: radarSpin 3.4s linear infinite;
+  animation-delay: 0.6s;
 }
-@keyframes radarSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes radarSpin { from { transform: translate(-50%,-50%) rotate(0deg); } to { transform: translate(-50%,-50%) rotate(360deg); } }
 
-/* 中央核心（微光立体盲盒球体 / 灵狐） */
-.ms-scan-core {
-  width: 216rpx; height: 216rpx; border-radius: 50%;
-  z-index: 2;
-  display: flex; align-items: center; justify-content: center;
-  background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.98), rgba(224,247,239,0.95) 55%, rgba(178,235,216,0.9));
-  box-shadow:
-    0 12rpx 34rpx rgba(16,185,129,0.3),
-    inset 0 0 24rpx rgba(255,255,255,0.6),
-    inset 0 -8rpx 20rpx rgba(114,216,196,0.35);
-  border: 3rpx solid rgba(255,255,255,0.85);
-  overflow: hidden;
+/* 毛玻璃浮岛卡片（Glassmorphism） */
+.ms-glass-card {
   position: relative;
+  width: 300rpx; height: 300rpx;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.60);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border: 1.5rpx solid rgba(255,255,255,0.75);
+  box-shadow:
+    0 24rpx 50rpx rgba(40,116,90,0.10),
+    inset 0 0 20rpx rgba(255,255,255,0.75),
+    inset 0 -10rpx 26rpx rgba(114,216,196,0.25);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  z-index: 2;
 }
-.ms-scan-core::after {
-  content: '';
+/* 左上高光饰面 */
+.ms-glass-shine {
   position: absolute; inset: 0; border-radius: 50%;
-  background: radial-gradient(circle at 32% 26%, rgba(255,255,255,0.85), transparent 42%);
-  pointer-events: none;
+  background: radial-gradient(circle at 32% 24%, rgba(255,255,255,0.85), transparent 44%);
+  pointer-events: none; z-index: 2;
 }
-.ms-scan-photo { width: 100%; height: 100%; border-radius: 50%; position: relative; z-index: 1; }
-.ms-scan-orb { display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; }
-.ms-scan-orb-ico { font-size: 110rpx; filter: drop-shadow(0 6rpx 14rpx rgba(30,142,111,0.35)); }
-/* 识别前呼吸缩放 */
-.orb-breathe { animation: orbBreathe 2.2s ease-in-out infinite; }
-@keyframes orbBreathe {
+.ms-glass-photo { width: 100%; height: 100%; border-radius: 50%; position: relative; z-index: 1; }
+.ms-glass-fox {
+  display: flex; align-items: center; justify-content: center;
+  position: relative; z-index: 3;
+  width: 100%; height: 100%;
+}
+.ms-glass-fox-ico {
+  font-size: 132rpx;
+  filter: drop-shadow(0 8rpx 16rpx rgba(30,142,111,0.30));
+}
+.fox-breathe { animation: foxBreathe 2.4s ease-in-out infinite; }
+@keyframes foxBreathe {
   0%,100% { transform: scale(1); }
   50% { transform: scale(1.06); }
 }
-.orb-idle { animation: orbIdle 0.4s ease; }
-@keyframes orbIdle { 0% { transform: scale(0.92); } 100% { transform: scale(1); } }
+.fox-idle { animation: foxIdle 0.4s ease; }
+@keyframes foxIdle { 0% { transform: scale(0.92); } 100% { transform: scale(1); } }
 
-/* 状态提示（沉浸式胶囊） */
-.ms-scan-tip {
-  position: absolute; bottom: -6rpx; left: 50%; transform: translateX(-50%);
-  z-index: 3; white-space: nowrap;
-  background: rgba(255,255,255,0.72);
-  backdrop-filter: blur(10rpx);
-  padding: 14rpx 30rpx; border-radius: 34rpx;
-  box-shadow: 0 6rpx 20rpx rgba(16,185,129,0.12);
-  border: 1rpx solid rgba(114,216,196,0.35);
-}
-.ms-scan-tip-main {
-  font-size: 26rpx; color: #1E8E6F; font-weight: 600; letter-spacing: 1rpx;
-}
-
-/* 主按钮（内发光高定胶囊） */
-.ms-scan-btn {
-  width: 100%; max-width: 620rpx; height: 104rpx; border-radius: 52rpx;
-  background: linear-gradient(135deg, #2BA882, #1E8E6F);
-  display: flex; align-items: center; justify-content: center;
+/* 状态提示 · 极薄半透明药丸（紧贴浮岛下方） */
+.ms-pill {
   position: relative;
+  margin-top: 34rpx;
+  padding: 12rpx 30rpx;
+  border-radius: 40rpx;
+  background: rgba(255,255,255,0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1rpx solid rgba(255,255,255,0.65);
+  box-shadow: 0 8rpx 22rpx rgba(40,116,90,0.08);
+  z-index: 3;
+}
+.ms-pill-text {
+  font-size: 24rpx; color: #2E5E51; font-weight: 600; letter-spacing: 1rpx;
+}
+
+/* 底部操作区（聚合，拒绝脱节） */
+.ms-actions-btm {
+  width: 100%;
+  display: flex; flex-direction: column; align-items: center;
+  margin-top: auto;
+  padding-bottom: 64rpx;
+  padding-top: 20rpx;
+}
+/* 高定主按钮（薄荷渐变 + 微光流光边框） */
+.ms-primary {
+  position: relative;
+  width: 100%;
+  height: 104rpx;
+  border-radius: 32px;
+  background: linear-gradient(135deg, #2EC4B6 0%, #209E92 100%);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
   box-shadow:
-    0 12rpx 30rpx rgba(30,142,111,0.38),
-    inset 0 2rpx 0 rgba(255,255,255,0.28);
-  overflow: hidden;
+    0 14rpx 30rpx rgba(46,196,182,0.35),
+    inset 0 2rpx 0 rgba(255,255,255,0.35);
+  border: 1rpx solid rgba(255,255,255,0.35);
 }
-.ms-scan-btn-ico { font-size: 32rpx; margin-right: 14rpx; position: relative; z-index: 2; }
-.ms-scan-btn-text { color: #fff; font-size: 32rpx; font-weight: 700; letter-spacing: 2rpx; position: relative; z-index: 2; }
-/* 内发光流光 */
-.ms-scan-btn-glow {
-  position: absolute; top: -40rpx; left: -40%;
-  width: 60%; height: 200%;
-  background: linear-gradient(100deg, transparent, rgba(255,255,255,0.35), transparent);
-  transform: rotate(20deg);
-  animation: btnShine 2.8s ease-in-out infinite;
-}
-@keyframes btnShine {
-  0% { left: -60%; }
-  60%,100% { left: 130%; }
-}
-.ms-scan-btn--press { transform: scale(0.97); }
-.ms-scan-btn--ready { animation: readyPulse 1.6s ease-in-out infinite; }
-@keyframes readyPulse {
-  0%,100% { box-shadow: 0 12rpx 30rpx rgba(30,142,111,0.38), inset 0 2rpx 0 rgba(255,255,255,0.28); }
-  50% { box-shadow: 0 12rpx 40rpx rgba(30,142,111,0.55), 0 0 0 12rpx rgba(114,216,196,0.18), inset 0 2rpx 0 rgba(255,255,255,0.28); }
-}
-
-/* 副按钮（优雅文字链 + 微光箭头） */
-.ms-scan-skip {
-  margin-top: 32rpx;
-  display: flex; align-items: center;
-  padding: 10rpx 16rpx;
-}
-.ms-scan-skip-txt { font-size: 22rpx; color: #9FBEB3; letter-spacing: 1rpx; }
-.ms-scan-skip-arrow {
-  font-size: 28rpx; color: #7BA294; margin-left: 4rpx;
-  opacity: 0.7;
-  transition: transform 0.2s ease;
-}
-.ms-scan-skip--press .ms-scan-skip-arrow { transform: translateX(4rpx); opacity: 1; }
-
-
-
-/* ===== STEP 1 识别中 ===== */
-.ms-analyzing { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-.ms-analyzing-ball { position: relative; width: 220rpx; height: 220rpx; display: flex; align-items: center; justify-content: center; }
-.ms-analyzing-pulse { position: absolute; width: 200rpx; height: 200rpx; border-radius: 50%; background: rgba(16,185,129,0.22); animation: ballPulse 1.4s ease-in-out infinite; }
-.ms-analyzing-pulse.pulse-2 { width: 220rpx; height: 220rpx; animation-delay: 0.7s; opacity: 0.6; }
-@keyframes ballPulse { 0%,100% { transform: scale(0.72); opacity: 0.8; } 50% { transform: scale(1.12); opacity: 0.25; } }
-.ms-analyzing-orb {
-  width: 132rpx; height: 132rpx; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.98), rgba(224,247,239,0.95) 55%, rgba(178,235,216,0.9));
-  box-shadow: 0 12rpx 30rpx rgba(16,185,129,0.3), inset 0 0 20rpx rgba(255,255,255,0.6), inset 0 -8rpx 16rpx rgba(114,216,196,0.35);
-  border: 3rpx solid rgba(255,255,255,0.85);
-  position: relative;
-  z-index: 2;
-  overflow: hidden;
-}
-.ms-analyzing-orb::after {
+.ms-primary::before {
   content: '';
-  position: absolute; inset: 0; border-radius: 50%;
-  background: radial-gradient(circle at 32% 26%, rgba(255,255,255,0.85), transparent 42%);
+  position: absolute; inset: 0;
+  border-radius: 32px;
+  padding: 2rpx;
+  background: linear-gradient(135deg, rgba(255,255,255,0.6), transparent 40%, rgba(255,255,255,0.3));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
   pointer-events: none;
 }
-.ms-analyzing-emoji { font-size: 64rpx; z-index: 1; filter: drop-shadow(0 4rpx 10rpx rgba(30,142,111,0.3)); }
-.ms-analyzing-text { margin-top: 44rpx; font-size: 30rpx; color: #21453C; font-weight: 700; letter-spacing: 1rpx; }
-.ms-analyzing-sub {
-  margin-top: 12rpx; font-size: 22rpx; color: #8BA89F; letter-spacing: 1rpx;
+.ms-primary-ico { font-size: 30rpx; margin-right: 14rpx; position: relative; z-index: 2; }
+.ms-primary-text { color: #fff; font-size: 32rpx; font-weight: 700; letter-spacing: 2rpx; position: relative; z-index: 2; }
+.ms-primary-glow {
+  position: absolute; top: -40rpx; left: -40%;
+  width: 56%; height: 200%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,0.35), transparent);
+  transform: rotate(20deg);
+  animation: primaryShine 3s ease-in-out infinite;
+  z-index: 1;
+}
+@keyframes primaryShine {
+  0% { left: -60%; } 60%,100% { left: 140%; }
+}
+.ms-primary--press { transform: scale(0.97); }
+.ms-primary--ready { animation: primaryReady 1.6s ease-in-out infinite; }
+@keyframes primaryReady {
+  0%,100% { box-shadow: 0 14rpx 30rpx rgba(46,196,182,0.35), inset 0 2rpx 0 rgba(255,255,255,0.35); }
+  50% { box-shadow: 0 14rpx 42rpx rgba(46,196,182,0.5), 0 0 0 14rpx rgba(114,216,196,0.16), inset 0 2rpx 0 rgba(255,255,255,0.35); }
 }
 
-.ms-analyzing-dots { display: flex; gap: 14rpx; margin-top: 30rpx; }
-.ms-analyzing-dots .dot { width: 16rpx; height: 16rpx; border-radius: 50%; background: #2BA882; animation: dotB 1.2s infinite; }
+/* 副按钮（低调返回） */
+.ms-skip {
+  margin-top: 30rpx;
+  display: flex; align-items: center;
+  padding: 8rpx 14rpx;
+}
+.ms-skip-text { font-size: 20rpx; color: #8FB0A4; letter-spacing: 1rpx; }
+.ms-skip-arrow {
+  font-size: 24rpx; color: #7BA294; margin-left: 4rpx; opacity: 0.75;
+  transition: transform 0.2s ease;
+}
+.ms-skip--press .ms-skip-arrow { transform: translateX(4rpx); opacity: 1; }
+
+/* ===== STEP 1 · 识别中（毛玻璃浮岛 + 沉浸文案） ===== */
+.ms-analyzing {
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  position: relative; z-index: 1;
+}
+.glass-analyzing {
+  width: 240rpx; height: 240rpx;
+  background: rgba(255,255,255,0.62);
+}
+.ms-analyzing-text { margin-top: 60rpx; font-size: 30rpx; color: #123C33; font-weight: 700; letter-spacing: 1rpx; }
+.ms-analyzing-sub { margin-top: 14rpx; font-size: 21rpx; color: #7BA294; letter-spacing: 2rpx; }
+.ms-analyzing-dots { display: flex; gap: 14rpx; margin-top: 34rpx; }
+.ms-analyzing-dots .dot { width: 14rpx; height: 14rpx; border-radius: 50%; background: #2BA882; animation: dotB 1.2s infinite; }
 .ms-analyzing-dots .dot:nth-child(2) { animation-delay: 0.2s; }
 .ms-analyzing-dots .dot:nth-child(3) { animation-delay: 0.4s; }
 @keyframes dotB { 0%,100% { opacity: 0.3; transform: translateY(0); } 50% { opacity: 1; transform: translateY(-10rpx); } }
 
 /* ===== STEP 2 结果 ===== */
-.ms-result { padding-top: 40rpx; padding-bottom: 60rpx; }
+.ms-result { padding: 40rpx 48rpx 60rpx; position: relative; z-index: 1; }
 .ms-result-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24rpx; }
 .ms-result-tag { font-size: 30rpx; font-weight: 700; color: #21453C; }
 .ms-band {
@@ -246,7 +297,7 @@
 .w1 { height: 24rpx; } .w2 { height: 48rpx; } .w3 { height: 32rpx; }
 
 /* 通用卡片 */
-.ms-card { background: #fff; border-radius: 30rpx; padding: 30rpx; margin-top: 24rpx; box-shadow: 0 6rpx 18rpx rgba(0,0,0,0.04); }
+.ms-card { background: rgba(255,255,255,0.85); border-radius: 30rpx; padding: 30rpx; margin-top: 24rpx; box-shadow: 0 6rpx 18rpx rgba(0,0,0,0.04); }
 .ms-section-title { display: block; font-size: 28rpx; font-weight: 700; color: #21453C; margin-bottom: 18rpx; }
 .ms-psych-text { display: block; font-size: 26rpx; color: #4A675E; line-height: 1.75; }
 
@@ -259,7 +310,7 @@
 .ms-micro-val { font-size: 24rpx; font-weight: 700; color: #21453C; width: 60rpx; text-align: right; }
 
 .ms-meter-row { display: flex; gap: 16rpx; margin-top: 24rpx; }
-.ms-meter { flex: 1; background: #fff; border-radius: 26rpx; padding: 24rpx; box-shadow: 0 6rpx 18rpx rgba(0,0,0,0.04); }
+.ms-meter { flex: 1; background: rgba(255,255,255,0.85); border-radius: 26rpx; padding: 24rpx; box-shadow: 0 6rpx 18rpx rgba(0,0,0,0.04); }
 .ms-meter-top { display: flex; justify-content: space-between; font-size: 24rpx; color: #8BA89F; margin-bottom: 14rpx; }
 .ms-meter-num { font-weight: 700; color: #21453C; }
 .ms-meter-bg { height: 18rpx; background: #EAF3EF; border-radius: 10rpx; overflow: hidden; }
@@ -295,7 +346,7 @@
 /* 维度三 · 天气互文 */
 .ms-weather {
   margin-top: 24rpx; padding: 24rpx 26rpx; border-radius: 26rpx;
-  background: #F0FAFF; border: 1rpx solid #D3ECF7;
+  background: rgba(240,250,255,0.9); border: 1rpx solid #D3ECF7;
   display: flex; align-items: center;
 }
 .ms-weather-emoji { font-size: 44rpx; margin-right: 16rpx; }
@@ -317,7 +368,7 @@
 .ms-link { font-size: 26rpx; color: #5A8A7C; font-weight: 600; }
 
 /* ===== STEP 3 治愈解药卡 ===== */
-.ms-card-page { padding-top: 50rpx; display: flex; flex-direction: column; align-items: center; }
+.ms-card-page { padding: 50rpx 48rpx; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 1; }
 .ms-card-title { font-size: 40rpx; font-weight: 700; color: #21453C; margin-bottom: 30rpx; }
 .ms-card {
   width: 100%; max-width: 620rpx; border-radius: 40rpx;

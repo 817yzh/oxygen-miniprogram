@@ -1,57 +1,63 @@
-<!-- pages/mood-scan/mood-scan.wxml · 面部能量扫描仪（四维度丰富版 · 高定开屏美化） -->
+<!-- pages/mood-scan/mood-scan.wxml · 面部能量扫描仪（杂志高定风 · Grade A） -->
 <view class="ms-page">
 
-  <!-- ===== 背景呼吸光晕层（全页氛围） ===== -->
+  <!-- ===== 极光呼吸光晕层（全页氛围，告别死白） ===== -->
   <view class="ms-aura aura-1"></view>
   <view class="ms-aura aura-2"></view>
   <view class="ms-aura aura-3"></view>
+  <view class="ms-grain"></view>
 
-  <!-- ========== STEP 0 · 开始扫描（3秒雷达动效） ========== -->
+  <!-- ========== STEP 0 · 开始扫描（杂志高定排版） ========== -->
   <view wx:if="{{step === 0}}" class="ms-scan">
-    <view class="ms-scan-head">
-      <text class="ms-scan-title">🧊 面部能量扫描</text>
-      <text class="ms-scan-sub">扫描你的微表情，测测今日心灵波段</text>
+    <!-- 顶部 · 杂志级大排版标题 -->
+    <view class="ms-hero">
+      <text class="ms-hero-title">面部能量扫描</text>
+      <text class="ms-hero-sub">FACIAL ENERGY SCANNING</text>
+      <view class="ms-hero-divider"></view>
+      <text class="ms-hero-cn">捕捉今日心灵波段</text>
     </view>
 
-    <!-- 雷达扫描盘（科技感升级） -->
-    <view class="ms-scan-stage">
-      <view class="ms-scan-ring ring-1"></view>
-      <view class="ms-scan-ring ring-2"></view>
-      <view class="ms-scan-ring ring-3"></view>
-      <view class="ms-scan-radar"></view>
-      <view class="ms-scan-radar-faint"></view>
-      <view class="ms-scan-core">
-        <image wx:if="{{photoPath}}" class="ms-scan-photo" src="{{photoPath}}" mode="aspectFill"></image>
-        <view wx:else class="ms-scan-orb {{scanDone ? 'orb-idle' : 'orb-breathe'}}">
-          <text class="ms-scan-orb-ico">🦊</text>
+    <!-- 核心 · 毛玻璃水晶浮岛雷达 -->
+    <view class="ms-stage">
+      <view class="ms-halo"></view>
+      <!-- 扇束光（保留轻微科技感） -->
+      <view class="ms-radar"></view>
+      <view class="ms-radar-faint"></view>
+      <!-- 毛玻璃浮岛 -->
+      <view class="ms-glass-card">
+        <view class="ms-glass-shine"></view>
+        <image wx:if="{{photoPath}}" class="ms-glass-photo" src="{{photoPath}}" mode="aspectFill"></image>
+        <view wx:else class="ms-glass-fox {{scanDone ? 'fox-idle' : 'fox-breathe'}}">
+          <text class="ms-glass-fox-ico">🦊</text>
         </view>
       </view>
-      <view class="ms-scan-tip">
-        <text class="ms-scan-tip-main">{{scanTips[scanTipIdx]}}</text>
+      <!-- 状态提示 · 紧贴浮岛下方的极薄药丸 -->
+      <view class="ms-pill">
+        <text class="ms-pill-text">{{scanTips[scanTipIdx]}}</text>
       </view>
     </view>
 
-    <!-- 主按钮（内发光高定胶囊） -->
-    <view class="ms-scan-btn {{scanDone ? 'ms-scan-btn--ready' : ''}}" bindtap="startScan" hover-class="ms-scan-btn--press">
-      <text class="ms-scan-btn-ico">{{scanDone ? '📸' : '🚀'}}</text>
-      <text class="ms-scan-btn-text">{{scanDone ? '对准镜头，拍下此刻' : '开启 3 秒充氧扫描'}}</text>
-      <text class="ms-scan-btn-glow"></text>
-    </view>
-
-    <!-- 副按钮（优雅文字链 + 微光箭头） -->
-    <view class="ms-scan-skip" bindtap="goHome" hover-class="ms-scan-skip--press">
-      <text class="ms-scan-skip-txt">暂不扫描，先回首页</text>
-      <text class="ms-scan-skip-arrow">›</text>
+    <!-- 底部操作区 · 主按钮 + 低调返回 -->
+    <view class="ms-actions-btm">
+      <view class="ms-primary {{scanDone ? 'ms-primary--ready' : ''}}" bindtap="startScan" hover-class="ms-primary--press">
+        <text class="ms-primary-ico">{{scanDone ? '📸' : '🚀'}}</text>
+        <text class="ms-primary-text">{{scanDone ? '对准镜头，拍下此刻' : '开启 3 秒充氧扫描'}}</text>
+        <text class="ms-primary-glow"></text>
+      </view>
+      <view class="ms-skip" bindtap="goHome" hover-class="ms-skip--press">
+        <text class="ms-skip-text">暂不扫描，先回首页</text>
+        <text class="ms-skip-arrow">›</text>
+      </view>
     </view>
   </view>
 
   <!-- ========== STEP 1 · 识别中 ========== -->
   <view wx:if="{{step === 1}}" class="ms-analyzing">
-    <view class="ms-analyzing-ball">
-      <view class="ms-analyzing-pulse"></view>
-      <view class="ms-analyzing-pulse pulse-2"></view>
-      <view class="ms-analyzing-orb">
-        <text class="ms-analyzing-emoji">🦊</text>
+    <view class="ms-halo halo-sm"></view>
+    <view class="ms-glass-card glass-analyzing">
+      <view class="ms-glass-shine"></view>
+      <view class="ms-glass-fox fox-breathe">
+        <text class="ms-glass-fox-ico">🦊</text>
       </view>
     </view>
     <text class="ms-analyzing-text">灵狐正在读取你的心灵气象…</text>
