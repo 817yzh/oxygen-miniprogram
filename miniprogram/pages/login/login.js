@@ -9,10 +9,10 @@ Page({
   },
 
   onLoad() {
-    // 已登录则直接进首页
-    if (app.globalData.user && app.globalData.user.loggedIn) {
-      this.goHome()
-    }
+    // 已登录则直接进首页（体验版测试时临时注释，方便展示登录页）
+    // if (app.globalData.user && app.globalData.user.loggedIn) {
+    //   this.goHome()
+    // }
   },
 
   toggleAgree() {
