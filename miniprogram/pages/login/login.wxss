@@ -1,4 +1,4 @@
-/* pages/login/login.wxss · 晨曦微光中的心灵引力场（饱满高定版） */
+/* pages/login/login.wxss · 晨曦微光心灵引力场（全新架构：通透大背景 + 悬浮IP + 关键词徽章矩阵） */
 
 .login-page {
   min-height: 100vh;
@@ -106,22 +106,22 @@
   50% { transform: translateY(-34rpx); opacity: 1; }
 }
 
-/* ===== 核心视觉焦点 ===== */
+/* ===== 顶部清爽视觉 ===== */
 .lg-hero {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   position: relative;
   z-index: 1;
-  padding-top: 40rpx;
+  padding-top: 110rpx;
 }
 /* 呼呼身后 · 超大晨曦薄荷呼吸光晕 */
 .lg-back-glow {
   position: absolute;
-  top: 50%; left: 50%;
-  width: 760rpx; height: 760rpx;
+  top: 34%; left: 50%;
+  width: 720rpx; height: 720rpx;
   transform: translate(-50%,-50%);
   border-radius: 50%;
   background: radial-gradient(circle, rgba(114,216,196,0.5), rgba(152,235,215,0.2) 45%, transparent 72%);
@@ -132,41 +132,7 @@
   0%,100% { transform: translate(-50%,-50%) scale(0.9); opacity: 0.7; }
   50% { transform: translate(-50%,-50%) scale(1.14); opacity: 1; }
 }
-
-/* ===== 极光玻璃底座（毛玻璃浮岛容器） ===== */
-.lg-island {
-  position: relative;
-  width: 100%;
-  max-width: 560rpx;
-  border-radius: 56rpx;
-  background: rgba(255,255,255,0.52);
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
-  border: 1.5rpx solid rgba(255,255,255,0.7);
-  box-shadow:
-    0 24rpx 60rpx rgba(40,116,90,0.10),
-    inset 0 0 30rpx rgba(255,255,255,0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 46rpx 30rpx 52rpx;
-  box-sizing: border-box;
-  overflow: hidden;
-  z-index: 2;
-}
-.lg-island-shine {
-  position: absolute; inset: 0;
-  background: linear-gradient(160deg, rgba(255,255,255,0.6), transparent 40%);
-  pointer-events: none;
-}
-.lg-island-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  z-index: 1;
-}
-/* IP 呼吸光晕（浮岛内） */
+/* IP 呼吸光晕 */
 .lg-halo {
   position: absolute;
   top: 20%;
@@ -182,6 +148,7 @@
   0%,100% { transform: translate(-50%,-50%) scale(0.92); opacity: 0.6; }
   50% { transform: translate(-50%,-50%) scale(1.1); opacity: 1; }
 }
+/* 悬浮 IP */
 .lg-ip-float {
   position: relative;
   width: 300rpx; height: 300rpx;
@@ -197,10 +164,10 @@
   0%,100% { transform: translateY(0); }
   50% { transform: translateY(-22rpx); }
 }
-/* 品牌标语 */
+/* 核心标语区 */
 .lg-slogan {
   margin-top: 8rpx;
-  font-size: 38rpx;
+  font-size: 40rpx;
   font-weight: 700;
   color: #123C33;
   letter-spacing: 4rpx;
@@ -208,8 +175,8 @@
   text-align: center;
 }
 .lg-slogan-sub {
-  margin-top: 14rpx;
-  font-size: 23rpx;
+  margin-top: 16rpx;
+  font-size: 24rpx;
   color: #6B8F82;
   letter-spacing: 3rpx;
   z-index: 2;
@@ -218,11 +185,39 @@
 
 /* ===== 极简交互落脚点 ===== */
 .lg-footer {
-  padding-bottom: 70rpx;
+  padding-bottom: 64rpx;
   position: relative;
   z-index: 2;
 }
-/* 高定授权主按钮 */
+/* ---- 关键词微缩徽章矩阵 ---- */
+.lg-badges {
+  display: flex;
+  justify-content: center;
+  gap: 18rpx;
+  margin-bottom: 36rpx;
+}
+.lg-badge {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 14rpx 24rpx;
+  border-radius: 40rpx;
+  background: rgba(255,255,255,0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1rpx solid rgba(255,255,255,0.8);
+  box-shadow:
+    0 8rpx 22rpx rgba(40,116,90,0.08),
+    inset 0 1rpx 0 rgba(255,255,255,0.8);
+}
+.lg-badge-ico { font-size: 26rpx; }
+.lg-badge-txt {
+  font-size: 22rpx;
+  font-weight: 600;
+  color: #2A5E52;
+  letter-spacing: 1rpx;
+}
+/* ---- 高定授权主按钮 ---- */
 .lg-auth-btn {
   position: relative;
   width: 100%;
@@ -273,7 +268,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 30rpx;
+  margin-top: 28rpx;
 }
 .lg-agree-box {
   width: 32rpx; height: 32rpx;

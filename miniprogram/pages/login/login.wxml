@@ -1,4 +1,4 @@
-<!-- pages/login/login.wxml · 晨曦微光中的心灵引力场（饱满高定版） -->
+<!-- pages/login/login.wxml · 晨曦微光心灵引力场（全新架构：通透大背景 + 悬浮IP + 关键词徽章矩阵） -->
 <view class="login-page">
 
   <!-- ===== 全屏晨曦微光渐变背景 + 流动光影 ===== -->
@@ -9,7 +9,7 @@
   <view class="lg-lights light-1"></view>
   <view class="lg-lights light-2"></view>
 
-  <!-- ===== 全屏微光悬浮粒子（氧气泡泡 · 填满真空感） ===== -->
+  <!-- ===== 全屏微光悬浮粒子（氧气泡泡） ===== -->
   <view class="lg-bubble-lg bubble-p1"></view>
   <view class="lg-bubble-lg bubble-p2"></view>
   <view class="lg-bubble-lg bubble-p3"></view>
@@ -17,31 +17,44 @@
   <view class="lg-bubble-sm bubble-p5"></view>
   <view class="lg-bubble-sm bubble-p6"></view>
 
-  <!-- ===== 核心视觉焦点：毛玻璃浮岛 ===== -->
+  <!-- ===== 顶部清爽视觉 ===== -->
   <view class="lg-hero">
     <!-- 呼呼身后 · 超大晨曦薄荷呼吸光晕 -->
     <view class="lg-back-glow"></view>
 
-    <!-- 极光玻璃底座：装住 IP + 标语 -->
-    <view class="lg-island">
-      <view class="lg-island-shine"></view>
-      <view class="lg-island-inner">
-        <view class="lg-halo"></view>
-        <view class="lg-ip-float">
-          <image
-            class="lg-ip-img"
-            src="https://cdn.jsdelivr.net/gh/817yzh/oxygen-images@main/oxy-ip.png"
-            mode="aspectFit"
-          />
-        </view>
-        <text class="lg-slogan">吸一口气，开启美好能量</text>
-        <text class="lg-slogan-sub">把生活的风浪，交给呼呼守护</text>
-      </view>
+    <!-- 悬浮 IP（偏上黄金点） -->
+    <view class="lg-halo"></view>
+    <view class="lg-ip-float">
+      <image
+        class="lg-ip-img"
+        src="https://cdn.jsdelivr.net/gh/817yzh/oxygen-images@main/oxy-ip.png"
+        mode="aspectFit"
+      />
     </view>
+
+    <!-- 核心标语区 -->
+    <text class="lg-slogan">吸一口气，开启美好能量</text>
+    <text class="lg-slogan-sub">把生活风浪，交给呼呼守护</text>
   </view>
 
   <!-- ===== 极简交互落脚点 ===== -->
   <view class="lg-footer">
+    <!-- 关键词微缩徽章矩阵 -->
+    <view class="lg-badges">
+      <view class="lg-badge">
+        <text class="lg-badge-ico">🌿</text>
+        <text class="lg-badge-txt">AI 情绪解药</text>
+      </view>
+      <view class="lg-badge">
+        <text class="lg-badge-ico">📷</text>
+        <text class="lg-badge-txt">3秒面部充氧</text>
+      </view>
+      <view class="lg-badge">
+        <text class="lg-badge-ico">🦊</text>
+        <text class="lg-badge-txt">灵狐陪伴守护</text>
+      </view>
+    </view>
+
     <!-- 高定授权主按钮 -->
     <view class="lg-auth-btn {{agreed ? '' : ''}}" bindtap="onWechatLogin" hover-class="lg-auth-btn--press">
       <view class="lg-auth-shine"></view>
