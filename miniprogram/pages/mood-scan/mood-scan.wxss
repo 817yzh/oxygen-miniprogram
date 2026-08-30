@@ -138,27 +138,22 @@
 }
 @keyframes radarSpin { from { transform: translate(-50%,-50%) rotate(0deg); } to { transform: translate(-50%,-50%) rotate(360deg); } }
 
-/* 毛玻璃浮岛卡片（Glassmorphism） */
+/* 毛玻璃浮岛卡片 —— 参考图自带玻璃圆环，此处做圆形透明容器 */
 .ms-glass-card {
   position: relative;
-  width: 300rpx; height: 300rpx;
+  width: 420rpx;
+  height: 420rpx;
   border-radius: 50%;
-  background: rgba(255,255,255,0.60);
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
-  border: 1.5rpx solid rgba(255,255,255,0.75);
-  box-shadow:
-    0 24rpx 50rpx rgba(40,116,90,0.10),
-    inset 0 0 20rpx rgba(255,255,255,0.75),
-    inset 0 -10rpx 26rpx rgba(114,216,196,0.25);
+  background: transparent;
   display: flex; align-items: center; justify-content: center;
   overflow: hidden;
   z-index: 2;
+  box-shadow: 0 20rpx 50rpx rgba(20,80,65,0.25);
 }
-/* 左上高光饰面 */
+/* 左上高光饰面（参考图已有光效，弱化） */
 .ms-glass-shine {
   position: absolute; inset: 0; border-radius: 50%;
-  background: radial-gradient(circle at 32% 24%, rgba(255,255,255,0.85), transparent 44%);
+  background: radial-gradient(circle at 30% 22%, rgba(255,255,255,0.25), transparent 40%);
   pointer-events: none; z-index: 2;
 }
 .ms-glass-photo { width: 100%; height: 100%; border-radius: 50%; position: relative; z-index: 1; }
@@ -167,14 +162,14 @@
   position: relative; z-index: 3;
   width: 100%; height: 100%;
 }
-.ms-glass-fox-ico {
-  font-size: 132rpx;
-  filter: drop-shadow(0 8rpx 16rpx rgba(30,142,111,0.30));
+.ms-glass-fox-img {
+  width: 100%;
+  height: 100%;
 }
 .fox-breathe { animation: foxBreathe 2.4s ease-in-out infinite; }
 @keyframes foxBreathe {
   0%,100% { transform: scale(1); }
-  50% { transform: scale(1.06); }
+  50% { transform: scale(1.05); }
 }
 .fox-idle { animation: foxIdle 0.4s ease; }
 @keyframes foxIdle { 0% { transform: scale(0.92); } 100% { transform: scale(1); } }
@@ -269,8 +264,9 @@
   position: relative; z-index: 1;
 }
 .glass-analyzing {
-  width: 240rpx; height: 240rpx;
-  background: rgba(255,255,255,0.62);
+  width: 360rpx; height: 360rpx;
+  background: transparent;
+  box-shadow: 0 16rpx 40rpx rgba(20,80,65,0.25);
 }
 .ms-analyzing-text { margin-top: 60rpx; font-size: 30rpx; color: #123C33; font-weight: 700; letter-spacing: 1rpx; }
 .ms-analyzing-sub { margin-top: 14rpx; font-size: 21rpx; color: #7BA294; letter-spacing: 2rpx; }
@@ -385,3 +381,447 @@
 .ms-card-ip { font-size: 22rpx; color: #4A675E; font-weight: 600; }
 .ms-card-date { font-size: 22rpx; color: #7A958C; }
 .ms-card-hint { margin-top: 26rpx; font-size: 22rpx; color: #9FBEB3; }
+
+/* ================================================================
+   扫描动效（三阶段：点击爆发 → 沉浸扫描 → 高光闪光）
+   ================================================================ */
+
+/* ===== 第二阶段：扫描能量外环（高速旋转） ===== */
+.scan-ring {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 460rpx; height: 460rpx;
+  transform: translate(-50%,-50%);
+  border-radius: 50%;
+  background: conic-gradient(from 0deg,
+    rgba(114,216,196,0.9) 0deg,
+    rgba(255,255,255,0.15) 60deg,
+    transparent 120deg,
+    rgba(114,216,196,0.5) 240deg,
+    transparent 300deg);
+  -webkit-mask: radial-gradient(circle, transparent 66%, #000 67%, #000 72%, transparent 73%);
+  mask: radial-gradient(circle, transparent 66%, #000 67%, #000 72%, transparent 73%);
+  animation: ringSpin 1.0s linear infinite;
+  z-index: 1;
+  pointer-events: none;
+}
+.scan-ring-2 {
+  width: 440rpx; height: 440rpx;
+  background: conic-gradient(from 180deg,
+    rgba(180,240,225,0.7) 0deg,
+    transparent 90deg,
+    rgba(114,216,196,0.4) 180deg,
+    transparent 270deg);
+  animation: ringSpinReverse 1.6s linear infinite;
+}
+@keyframes ringSpin {
+  from { transform: translate(-50%,-50%) rotate(0deg); }
+  to { transform: translate(-50%,-50%) rotate(360deg); }
+}
+@keyframes ringSpinReverse {
+  from { transform: translate(-50%,-50%) rotate(360deg); }
+  to { transform: translate(-50%,-50%) rotate(0deg); }
+}
+
+/* ===== 第二阶段：声纳波纹（从中心向外扩散） ===== */
+.sonar-wave {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 200rpx; height: 200rpx;
+  transform: translate(-50%,-50%);
+  border-radius: 50%;
+  border: 2rpx solid rgba(114,216,196,0.45);
+  animation: sonarExpand 1.5s ease-out infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+.sonar-2 {
+  animation-delay: 0.75s;
+  border-color: rgba(180,240,225,0.35);
+}
+@keyframes sonarExpand {
+  0% { width: 200rpx; height: 200rpx; opacity: 0.7; }
+  100% { width: 500rpx; height: 500rpx; opacity: 0; }
+}
+
+/* ===== 第二阶段：发光扫描线（从上扫到下，3秒） ===== */
+.scan-line {
+  position: absolute;
+  left: 8%;
+  width: 84%;
+  height: 6rpx;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(114,216,196,0.85) 20%,
+    rgba(255,255,255,0.95) 50%,
+    rgba(114,216,196,0.85) 80%,
+    transparent);
+  border-radius: 6rpx;
+  box-shadow:
+    0 0 16rpx rgba(114,216,196,0.9),
+    0 0 40rpx rgba(114,216,196,0.5),
+    0 0 80rpx rgba(114,216,196,0.25);
+  top: 5%;
+  animation: scanMove 3s linear forwards;
+  z-index: 6;
+  pointer-events: none;
+}
+@keyframes scanMove {
+  0% { top: 6%; opacity: 0; }
+  5% { opacity: 1; }
+  95% { opacity: 1; }
+  100% { top: 92%; opacity: 0; }
+}
+
+/* ===== 第二阶段：气泡粒子（扫描线经过处上浮） ===== */
+.scan-bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%,
+    rgba(255,255,255,0.95),
+    rgba(114,216,196,0.4) 60%,
+    transparent);
+  z-index: 5;
+  pointer-events: none;
+  animation: bubbleRise 1.8s ease-in infinite;
+}
+.b1 { width: 14rpx; height: 14rpx; left: 22%; top: 55%; animation-delay: 0.2s; }
+.b2 { width: 10rpx; height: 10rpx; left: 68%; top: 45%; animation-delay: 0.6s; }
+.b3 { width: 18rpx; height: 18rpx; left: 40%; top: 65%; animation-delay: 1.0s; }
+.b4 { width: 8rpx; height: 8rpx; left: 78%; top: 58%; animation-delay: 1.4s; }
+@keyframes bubbleRise {
+  0% { transform: translateY(0) scale(0.4); opacity: 0; }
+  15% { opacity: 0.9; }
+  100% { transform: translateY(-160rpx) scale(1.1); opacity: 0; }
+}
+
+/* ===== 第三阶段：结束高光闪光（暖金全屏） ===== */
+.scan-flash {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 50% 45%,
+    rgba(255,240,200,0.95) 0%,
+    rgba(255,220,150,0.6) 30%,
+    rgba(255,255,255,0.3) 60%,
+    transparent 100%);
+  z-index: 999;
+  animation: flashOut 0.55s ease-out forwards;
+  pointer-events: none;
+}
+@keyframes flashOut {
+  0% { opacity: 0; }
+  25% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ===== 第一阶段：按钮水波纹 ===== */
+.ms-primary .ripple {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 120rpx; height: 120rpx;
+  margin-top: -60rpx; margin-left: -60rpx;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.5);
+  transform: scale(0);
+  animation: rippleExpand 0.6s ease-out forwards;
+  pointer-events: none;
+  z-index: 3;
+}
+@keyframes rippleExpand {
+  0% { transform: scale(0); opacity: 0.8; }
+  100% { transform: scale(5); opacity: 0; }
+}
+
+/* ===== 狐狸状态动画 ===== */
+/* 扫描中：闭眼思考（微暗 + 轻微收缩） */
+.fox-thinking {
+  animation: foxThinking 2.6s ease-in-out;
+}
+@keyframes foxThinking {
+  0%, 100% { filter: brightness(1); transform: scale(1); }
+  15%, 85% { filter: brightness(0.78) contrast(1.1) saturate(0.9); transform: scale(0.96); }
+}
+/* 扫描结束：清醒弹跳（元气微笑） */
+.fox-awake {
+  animation: foxAwake 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.3);
+}
+@keyframes foxAwake {
+  0% { transform: scale(0.75); filter: brightness(1.3); }
+  50% { transform: scale(1.15); filter: brightness(1.1); }
+  100% { transform: scale(1); filter: brightness(1); }
+}
+
+/* ================================================================
+   STEP 1 识别中 · 沉浸扫描专用样式（无限循环版）
+   ================================================================ */
+
+/* STEP1 能量环尺寸适配（glass-analyzing 为 360rpx） */
+.a1-ring {
+  width: 420rpx; height: 420rpx;
+  top: 40%; /* 与毛玻璃卡片对齐（卡片在 flex 布局中偏上） */
+}
+.a1-ring-2 {
+  width: 400rpx; height: 400rpx;
+  top: 40%;
+}
+
+/* STEP1 声纳波纹位置对齐 */
+.ms-analyzing .sonar-wave {
+  top: 40%;
+}
+
+/* 来回扫描线（无限循环：上→下→上） */
+.scan-line-loop {
+  animation: scanMoveLoop 2.8s ease-in-out infinite;
+}
+@keyframes scanMoveLoop {
+  0% { top: 6%; opacity: 0; }
+  6% { opacity: 1; }
+  44% { top: 90%; opacity: 1; }
+  50% { top: 92%; opacity: 0; }
+  56% { top: 90%; opacity: 0; }
+  60% { opacity: 1; }
+  96% { top: 8%; opacity: 1; }
+  100% { top: 6%; opacity: 0; }
+}
+
+/* 狐狸思考动画（无限循环：微暗→恢复） */
+.fox-thinking-loop {
+  animation: foxThinkingLoop 3s ease-in-out infinite;
+}
+@keyframes foxThinkingLoop {
+  0%, 100% { filter: brightness(1); transform: scale(1); }
+  50% { filter: brightness(0.78) contrast(1.1) saturate(0.9); transform: scale(0.96); }
+}
+
+/* STEP1 毛玻璃卡片确保透明 + overflow 可见（能量环在外部） */
+.glass-analyzing {
+  overflow: hidden;
+  background: transparent;
+  box-shadow: 0 16rpx 40rpx rgba(20,80,65,0.25);
+}
+
+
+/* ================================================================
+   STEP 2 结果页 · 终极高定治愈海报（单胶囊聚合）
+   ================================================================ */
+
+.poster-page {
+  padding: 20rpx 28rpx 40rpx;
+  box-sizing: border-box;
+}
+
+/* ---------- 顶部氛围区（极简留白 · 艺术化标题） ---------- */
+.poster-header {
+  text-align: center;
+  padding: 30rpx 0 36rpx;
+}
+.poster-h-title {
+  display: block;
+  font-size: 34rpx;
+  font-weight: 300;
+  color: #3D6B5E;
+  letter-spacing: 6rpx;
+  margin-bottom: 10rpx;
+}
+.poster-h-sub {
+  display: block;
+  font-size: 18rpx;
+  color: #8BA89E;
+  letter-spacing: 4rpx;
+  font-weight: 500;
+}
+
+/* ---------- 核心治愈报告舱（毛玻璃解药胶囊） ---------- */
+.healing-capsule {
+  background: rgba(255,255,255,0.55);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: 44rpx;
+  border: 1.5rpx solid rgba(255,255,255,0.75);
+  box-shadow: 0 24rpx 60rpx rgba(0,50,40,0.10);
+  overflow: hidden;
+  margin-bottom: 32rpx;
+}
+
+/* 顶部暗色流光签 */
+.capsule-head {
+  position: relative;
+  background: linear-gradient(135deg, #1A3D34 0%, #0D211B 100%);
+  padding: 32rpx 32rpx 36rpx;
+  overflow: hidden;
+}
+.capsule-head-glow {
+  position: absolute;
+  top: -80rpx; right: -60rpx;
+  width: 300rpx; height: 300rpx;
+  border-radius: 50%;
+  opacity: 0.35;
+  filter: blur(30rpx);
+  pointer-events: none;
+}
+.capsule-head-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 18rpx;
+  position: relative; z-index: 1;
+}
+.capsule-weather {
+  font-size: 22rpx;
+  color: rgba(255,255,255,0.75);
+  font-weight: 500;
+}
+.capsule-emoji {
+  font-size: 48rpx;
+  filter: drop-shadow(0 4rpx 10rpx rgba(0,0,0,0.2));
+}
+.capsule-title {
+  display: block;
+  font-size: 38rpx;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 2rpx;
+  margin-bottom: 10rpx;
+  position: relative; z-index: 1;
+  text-shadow: 0 2rpx 8rpx rgba(0,0,0,0.15);
+}
+.capsule-desc {
+  display: block;
+  font-size: 24rpx;
+  color: rgba(255,255,255,0.82);
+  line-height: 1.6;
+  font-weight: 500;
+  position: relative; z-index: 1;
+}
+
+/* 中部双氧共振舱 */
+.capsule-body {
+  padding: 36rpx 28rpx 32rpx;
+}
+.oxygen-rings {
+  display: flex; align-items: center; justify-content: center;
+  gap: 20rpx;
+  margin-bottom: 32rpx;
+}
+.ring-cell {
+  display: flex; flex-direction: column; align-items: center;
+  flex: 1;
+}
+.ring-wrap {
+  width: 150rpx; height: 150rpx;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 14rpx;
+  transition: all 0.6s ease;
+}
+.ring-inner {
+  width: 118rpx; height: 118rpx;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.9);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: inset 0 2rpx 8rpx rgba(0,0,0,0.06);
+}
+.ring-num {
+  font-size: 40rpx;
+  font-weight: 800;
+  color: #1F4A3E;
+}
+.ring-label {
+  font-size: 24rpx;
+  font-weight: 700;
+  color: #2D5A4D;
+  margin-bottom: 4rpx;
+}
+.ring-sub {
+  font-size: 18rpx;
+  color: #8BA89E;
+  font-weight: 500;
+  text-align: center;
+}
+.rings-middle {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 6rpx;
+  width: 120rpx;
+}
+.rings-dot {
+  font-size: 16rpx;
+  color: rgba(114,216,196,0.6);
+}
+.rings-text {
+  font-size: 18rpx;
+  color: #7A958C;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* 心理洞察 */
+.capsule-psych {
+  background: rgba(114,216,196,0.08);
+  border-radius: 24rpx;
+  padding: 22rpx 24rpx;
+  border: 1rpx solid rgba(114,216,196,0.15);
+}
+.psych-label {
+  display: block;
+  font-size: 22rpx;
+  font-weight: 700;
+  color: #2EC4B6;
+  margin-bottom: 10rpx;
+  letter-spacing: 1rpx;
+}
+.psych-text {
+  display: block;
+  font-size: 24rpx;
+  color: #3D6B5E;
+  line-height: 1.75;
+  font-weight: 500;
+}
+
+/* ---------- 底部金句（沉浸式留白 · 卡片外） ---------- */
+.poster-quote {
+  text-align: center;
+  padding: 20rpx 40rpx 36rpx;
+}
+.poster-quote .quote-text {
+  display: block;
+  font-size: 28rpx;
+  color: #2D5A4D;
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1.8;
+  margin-bottom: 12rpx;
+}
+.poster-quote .quote-warm {
+  display: block;
+  font-size: 22rpx;
+  color: #7A958C;
+  font-weight: 500;
+}
+
+/* ---------- 底部黄金双操作区（仅两个按钮 · 大呼吸感） ---------- */
+.poster-actions {
+  display: flex; gap: 20rpx;
+  padding: 20rpx 16rpx 30rpx;
+  justify-content: center;
+}
+.poster-btn {
+  flex: 1;
+  height: 92rpx;
+  border-radius: 46rpx;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28rpx;
+  font-weight: 700;
+  letter-spacing: 1rpx;
+  transition: all 0.2s ease;
+}
+.poster-btn.secondary {
+  background: rgba(255,255,255,0.6);
+  color: #2EC4B6;
+  border: 1.5rpx solid rgba(46,196,182,0.5);
+}
+.poster-btn.primary {
+  background: linear-gradient(135deg, #2EC4B6 0%, #1FA89A 100%);
+  color: #fff;
+  box-shadow: 0 12rpx 28rpx rgba(46,196,182,0.35);
+}
+.btn-hover { opacity: 0.85; transform: scale(0.97); }
