@@ -1,58 +1,50 @@
-<!-- 登录页 · 氧氧宝 -->
+<!-- pages/login/login.wxml · 晨曦微光中的心灵引力场（极简高定登录） -->
 <view class="login-page">
 
-  <!-- 顶部氛围区：渐变 + 漂浮气泡 + IP -->
-  <view class="hero">
-    <!-- 漂浮气泡装饰 -->
-    <view class="bubble b1"></view>
-    <view class="bubble b2"></view>
-    <view class="bubble b3"></view>
-    <view class="bubble b4"></view>
+  <!-- ===== 全屏晨曦微光渐变背景 + 流动光影 ===== -->
+  <view class="lg-aura aura-1"></view>
+  <view class="lg-aura aura-2"></view>
+  <view class="lg-aura aura-3"></view>
+  <view class="lg-grain"></view>
+  <view class="lg-lights light-1"></view>
+  <view class="lg-lights light-2"></view>
 
-    <!-- IP 狐狸 -->
-    <view class="ip-wrap">
-      <image class="ip-img" src="https://cdn.jsdelivr.net/gh/817yzh/oxygen-images@main/oxy-ip.png" mode="aspectFit" />
+  <!-- ===== 核心视觉焦点：悬浮 IP（呼呼 · 戴氧气面罩抱能量瓶） ===== -->
+  <view class="lg-hero">
+    <view class="lg-halo"></view>
+    <view class="lg-ip-float">
+      <image
+        class="lg-ip-img"
+        src="https://cdn.jsdelivr.net/gh/817yzh/oxygen-images@main/oxy-ip.png"
+        mode="aspectFit"
+      />
     </view>
-
-    <!-- 品牌 -->
-    <view class="brand">
-      <text class="brand-name">氧氧宝</text>
-      <text class="brand-slogan">连接身体与内心的氧气伙伴</text>
-    </view>
+    <text class="lg-slogan">吸一口气，开启美好能量</text>
+    <text class="lg-slogan-sub">把生活的风浪，交给呼呼守护</text>
   </view>
 
-  <!-- 底部登录卡片 -->
-  <view class="login-card">
-    <view class="feature-row">
-      <view class="feature col-3">
-        <text class="feature-ico">💚</text>
-        <text class="feature-txt">情绪感知</text>
-      </view>
-      <view class="feature col-3">
-        <text class="feature-ico">🤖</text>
-        <text class="feature-txt">AI 陪伴</text>
-      </view>
-      <view class="feature col-3">
-        <text class="feature-ico">🌱</text>
-        <text class="feature-txt">自我成长</text>
+  <!-- ===== 极简交互落脚点 ===== -->
+  <view class="lg-footer">
+    <!-- 高定授权主按钮 -->
+    <view class="lg-auth-btn {{agreed ? '' : ''}}" bindtap="onWechatLogin" hover-class="lg-auth-btn--press">
+      <view class="lg-auth-shine"></view>
+      <text class="lg-auth-ico">✨</text>
+      <view class="lg-auth-texts">
+        <text class="lg-auth-main">微信一键授权登录</text>
+        <text class="lg-auth-sub">开启充氧之旅</text>
       </view>
     </view>
 
-    <button class="btn btn--primary btn--block login-btn" bindtap="onWechatLogin">
-      <text class="login-btn-text">微信一键登录</text>
-    </button>
-
-    <view class="agreement">
-      <view class="agree-check {{agreed?'on':''}}" bindtap="toggleAgree">
-        <text wx:if="{{agreed}}">✓</text>
+    <!-- 协议勾选 -->
+    <view class="lg-agree" bindtap="toggleAgree">
+      <view class="lg-agree-box {{agreed ? 'on' : ''}}">
+        <text wx:if="{{agreed}}" class="lg-agree-check">✓</text>
       </view>
-      <text class="aux">我已阅读并同意</text>
-      <text class="link" bindtap="showAgree">《用户协议》</text>
-      <text class="aux">和</text>
-      <text class="link" bindtap="showPrivacy">《隐私政策》</text>
+      <text class="lg-agree-text">登录即代表同意</text>
+      <text class="lg-agree-link" catchtap="showAgree">《用户协议》</text>
+      <text class="lg-agree-text">和</text>
+      <text class="lg-agree-link" catchtap="showPrivacy">《隐私政策》</text>
     </view>
   </view>
-
-  <view class="foot-note">用 30 秒认识你 · 从发现今天的氧气开始</view>
 
 </view>
