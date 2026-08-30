@@ -21,10 +21,16 @@
     <view class="intro-video-close" catchtap="closeIntroVideo">✕</view>
   </view>
 
-  <!-- ========== 1. 顶部问候区 ========== -->
+  <!-- ========== 1. 顶部问候区 + 打卡入口 ========== -->
   <view class="greeting-area">
-    <text class="greeting-title">{{greetMain}}</text>
-    <text class="greeting-sub">{{userName}}，今天是陪伴你的第 {{companionDay}} 天 💚</text>
+    <view class="greeting-main">
+      <text class="greeting-title">{{greetMain}}</text>
+      <text class="greeting-sub">{{userName}}，今天是陪伴你的第 {{companionDay}} 天 💚</text>
+    </view>
+    <view class="checkin-entry" bindtap="goCheckin" hover-class="checkin-entry--press">
+      <text class="checkin-entry-ico">📅</text>
+      <text class="checkin-entry-text">今日打卡</text>
+    </view>
   </view>
 
   <!-- 今日氧气记录入口（点击唤起状态轻选抽屉） -->
@@ -91,9 +97,11 @@
 <!-- 底部三合一黄金闭环：主按钮（面部充氧）+ 次按钮（聊一聊） -->
   <view class="action-area">
     <view class="main-oxygen-btn" bindtap="onMoodSnap" hover-class="btn-hover">
-      <text class="main-btn-icon">✨</text>
-      <text class="main-btn-text">开启今日面部充氧</text>
-      <text class="main-btn-sub">3秒扫脸 · 测测今日心灵波段</text>
+      <view class="main-btn-icon">✨</view>
+      <view class="main-btn-body">
+        <text class="main-btn-text">开启今日面部充氧</text>
+        <text class="main-btn-sub">3秒扫脸 · 测测心灵波段</text>
+      </view>
     </view>
     <view class="chat-link" bindtap="goChat" hover-class="btn-hover">
       <text class="chat-link-ico">💬</text>
