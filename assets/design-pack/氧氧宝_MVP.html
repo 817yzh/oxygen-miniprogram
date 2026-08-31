@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>充氧宝 · 氧感生活</title>
+<style>
+/* ===== 视觉基线 · 清透氧感浅底版 ===== */
+:root{
+  --bg:#f7fffc; --bg2:#fff8eb; --bg3:#f0fbff;
+  --surface:rgba(255,255,255,.86); --surface-strong:#fff;
+  --card:rgba(255,255,255,.86); --card-line:rgba(53,214,184,.18);
+  --shadow:0 14px 34px rgba(31,125,113,.10);
+  --shadow-strong:0 20px 56px rgba(31,125,113,.16);
+  --ink:#12313a; --muted:#668089; --dim:#9ab0b7;
+  --cta:#35D6B8; --cta-text:#063129; --cta-shadow:0 12px 24px rgba(53,214,184,.30);
+  --blue:#5aa7ff; --warm:#ffb84d; --coral:#ff7f73; --soft:#eafbf5;
+  --font:"PingFang SC","Microsoft YaHei",-apple-system,sans-serif;
+  --r-sm:12px; --r-card:20px; --r-hero:28px; --r-capsule:999px;
+  --tab-h:64px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:var(--font);color:var(--ink);overflow:hidden;user-select:none;
+  background:linear-gradient(135deg, #f3fffb 0%, #fffaf0 46%, #eef9ff 100%);
+}
+.app{max-width:430px;margin:0 auto;height:100dvh;display:flex;flex-direction:column;position:relative;overflow:hidden}
+/* 页面容器 */
+.pages{flex:1;position:relative;overflow:hidden}
+.page{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding:0 18px 80px;display:none;-webkit-overflow-scrolling:touch}
+.page.active{display:block;animation:fadeUp .35s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* ===== Tab Bar ===== */
+.tab-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);z-index:50;
+  max-width:430px;width:100%;height:calc(var(--tab-h) + env(safe-area-inset-bottom,0px));
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  display:flex;background:rgba(255,255,255,.92);backdrop-filter:blur(20px);
+  border-top:1px solid rgba(53,214,184,.12)}
+.tab-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:1px;border:0;background:transparent;color:var(--dim);font-size:9.5px;font-weight:500;
+  cursor:pointer;transition:color .2s;font-family:var(--font);padding:6px 0 4px}
+.tab-item svg{width:22px;height:22px;opacity:.45;transition:opacity .2s}
+.tab-item.active{color:var(--cta)}.tab-item.active svg{opacity:1}
+.tab-item:active{opacity:.7}
+
+/* ===== 通用组件 ===== */
+.btn{display:block;width:100%;border:none;border-radius:var(--r-capsule);padding:15px;font-size:15px;
+  font-weight:800;background:var(--cta);color:var(--cta-text);cursor:pointer;
+  transition:transform .12s,box-shadow .2s;font-family:var(--font);letter-spacing:1px;
+  box-shadow:var(--cta-shadow)}
+.btn:active{transform:scale(.97)}
+.btn-sm{padding:10px 20px;width:auto;display:inline-flex;align-items:center;gap:6px;font-size:13px;border-radius:var(--r-capsule)}
+.btn-ghost{background:transparent;color:var(--cta);border:1px solid var(--cta);box-shadow:none}
+.card{background:var(--surface);border:1px solid var(--card-line);border-radius:var(--r-card);
+  padding:16px;margin-bottom:12px;box-shadow:var(--shadow);backdrop-filter:blur(4px)}
+.glass{background:rgba(255,255,255,.72);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.9)}
+.sub{font-size:12.5px;color:var(--muted);line-height:1.7}
+.dim{font-size:11px;color:var(--dim)}
+
+/* ===== 首页 ===== */
+.home-top{padding:18px 0 4px;display:flex;justify-content:space-between;align-items:center}
+.home-top .left h1{font-size:26px;font-weight:800;letter-spacing:-.5px;color:var(--ink)}
+.home-top .left .date{font-size:12px;color:var(--muted);margin-top:2px}
+.avatar{width:40px;height:40px;border-radius:50%;
+  background:linear-gradient(135deg,var(--cta),var(--blue));border:3px solid #fff;box-shadow:0 6px 16px rgba(53,214,184,.25)}
+/* 氧宝舞台 */
+.stage{position:relative;border-radius:var(--r-hero);overflow:hidden;margin-bottom:10px;
+  min-height:200px;
+  background:radial-gradient(circle at 72% 26%,rgba(90,167,255,.18),transparent 34%),
+    linear-gradient(145deg,rgba(255,255,255,.94),rgba(226,250,244,.84));
+  border:1px solid rgba(53,214,184,.20);box-shadow:var(--shadow-strong)}
+.stage-inner{display:grid;grid-template-columns:1fr 130px;gap:8px;align-items:center;padding:18px}
+.stage-left h2{font-size:24px;font-weight:800;line-height:1.15}
+.stage-left h2 .highlight{color:var(--cta)}
+.stage-left p{margin-top:8px;font-size:12px;color:var(--muted);line-height:1.6}
+/* IP形象 */
+.ip-wrap{width:122px;height:168px;justify-self:end;position:relative;filter:drop-shadow(0 18px 24px rgba(53,125,184,.20))}
+.ip-body{position:absolute;inset:24px 12px 8px;border-radius:58px 58px 42px 42px;
+  background:radial-gradient(circle at 34% 18%,rgba(255,255,255,.96),transparent 17%),
+    linear-gradient(160deg,#9eeaff 0%,#5aa7ff 46%,#346fe7 100%);
+  border:4px solid rgba(255,255,255,.86);
+  box-shadow:inset 0 -18px 28px rgba(19,51,148,.22),inset 0 12px 22px rgba(255,255,255,.40)}
+.ip-ear{position:absolute;width:28px;height:40px;top:10px;border-radius:18px 18px 8px 8px;
+  background:linear-gradient(160deg,#d6f9ff,#5aa7ff);border:3px solid rgba(255,255,255,.88)}
+.ip-ear.left{left:24px;transform:rotate(-14deg)}.ip-ear.right{right:24px;transform:rotate(14deg)}
+.ip-eye{position:absolute;width:7px;height:11px;top:58px;border-radius:var(--r-capsule);background:rgba(21,49,63,.85)}
+.ip-eye.left{left:44px}.ip-eye.right{right:44px}
+.ip-core{position:absolute;width:44px;height:44px;left:39px;top:74px;border-radius:50%;
+  background:radial-gradient(circle,#f8fffd 0%,#35d6b8 50%,#18a88d 100%);
+  box-shadow:0 0 26px rgba(53,214,184,.6);transition:all .6s}
+.ip-smile{position:absolute;width:24px;height:11px;left:49px;top:82px;
+  border-bottom:2.5px solid rgba(21,49,63,.8);border-radius:0 0 24px 24px}
+.bubble{position:absolute;border-radius:50%;background:rgba(53,214,184,.2);border:1px solid rgba(255,255,255,.7)}
+.bubble.b1{width:14px;height:14px;right:4px;top:34px}.bubble.b2{width:9px;height:9px;left:6px;top:80px}
+/* 氧值环 */
+.ring-section{display:flex;justify-content:center;padding:4px 0}
+.ring-wrap{width:110px;height:110px;position:relative;margin:0 auto}
+.ring-wrap svg{transform:rotate(-90deg)}
+.ring-val{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-val b{font-size:28px;font-weight:800;background:linear-gradient(135deg,var(--cta),#5aa7ff);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
+.ring-val span{font-size:10px;color:var(--muted);margin-top:0}
+/* 氧宝消息 */
+.yb-bubble{display:flex;align-items:flex-start;gap:8px;margin:4px 0 10px}
+.yb-bubble .dot{width:20px;height:20px;border-radius:50%;flex:none;margin-top:2px;
+  background:linear-gradient(135deg,var(--cta),#5aa7ff);box-shadow:0 0 12px rgba(53,214,184,.3)}
+.yb-bubble .txt{font-size:13px;color:var(--muted);line-height:1.7;flex:1}
+/* 快捷入口卡片 */
+.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px}
+.q-item{display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 10px;
+  border-radius:var(--r-card);background:var(--surface);border:1px solid var(--card-line);
+  box-shadow:var(--shadow);cursor:pointer;transition:all .15s;font-family:var(--font);color:var(--ink)}
+.q-item:active{transform:scale(.96);box-shadow:0 6px 16px rgba(31,125,113,.08)}
+.q-item svg{width:22px;height:22px;color:var(--cta)}
+.q-item .ql{font-size:13px;font-weight:700}.q-item .qs{font-size:10px;color:var(--muted);margin-top:-2px}
+/* 人格预览 */
+.preview-section{margin-top:2px}
+.preview-section .sec-title{font-size:14px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.persona-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.pg{background:var(--surface);border:1px solid var(--card-line);border-radius:var(--r-sm);
+  box-shadow:var(--shadow);padding:10px 4px;text-align:center;cursor:pointer;transition:all .15s}
+.pg:active{transform:scale(.95)}
+.pg .dot{width:18px;height:18px;border-radius:50%;margin:0 auto 4px;box-shadow:0 0 6px currentColor}
+.pg span{font-size:9.5px;color:var(--muted)}
+.pg.cur{border-color:var(--cta);background:rgba(53,214,184,.06)}
+.pg.cur span{color:var(--ink);font-weight:600}
+/* 合规 */
+.legal{font-size:9px;color:var(--dim);text-align:center;padding:10px 2px;line-height:1.6;opacity:.7}
+
+/* ===== 打卡页 ===== */
+.ck-header{text-align:center;padding:18px 0 6px}
+.ck-header h2{font-size:22px;font-weight:800}.ck-header .sub{margin-top:4px}
+.streak{display:flex;gap:6px;justify-content:center;margin:12px 0}
+.streak .s{width:30px;height:30px;border-radius:50%;background:var(--soft);
+  border:1px solid rgba(53,214,184,.15);display:flex;align-items:center;justify-content:center;
+  font-size:11px;color:var(--muted)}
+.streak .s.done{background:var(--cta);color:#fff;border-color:var(--cta);box-shadow:0 4px 10px rgba(53,214,184,.3)}
+.mood-row{display:flex;gap:6px;justify-content:center;margin:14px 0}
+.mood-b{width:54px;height:60px;border-radius:var(--r-card);background:var(--soft);
+  border:1.5px solid transparent;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:2px;cursor:pointer;transition:all .15s;color:var(--muted);font-size:9.5px;
+  font-family:var(--font)}
+.mood-b svg{width:20px;height:20px;color:var(--dim)}
+.mood-b.on{border-color:var(--cta);background:rgba(53,214,184,.1);color:var(--cta)}
+.mood-b.on svg{color:var(--cta)}
+.mood-b:active{transform:scale(.92)}
+.ck-input{width:100%;background:var(--surface);border:1.5px solid rgba(53,214,184,.12);
+  border-radius:var(--r-card);padding:12px 14px;color:var(--ink);font-size:14px;
+  font-family:var(--font);resize:none;height:56px;outline:none;margin:8px 0}
+.ck-input::placeholder{color:var(--dim)}.ck-input:focus{border-color:var(--cta)}
+.ck-result{margin-top:10px;text-align:center}
+.ck-result .val-display{display:inline-flex;flex-direction:column;align-items:center;
+  background:var(--surface);border:1px solid var(--card-line);border-radius:var(--r-card);
+  padding:16px 28px;box-shadow:var(--shadow)}
+.ck-result .val-display .num{font-size:40px;font-weight:800;
+  background:linear-gradient(135deg,var(--cta),#5aa7ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ck-result .val-display .lbl{font-size:12px;color:var(--muted)}
+
+/* ===== 调节页 ===== */
+.breath-section{text-align:center;padding:16px 0}
+.breath-circle{width:220px;height:220px;margin:8px auto;border-radius:50%;position:relative;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  background:conic-gradient(var(--cta) 0deg,rgba(53,214,184,.08) 0deg);
+  box-shadow:0 0 40px rgba(53,214,184,.1);transition:all .3s}
+.breath-circle .bg{position:absolute;inset:5px;border-radius:50%;background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1}
+.breath-circle .bg b{font-size:28px;color:var(--cta);transition:all .3s}
+.breath-circle .bg span{font-size:13px;color:var(--muted);margin-top:2px}
+.breath-steps{display:flex;gap:8px;justify-content:center;margin:14px 0 8px}
+.bs{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;background:var(--soft);border:1.5px solid rgba(53,214,184,.12);color:var(--muted)}
+.bs.cur{border-color:var(--cta);color:var(--cta);background:rgba(53,214,184,.1)}
+.bs.done{background:var(--cta);color:#fff;border-color:var(--cta)}
+/* 树洞 */
+.treehole{background:var(--surface);border:1px solid var(--card-line);border-radius:var(--r-card);
+  padding:16px;box-shadow:var(--shadow);margin-top:6px}
+.th-title{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;margin-bottom:10px}
+.th-msgs{max-height:130px;overflow-y:auto;margin-bottom:10px;display:flex;flex-direction:column;gap:8px}
+.th-msg{max-width:82%;padding:9px 13px;border-radius:16px 16px 16px 4px;font-size:12.5px;line-height:1.7}
+.th-msg.from{background:rgba(53,214,184,.12);align-self:flex-end;border-bottom-right-radius:4px;color:var(--ink)}
+.th-msg.to{background:var(--soft);align-self:flex-start;border-bottom-left-radius:4px;color:var(--muted)}
+.th-input{display:flex;gap:8px}
+.th-input input{flex:1;background:var(--soft);border:1.5px solid rgba(53,214,184,.1);border-radius:var(--r-capsule);
+  padding:10px 14px;color:var(--ink);font-size:13px;outline:none;font-family:var(--font)}
+.th-input input:focus{border-color:var(--cta)}
+
+/* ===== 成长页 ===== */
+.chart-card{padding:18px 14px}
+.chart-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.chart-head .t{font-size:14px;font-weight:700}.chart-head .avg{font-size:11px;color:var(--muted)}
+.chart{display:flex;align-items:flex-end;gap:5px;height:130px;padding:6px 2px}
+.ch-bar{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.ch-bar .col{width:100%;border-radius:4px 4px 0 0;min-height:3px;
+  background:linear-gradient(180deg,var(--cta),rgba(53,214,184,.3));transition:height .6s}
+.ch-bar .day{font-size:9px;color:var(--dim)}.ch-bar .v{font-size:8.5px;color:var(--muted)}
+.badge-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.bi{border:1px solid var(--card-line);border-radius:var(--r-sm);padding:10px 4px;text-align:center;
+  background:var(--surface);box-shadow:var(--shadow)}
+.bi .dot{width:20px;height:20px;border-radius:50%;margin:0 auto 3px;background:var(--soft)}
+.bi span{font-size:9px;color:var(--dim)}
+.bi.locked{opacity:.5}.bi.unlocked{border-color:var(--cta)}
+.bi.unlocked .dot{background:var(--cta);box-shadow:0 0 10px rgba(53,214,184,.4)}
+.challenge-item{display:flex;align-items:center;gap:10px;padding:10px 12px;margin-bottom:6px;
+  background:var(--surface);border:1px solid var(--card-line);border-radius:var(--r-sm);box-shadow:var(--shadow)}
+.challenge-item .ci{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;
+  justify-content:center;font-size:12px;font-weight:800;background:var(--soft);color:var(--muted)}
+.challenge-item .ci.done{background:var(--cta);color:#fff}
+.challenge-item b{font-size:13px}.challenge-item .sub{margin-top:1px;font-size:10.5px}
+
+/* ===== 分享弹窗 ===== */
+.modal{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;
+  background:rgba(18,49,58,.5);backdrop-filter:blur(8px);padding:20px}
+.modal.open{display:flex}
+.modal-inner{width:100%;max-width:320px;border-radius:var(--r-hero);background:var(--surface-strong);
+  box-shadow:var(--shadow-strong);overflow:hidden}
+.modal-head{display:flex;justify-content:space-between;align-items:center;padding:16px 18px 0}
+.modal-head h3{font-size:16px;font-weight:700}.modal-close{width:28px;height:28px;border-radius:50%;
+  border:1px solid var(--card-line);color:var(--muted);display:flex;align-items:center;
+  justify-content:center;cursor:pointer;font-size:14px;background:var(--bg)}
+.share-card{padding:20px 18px;text-align:center}
+.share-card .s-val{font-size:52px;font-weight:800;
+  background:linear-gradient(135deg,var(--cta),#5aa7ff);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
+.share-card .s-sub{font-size:13px;color:var(--muted);margin:4px 0 10px}
+.share-card .s-tag{display:inline-block;padding:5px 16px;border-radius:var(--r-capsule);
+  font-size:12px;font-weight:700;background:var(--cta);color:var(--cta-text)}
+.share-card .s-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:14px;
+  padding-top:12px;border-top:1px solid var(--card-line);font-size:10px;color:var(--dim)}
+.modal-actions{padding:0 18px 18px;display:flex;gap:8px}
+.modal-actions .btn{font-size:13px;padding:13px}
+/* 人格结果 */
+.result-hero{text-align:center;padding:18px 4px}
+.result-hero .orb{width:80px;height:80px;border-radius:50%;margin:0 auto 10px;
+  background:radial-gradient(circle at 34% 30%,#fff3,var(--pc,var(--cta)) 62%,color-mix(in srgb,var(--pc,var(--cta)) 40%,transparent));
+  box-shadow:0 0 50px color-mix(in srgb,var(--pc,var(--cta)) 40%,transparent),inset 0 0 20px rgba(255,255,255,.15)}
+.result-hero h2{font-size:26px;font-weight:800;letter-spacing:2px}
+.result-hero .career-tag{display:inline-block;margin-top:6px;font-size:11px;padding:3px 12px;
+  border-radius:var(--r-capsule);background:var(--soft);color:var(--muted)}
+.result-hero .desc{font-size:13px;color:var(--muted);margin-top:10px;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="pages">
+    <!-- ===== HOME ===== -->
+    <div class="page active" id="p-home">
+      <div class="home-top">
+        <div class="left"><h1>充氧宝</h1><div class="date" id="todayDate"></div></div>
+        <div class="avatar"></div>
+      </div>
+      <!-- 氧宝舞台 -->
+      <div class="stage">
+        <div class="stage-inner">
+          <div class="stage-left">
+            <h2>今天<br><span class="highlight">充氧</span>了吗？</h2>
+            <p>记录心情 · 跟随呼吸 · 发现你的氧系人格</p>
+          </div>
+          <div class="ip-wrap">
+            <div class="ip-ear left"></div><div class="ip-ear right"></div>
+            <div class="ip-body"></div>
+            <div class="ip-eye left"></div><div class="ip-eye right"></div>
+            <div class="ip-core" id="ipCore"></div>
+            <div class="ip-smile"></div>
+            <div class="bubble b1"></div><div class="bubble b2"></div>
+          </div>
+        </div>
+      </div>
+      <!-- 氧值环 -->
+      <div class="ring-section">
+        <div class="ring-wrap">
+          <svg width="110" height="110" viewBox="0 0 110 110">
+            <circle cx="55" cy="55" r="48" fill="none" stroke="rgba(53,214,184,.1)" stroke-width="6"/>
+            <circle id="oxyRing" cx="55" cy="55" r="48" fill="none" stroke="url(#oxyGrad)" stroke-width="6" stroke-linecap="round" stroke-dasharray="301.6" stroke-dashoffset="150.8"/>
+            <defs><linearGradient id="oxyGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#35D6B8"/><stop offset="100%" stop-color="#5AA7FF"/></linearGradient></defs>
+          </svg>
+          <div class="ring-val"><b id="oxyNum">50</b><span>氧值</span></div>
+        </div>
+      </div>
+      <!-- 氧宝消息 -->
+      <div class="yb-bubble">
+        <div class="dot"></div>
+        <div class="txt" id="ybMsg">今天感觉怎么样？来打个卡记录一下吧 🌿</div>
+      </div>
+      <!-- 人格身份条 -->
+      <div id="personaBar" style="display:none"></div>
+      <!-- 快捷入口 -->
+      <div class="quick-grid">
+        <div class="q-item" onclick="go('checkin')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          <span class="ql">今日打卡</span><span class="qs">记录心情与氧值</span>
+        </div>
+        <div class="q-item" onclick="go('regulate')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <span class="ql">呼吸氧舱</span><span class="qs">4-4-6 放松引导</span>
+        </div>
+        <div class="q-item" onclick="startQuiz()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4"/></svg>
+          <span class="ql">氧系人格</span><span class="qs">发现你的氧身份</span>
+        </div>
+        <div class="q-item" onclick="go('grow')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          <span class="ql">成长轨迹</span><span class="qs">周报 · 徽章 · 挑战</span>
+        </div>
+      </div>
+      <!-- 人格图鉴 -->
+      <div class="preview-section">
+        <div class="sec-title">🏷️ 氧系人格图鉴</div>
+        <div class="persona-grid" id="personaGrid"></div>
+      </div>
+      <div class="legal">情绪健康陪伴工具 · 非心理咨询/诊疗服务</div>
+    </div>
+
+    <!-- ===== 测评 ===== -->
+    <div class="page" id="p-quiz">
+      <div style="display:flex;align-items:center;gap:10px;padding:16px 0 6px">
+        <div class="btn btn-ghost btn-sm" onclick="go('home')">← 返回</div>
+        <span style="font-size:17px;font-weight:800">氧系人格测评</span>
+      </div>
+      <div id="quizContent"></div>
+    </div>
+
+    <!-- ===== CHECKIN ===== -->
+    <div class="page" id="p-checkin">
+      <div class="ck-header">
+        <h2>今天你的氧值是多少？</h2>
+        <div class="sub">选择心情，记录属于你的一天</div>
+      </div>
+      <div class="streak" id="streakBar"></div>
+      <div class="card" style="padding:18px">
+        <div class="mood-row">
+          <button class="mood-b" data-mood="energetic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 13s1.5 3 4 3 4-3 4-3"/><circle cx="9" cy="9" r="1.5"/><circle cx="15" cy="9" r="1.5"/></svg><span>元气</span></button>
+          <button class="mood-b" data-mood="calm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12s1.5 2 4 2 4-2 4-2"/><circle cx="9" cy="9" r="1.5"/><circle cx="15" cy="9" r="1.5"/></svg><span>平静</span></button>
+          <button class="mood-b" data-mood="tired"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 13s0-1 3-1 3 1 3 1"/><circle cx="9" cy="9" r="1.5"/><circle cx="15" cy="9" r="1.5"/></svg><span>疲惫</span></button>
+          <button class="mood-b" data-mood="anxious"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 15s.5-2 3-2 3 2 3 2"/><circle cx="9" cy="9" r="1.5"/><circle cx="15" cy="9" r="1.5"/></svg><span>焦虑</span></button>
+          <button class="mood-b" data-mood="sad"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 15s1.5-3 4-3 4 3 4 3"/><circle cx="9" cy="9" r="1.5"/><circle cx="15" cy="9" r="1.5"/></svg><span>低落</span></button>
+        </div>
+        <textarea class="ck-input" id="moodNote" placeholder="说点什么吧…（可选）" maxlength="80"></textarea>
+        <div class="btn" onclick="doCheckin()">记录 · 生成今日氧值</div>
+        <div class="ck-result" id="ckResult"></div>
+      </div>
+      <div class="legal">情绪健康陪伴工具 · 非心理咨询/诊疗服务</div>
+    </div>
+
+    <!-- ===== REGULATE ===== -->
+    <div class="page" id="p-regulate">
+      <div style="display:flex;align-items:center;gap:10px;padding:16px 0 4px">
+        <div class="btn btn-ghost btn-sm" onclick="go('home')">← 返回</div>
+        <span style="font-size:17px;font-weight:800">呼吸氧舱</span>
+      </div>
+      <div class="sub" style="text-align:center;margin:4px 0 8px">4-4-6 呼吸法 · 跟随节奏放松身心</div>
+      <div class="breath-section">
+        <div class="breath-circle" id="breathCircle" onclick="toggleBreath()">
+          <div class="bg"><b id="breathLabel">开始</b><span id="breathSub">点击启动</span></div>
+        </div>
+        <div class="breath-steps" id="breathSteps"><div class="bs cur">吸</div><div class="bs">屏</div><div class="bs">呼</div></div>
+        <div class="btn btn-ghost btn-sm" style="margin:0 auto" id="breathBtn" onclick="toggleBreath()">开始呼吸</div>
+      </div>
+      <div class="treehole">
+        <div class="th-title">🫧 树洞 · 和氧宝聊聊</div>
+        <div class="th-msgs" id="thMsgs"><div class="th-msg to">嗨～今天有什么想和我分享的吗？</div></div>
+        <div class="th-input"><input id="thInput" placeholder="随便说说…" maxlength="100" onkeydown="if(event.key==='Enter')sendTH()"><div class="btn btn-sm" style="width:auto" onclick="sendTH()">发送</div></div>
+      </div>
+      <div class="legal">AI 陪伴 · 非心理咨询/诊疗服务 · 如需帮助请拨打 12356</div>
+    </div>
+
+    <!-- ===== GROW ===== -->
+    <div class="page" id="p-grow">
+      <div style="padding:16px 0 6px"><h2 style="font-size:20px;font-weight:800">📈 成长轨迹</h2></div>
+      <!-- 周趋势 -->
+      <div class="chart-card card"><div class="chart-head"><span class="t">本周氧值趋势</span><span class="avg" id="weekAvg">平均 --</span></div><div class="chart" id="weekChart"></div></div>
+      <!-- 徽章 -->
+      <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span style="font-size:14px;font-weight:700">🏅 氧人格徽章</span><span class="dim" id="badgeCount">0/8</span></div><div class="badge-grid" id="badgeGrid"></div></div>
+      <!-- 挑战 -->
+      <div class="card"><div style="font-size:14px;font-weight:700;margin-bottom:8px">⚡ 7 天挑战</div><div id="challengeList"></div></div>
+      <div class="btn btn-ghost btn-sm" style="margin:0 auto 8px" onclick="showShare()">📤 分享氧值卡</div>
+      <div class="legal">情绪健康陪伴工具 · 非心理咨询/诊疗服务</div>
+    </div>
+  </div>
+
+  <!-- ===== Share Modal ===== -->
+  <div class="modal" id="shareModal"><div class="modal-inner">
+    <div class="modal-head"><h3>分享氧值卡</h3><div class="modal-close" onclick="closeShare()">✕</div></div>
+    <div class="share-card">
+      <div style="font-size:11px;color:var(--dim);letter-spacing:2px">今日氧值</div>
+      <div class="s-val" id="shareVal">--</div>
+      <div class="s-sub" id="shareMood">--</div>
+      <div class="s-tag" id="shareTag">氧系生活</div>
+      <div class="s-bottom"><span>充氧宝 · 氧感生活</span><span>💚</span></div>
+    </div>
+    <div class="modal-actions"><div class="btn" onclick="closeShare()">保存图片</div></div>
+  </div></div>
+
+  <!-- ===== Tab Bar ===== -->
+  <div class="tab-bar">
+    <button class="tab-item active" data-tab="home" onclick="go('home')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg><span>首页</span>
+    </button>
+    <button class="tab-item" data-tab="checkin" onclick="go('checkin')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg><span>打卡</span>
+    </button>
+    <button class="tab-item" data-tab="regulate" onclick="go('regulate')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span>调节</span>
+    </button>
+    <button class="tab-item" data-tab="grow" onclick="go('grow')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg><span>成长</span>
+    </button>
+  </div>
+</div>
+
+<script>
+// ===== Data =====
+const P = {
+  'oxy-yong':{n:'氧涌',c:'#35D6B8',r:'高原氧王',d:'满氧状态，能量充沛的你'},
+  'oxy-yun':{n:'氧蕴',c:'#5AA7FF',r:'深海潜行者',d:'蓄氧深厚，沉稳有力的你'},
+  'oxy-xi':{n:'氧曦',c:'#FFB84D',r:'晨光唤醒师',d:'微氧初升，温柔细腻的你'},
+  'oxy-mi':{n:'氧谧',c:'#A78BFA',r:'静谧疗愈师',d:'安静修复，内敛自愈的你'},
+  'oxy-ran':{n:'氧燃',c:'#FF6B6B',r:'火焰挑战者',d:'行动充氧，热烈向前的你'},
+  'oxy-yu':{n:'氧语',c:'#8B95A7',r:'云端观察者',d:'低氧低语，善于倾听的你'},
+  'oxy-ju':{n:'氧聚',c:'#FFD166',r:'社交光合者',d:'社交补氧，温暖聚光的你'},
+  'oxy-ban':{n:'氧伴',c:'#7BC96F',r:'大地守护者',d:'稳定陪伴，让人安心的你'}
+};
+const MM = {energetic:{v:85,l:'元气满满'},calm:{v:70,l:'平静安稳'},tired:{v:45,l:'有点疲惫'},anxious:{v:35,l:'有些焦虑'},sad:{v:25,l:'心情低落'}};
+const MC = {energetic:'#35D6B8',calm:'#5AA7FF',tired:'#8B95A7',anxious:'#FFB84D',sad:'#A78BFA'};
+const WD = ['日','一','二','三','四','五','六'];
+const QZ = [
+  {q:'周末终于到了，你更想？',a:['约朋友去户外探险','在家安静看书听音乐','尝试一项新运动','整理房间断舍离']},
+  {q:'朋友遇到困难，你会？',a:['直接帮忙解决','默默陪着倾听','帮忙出主意','介绍能帮到他的人']},
+  {q:'哪种环境让你最放松？',a:['高山雪原','海边日落','森林小径','城市咖啡馆']},
+  {q:'你觉得自己更像？',a:['一团燃烧的火','一汪宁静的湖','一阵自由的风','一片厚实的土地']},
+  {q:'面对压力，你通常？',a:['立刻行动解决问题','先放空再处理','找人倾诉','运动出汗']},
+  {q:'旅行时你更在意？',a:['刺激的体验','宁静的氛围','当地的文化','舒适的环境']},
+  {q:'你更擅长什么？',a:['带领大家','体谅大家','影响大家','支持大家']},
+  {q:'周末早晨醒来，你最先想到的是？',a:['今天要做什么有趣的事','再躺一会儿放空','约朋友见面','计划好今天的所有安排']},
+];
+
+let ps = {type:null,name:null,career:null,at:null};
+let sm = null, br = false, bt = null;
+let ad = loadData();
+
+function loadData(){
+  try{const d=JSON.parse(localStorage.getItem('cyb_data'));if(d){if(d.ps)ps=d.ps;return d}}catch(e){}
+  return {ck:{},ch:{}};
+}
+function sd(){ad.ps=ps;localStorage.setItem('cyb_data',JSON.stringify(ad))}
+function init(){
+  document.getElementById('todayDate').textContent=new Date().toLocaleDateString('zh-CN',{month:'long',day:'numeric'});
+  renderPG();renderSt();updateCore();if(ps.type)showPBar();renderWC();renderBG();renderCL()
+}
+function go(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('p-'+id).classList.add('active');
+  document.querySelectorAll('.tab-item').forEach(t=>t.classList.toggle('active',t.dataset.tab===id));
+  if(id==='grow'){renderWC();renderBG();renderCL()}
+  if(id==='home'){renderSt();updateCore()}
+}
+function updateCore(){
+  const today = new Date().toISOString().slice(0,10);
+  const ck = ad.ck[today];
+  const oxy = ck?ck.o:50;
+  document.getElementById('oxyNum').textContent=oxy;
+  const circ = 301.6; const off = circ - (oxy/100)*circ;
+  document.getElementById('oxyRing').setAttribute('stroke-dashoffset',off);
+  const core = document.getElementById('ipCore');
+  if(ck&&ck.m){
+    core.style.background=`radial-gradient(circle,#f8fffd 0%,${MC[ck.m]} 50%,${MC[ck.m]}cc 100%)`;
+    core.style.boxShadow=`0 0 26px ${MC[ck.m]}99`;
+  }else{core.style.background='';core.style.boxShadow=''} // reset to default
+  const msgEl = document.getElementById('ybMsg');
+  if(!ck)msgEl.textContent='今天还没打卡呢～来记录一下心情吧 🌿';
+  else{
+    const msgs={energetic:'状态满满！今天也是元气的一天 ✨',calm:'心情平静安稳，这样的状态真好 ☁️',tired:'有点疲惫的话，试试呼吸调节放松一下吧 🌬️',anxious:'别担心，来做个深呼吸，我陪着你 💚',sad:'抱抱你，让氧宝陪你一会儿吧 🌱'};
+    msgEl.textContent=msgs[ck.m]||'今天感觉怎么样？';
+  }
+}
+// ===== Persona =====
+function renderPG(){
+  const g=document.getElementById('personaGrid');g.innerHTML='';
+  Object.entries(P).forEach(([k,v])=>{
+    const cur=ps.type===k;
+    g.innerHTML+=`<div class="pg${cur?' cur':''}" onclick="${cur?'':'startQuiz()'}">
+      <div class="dot" style="color:${v.c}"></div><span>${cur?v.n:'???'}</span></div>`;
+  });
+}
+function showPBar(){
+  const p=ps;if(!p.type)return;
+  const pb=document.getElementById('personaBar');pb.style.display='block';
+  pb.innerHTML=`<div class="card" style="display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer" onclick="go('home')">
+    <div style="width:18px;height:18px;border-radius:50%;background:${P[p.type].c};box-shadow:0 0 8px ${P[p.type].c}44"></div>
+    <span style="font-size:13px;font-weight:600">${p.name}</span><span style="font-size:11px;color:var(--muted)">· ${p.career}</span>
+    <span style="margin-left:auto;color:var(--muted);font-size:10px">▼</span></div>`;
+  renderPG();
+}
+
+// ===== Quiz =====
+function startQuiz(){
+  go('quiz');let qi=0;
+  const c=document.getElementById('quizContent');
+  function rQ(){
+    if(qi>=QZ.length){showR();return;}
+    const q=QZ[qi];
+    c.innerHTML=`<div class="card" style="padding:20px"><div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+      <div style="flex:1;height:4px;background:rgba(53,214,184,.12);border-radius:999px;overflow:hidden">
+      <div style="height:100%;width:${(qi/QZ.length)*100}%;background:linear-gradient(90deg,var(--cta),#5aa7ff);border-radius:999px;transition:width .3s"></div></div>
+      <span style="font-size:11px;color:var(--muted)">${qi+1}/${QZ.length}</span></div>
+      <div style="font-size:10px;color:var(--cta);letter-spacing:2px;margin-bottom:6px">第 ${qi+1} 题</div>
+      <h3 style="font-size:17px;line-height:1.6;margin-bottom:16px;font-weight:700">${q.q}</h3>
+      ${q.a.map((a,i)=>`<button class="btn btn-ghost" style="margin-bottom:8px;text-align:left;font-weight:500;font-size:14px;padding:12px 16px" onclick="aq(${i})">${a}</button>`).join('')}</div>`;
+  }
+  window.aq=function(i){qi++;rQ()};
+  function showR(){
+    const idx=Math.floor(Math.random()*Object.keys(P).length);
+    const k=Object.keys(P)[idx];const v=P[k];
+    ps={type:k,name:v.n,career:v.r,at:new Date().toISOString()};sd();showPBar();
+    c.innerHTML=`<div class="result-hero"><div class="orb" style="--pc:${v.c}"></div>
+      <h2 style="color:${v.c}">${v.n}</h2><div class="career-tag">${v.r}</div>
+      <div class="desc">${v.d}</div></div>
+      <div class="card"><div class="btn" onclick="go('home')">回到首页</div>
+      <div class="btn btn-ghost btn-sm" style="margin:8px auto 0" onclick="go('checkin')">开始今日打卡 →</div></div>
+      <div class="legal">情绪健康陪伴工具 · 非心理咨询/诊疗服务</div>`;
+  }
+  rQ();
+}
+
+// ===== Checkin =====
+function pickMood(el){
+  document.querySelectorAll('.mood-b').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');sm=el.dataset.mood;
+}
+document.querySelectorAll('.mood-b').forEach(b=>b.addEventListener('click',function(){pickMood(this)}));
+
+function doCheckin(){
+  if(!sm){document.getElementById('ckResult').innerHTML='<span style="color:var(--coral);font-size:13px">请选择一个心情～</span>';return;}
+  const m=MM[sm];const note=document.getElementById('moodNote').value.trim();
+  const today=new Date().toISOString().slice(0,10);
+  const streak=getSt();
+  const oxy=Math.min(m.v+Math.floor(Math.random()*8)+Math.min(streak*2,10),100);
+  ad.ck[today]={m:sm,o:oxy,note,date:today};sd();
+  document.getElementById('ckResult').innerHTML=`<div class="val-display"><div class="lbl">今日氧值</div><div class="num">${oxy}</div>
+    <div style="font-size:12px;color:var(--muted);margin-top:4px">${m.l}${streak>0?' · 连击 +'+Math.min(streak*2,10):''}</div></div>`;
+  updateCore();renderSt();
+  setTimeout(()=>document.getElementById('ckResult').innerHTML='',3000);
+}
+function getSt(){
+  const ds=Object.keys(ad.ck).sort().reverse();if(!ds.length)return 0;
+  let s=0;const d=new Date();
+  for(let i=0;i<ds.length;i++){
+    const e=new Date(d);e.setDate(e.getDate()-i);
+    if(ds.includes(e.toISOString().slice(0,10)))s++;else break;
+  }return s;
+}
+function renderSt(){
+  const s=getSt();const bar=document.getElementById('streakBar');bar.innerHTML='';
+  for(let i=0;i<7;i++){
+    const d=new Date();d.setDate(d.getDate()-i);
+    const k=d.toISOString().slice(0,10);const done=ad.ck[k];
+    bar.innerHTML+=`<div class="s${done?' done':''}">${done?'✓':i+1}</div>`;
+  }
+}
+// ===== Regulate =====
+function toggleBreath(){
+  br=!br;document.getElementById('breathBtn').textContent=br?'停止':'开始呼吸';
+  if(br)startB();else{clearTimeout(bt);resetB()}
+}
+function startB(){
+  const sts=[{l:'吸',t:4},{l:'屏',t:4},{l:'呼',t:6}];let si=0;
+  function tk(){
+    if(!br)return;const s=sts[si];
+    document.getElementById('breathLabel').textContent=s.l;
+    document.getElementById('breathSub').textContent=s.t+'秒';
+    document.querySelectorAll('.bs').forEach((b,i)=>b.className=`bs${i===si?' cur':''}${i<si?' done':''}`);
+    const cir=document.getElementById('breathCircle');
+    cir.style.transition=`all ${s.t}s cubic-bezier(.4,0,.2,1)`;
+    cir.style.transform=si===0?'scale(1.06)':si===2?'scale(.94)':'scale(1)';
+    bt=setTimeout(()=>{si=(si+1)%3;tk()},s.t*1000);
+  }
+  tk();
+}
+function resetB(){
+  document.getElementById('breathLabel').textContent='开始';
+  document.getElementById('breathSub').textContent='点击启动';
+  document.querySelectorAll('.bs').forEach(b=>b.className='bs');
+  document.querySelector('.bs').classList.add('cur');
+  document.getElementById('breathCircle').style.transform='scale(1)';
+}
+// ===== Treehole =====
+function sendTH(){
+  const inp=document.getElementById('thInput');const msg=inp.value.trim();
+  if(!msg)return;
+  const msgs=document.getElementById('thMsgs');
+  msgs.innerHTML+=`<div class="th-msg from">${msg}</div>`;inp.value='';
+  const R=['嗯，我在听你说～','感受到你的心情了 🌿','谢谢你愿意跟我分享 💚','试试深呼吸一下？会好很多的','我在这里陪着你～','今天的你已经很棒了！','让氧气充满身体，放松一下吧 ✨'];
+  setTimeout(()=>{
+    msgs.innerHTML+=`<div class="th-msg to">${R[Math.floor(Math.random()*R.length)]}</div>`;
+    msgs.scrollTop=msgs.scrollHeight;
+  },600+Math.random()*400);
+  msgs.scrollTop=msgs.scrollHeight;
+}
+// ===== Grow =====
+function renderWC(){
+  const ch=document.getElementById('weekChart');ch.innerHTML='';
+  const vs=[];let sum=0,cnt=0;
+  for(let i=6;i>=0;i--){
+    const d=new Date();d.setDate(d.getDate()-i);const k=d.toISOString().slice(0,10);
+    const ck=ad.ck[k];const v=ck?ck.o:0;
+    if(v>0){sum+=v;cnt++}
+    vs.push(v);const h=Math.max(v/100*112,3);
+    ch.innerHTML+=`<div class="ch-bar"><div class="col" style="height:${h}px;opacity:${v>0?1:.12}"></div><span class="v">${v>0?v:''}</span><span class="day">${WD[d.getDay()]}</span></div>`;
+  }
+  document.getElementById('weekAvg').textContent=cnt?'平均 '+Math.round(sum/cnt):'暂无数据';
+}
+function renderBG(){
+  const g=document.getElementById('badgeGrid');g.innerHTML='';let cnt=0;
+  Object.entries(P).forEach(([k,v])=>{
+    const u=ps.type===k;if(u)cnt++;
+    g.innerHTML+=`<div class="bi${u?' unlocked':' locked'}"><div class="dot" style="${u?`background:${v.c};box-shadow:0 0 10px ${v.c}44`:''}"></div><span>${u?v.n:'???'}</span></div>`;
+  });
+  document.getElementById('badgeCount').textContent=cnt+'/8';
+}
+function renderCL(){
+  const cl=document.getElementById('challengeList');cl.innerHTML='';
+  const days=['第1天 · 记录心情','第2天 · 深呼吸一次','第3天 · 户外走走','第4天 · 对镜子微笑','第5天 · 给朋友发消息','第6天 · 早睡半小时','第7天 · 回顾这一周'];
+  const st=getSt();
+  days.forEach((d,i)=>{
+    const done=st>i;
+    cl.innerHTML+=`<div class="challenge-item"><div class="ci${done?' done':''}">${done?'✓':i+1}</div>
+      <div><b>${d.split('·')[0].trim()}</b><div class="sub">${d.split('·')[1]||'完成挑战'}</div></div></div>`;
+  });
+}
+// ===== Share =====
+function showShare(){
+  const today=new Date().toISOString().slice(0,10);const ck=ad.ck[today];
+  document.getElementById('shareVal').textContent=ck?ck.o:'--';
+  document.getElementById('shareMood').textContent=ck?MM[ck.m]?.l||'':'今天还没打卡';
+  document.getElementById('shareTag').textContent=ps.name?`${ps.name} · ${ps.career}`:'氧系生活';
+  document.getElementById('shareModal').classList.add('open');
+}
+function closeShare(){document.getElementById('shareModal').classList.remove('open')}
+init();
+</script>
+</body>
+</html>
