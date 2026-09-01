@@ -34,8 +34,8 @@
 <!-- 赛事名 -->
 <text x="172" y="52" font-size="23" fill="#C9E9DE">北京大学生"超级个体"（OPC）创业大赛 · 2026</text>
 <!-- 右上: 03 角标 + CASE 19 大字(最显著元素) -->
-<rect x="850" y="28" width="54" height="30" rx="15" fill="#FFB86B"/>
-<text x="877" y="49" font-size="20" font-weight="bold" fill="#16362E" text-anchor="middle">03</text>
+<rect x="760" y="28" width="54" height="30" rx="15" fill="#FFB86B"/>
+<text x="787" y="49" font-size="20" font-weight="bold" fill="#16362E" text-anchor="middle">03</text>
 <text x="1060" y="60" font-size="42" font-weight="bold" fill="#7BDCD0" text-anchor="end" letter-spacing="1">CASE 19</text>
 <line x1="60" y1="66" x2="1040" y2="66" stroke="#2EC4B6" stroke-width="1" opacity="0.35"/>
 <!-- 主标题 + 副标题 -->
