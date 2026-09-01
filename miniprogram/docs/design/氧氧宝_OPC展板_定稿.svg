@@ -1,0 +1,213 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="1100mm" height="1600mm" viewBox="0 0 1100 1600" font-family="Microsoft YaHei, PingFang SC, sans-serif">
+<defs>
+  <linearGradient id="gTop" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#16362E"/><stop offset="1" stop-color="#1E4D3F"/>
+  </linearGradient>
+  <linearGradient id="gBot" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#1E4D3F"/><stop offset="1" stop-color="#16362E"/>
+  </linearGradient>
+  <linearGradient id="gMint" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#2EC4B6"/><stop offset="1" stop-color="#209E92"/>
+  </linearGradient>
+  <filter id="cardShadow" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#16362E" flood-opacity="0.08"/>
+  </filter>
+  <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+    <feDropShadow dx="0" dy="6" stdDeviation="12" flood-color="#16362E" flood-opacity="0.10"/>
+  </filter>
+  <clipPath id="avatarClip"><circle cx="190" cy="346" r="72"/></clipPath>
+  <clipPath id="ipClip"><circle cx="92" cy="84" r="58"/></clipPath>
+</defs>
+
+<rect width="1100" height="1600" fill="#EBF5F1"/>
+
+<rect x="0" y="0" width="1100" height="240" fill="url(#gTop)"/>
+<circle cx="1030" cy="26" r="58" fill="#2EC4B6" opacity="0.10"/>
+<circle cx="985" cy="212" r="88" fill="#7CCFEA" opacity="0.08"/>
+<circle cx="62" cy="212" r="68" fill="#FFB86B" opacity="0.08"/>
+<circle cx="182" cy="18" r="34" fill="#7BDCD0" opacity="0.10"/>
+<!-- IP 圆形徽章 -->
+<image href="assets/ip-badge.png" x="34" y="26" width="116" height="116"
+       clip-path="url(#ipClip)" preserveAspectRatio="xMidYMid slice"/>
+<circle cx="92" cy="84" r="58" fill="none" stroke="#7BDCD0" stroke-width="2.5" opacity="0.7"/>
+<!-- 赛事名 -->
+<text x="172" y="52" font-size="23" fill="#C9E9DE">北京大学生"超级个体"（OPC）创业大赛 · 2026</text>
+<!-- 右上: 03 角标 + CASE 19 大字(最显著元素) -->
+<rect x="850" y="28" width="54" height="30" rx="15" fill="#FFB86B"/>
+<text x="877" y="49" font-size="20" font-weight="bold" fill="#16362E" text-anchor="middle">03</text>
+<text x="1060" y="60" font-size="42" font-weight="bold" fill="#7BDCD0" text-anchor="end" letter-spacing="1">CASE 19</text>
+<line x1="60" y1="66" x2="1040" y2="66" stroke="#2EC4B6" stroke-width="1" opacity="0.35"/>
+<!-- 主标题 + 副标题 -->
+<text x="550" y="128" font-size="70" font-weight="bold" fill="#FFFFFF"
+      text-anchor="middle" letter-spacing="5">氧氧宝小程序应用</text>
+<text x="550" y="168" font-size="28" fill="#7BDCD0" text-anchor="middle" letter-spacing="2">氧气情绪能量管理 · AI 陪伴小程序（产品 IP：氧氧）</text>
+<!-- 价值主张胶囊(两行) -->
+<rect x="100" y="182" width="900" height="50" rx="25" fill="url(#gMint)" filter="url(#cardShadow)"/>
+<text x="550" y="203" font-size="19" fill="#FFFFFF" text-anchor="middle">面向高原、运动、脑疲劳及银发场景用户，</text>
+<text x="550" y="225" font-size="19" font-weight="600" fill="#FFFFFF" text-anchor="middle">通过硬件连接与 AI 陪伴，感知双氧状态，实现智能化健康陪伴</text>
+
+<g>
+  <rect x="40" y="258" width="6" height="30" rx="3" fill="#2EC4B6"/>
+  <text x="56" y="282" font-size="28" font-weight="bold" fill="#16362E">项目发起人</text>
+  <text x="1060" y="282" font-size="19" fill="#5A7E72" text-anchor="end">人机协同 · 超级个体（人 + AI）</text>
+  <line x1="205" y1="275" x2="1060" y2="275" stroke="#BFDCD2" stroke-width="1.5"/>
+</g>
+
+<!-- 左侧: 人物卡 (含证件照/身份/人机协同) -->
+<g filter="url(#cardShadow)">
+  <rect x="40" y="296" width="300" height="292" rx="24" fill="#FFFFFF"/>
+  <image href="assets/portrait_lobster.png" x="118" y="274" width="144" height="144"
+         clip-path="url(#avatarClip)" preserveAspectRatio="xMidYMid slice"/>
+  <circle cx="190" cy="346" r="72" fill="none" stroke="#2EC4B6" stroke-width="3"/>
+  <text x="190" y="452" font-size="32" font-weight="bold" fill="#16362E" text-anchor="middle">杨子涵</text>
+  <text x="190" y="486" font-size="20" fill="#5A7E72" text-anchor="middle">北京工商大学</text>
+  <text x="190" y="512" font-size="20" fill="#5A7E72" text-anchor="middle">商学院 · 供应链管理</text>
+  <rect x="64" y="528" width="252" height="30" rx="15" fill="#E3F6F2" stroke="#2EC4B6" stroke-width="1.2"/>
+  <text x="190" y="549" font-size="17" font-weight="600" fill="#209E92" text-anchor="middle">产品负责人 · 需求/设计/验收</text>
+  <text x="190" y="581" font-size="15" fill="#5A7E72" text-anchor="middle">人：需求定义·场景设计·决策验收 ｜ AI：架构·代码·视觉优化</text>
+</g>
+
+<!-- 右侧: 项目背景 -->
+<g filter="url(#cardShadow)">
+  <rect x="366" y="296" width="694" height="112" rx="20" fill="#FFFFFF"/>
+  <text x="392" y="328" font-size="22" font-weight="bold" fill="#16362E"><tspan fill="#FFB86B">●</tspan> 项目背景</text>
+  <text x="392" y="356" font-size="16" fill="#334455">珠海横琴我可爱科技主营永磁体氧气富集富氧设备，覆盖高原/运动/脑疲劳/银发四类场景；</text>
+  <text x="392" y="380" font-size="16" fill="#334455">氧氧宝作为充氧宝硬件生态的软件智能层，通过 AI 交互连接用户感受与设备数据，</text>
+  <text x="392" y="404" font-size="16" fill="#334455">探索从"补氧设备"到"智能陪伴"的升级。</text>
+</g>
+
+<!-- 右侧: 目标用户 · 四大应用场景 -->
+<g filter="url(#cardShadow)">
+  <rect x="366" y="420" width="694" height="80" rx="20" fill="#FFFFFF"/>
+  <text x="392" y="452" font-size="22" font-weight="bold" fill="#16362E"><tspan fill="#7CCFEA">●</tspan> 目标用户 · 四大应用场景（企业原始场景）</text>
+  <rect x="392" y="462" width="330" height="24" rx="12" fill="#EAF7FE"/>
+  <text x="557" y="479" font-size="14" fill="#1674C8" text-anchor="middle">① 高原 · 随身补氧安心陪伴</text>
+  <rect x="732" y="462" width="316" height="24" rx="12" fill="#EAF7FE"/>
+  <text x="890" y="479" font-size="14" fill="#1674C8" text-anchor="middle">② 运动 · 高强度耗氧恢复</text>
+  <rect x="392" y="490" width="330" height="24" rx="12" fill="#EAF7FE"/>
+  <text x="557" y="507" font-size="14" fill="#1674C8" text-anchor="middle">③ 脑疲劳 · 用脑过度提神舒缓</text>
+  <rect x="732" y="490" width="316" height="24" rx="12" fill="#EAF7FE"/>
+  <text x="890" y="507" font-size="14" fill="#1674C8" text-anchor="middle">④ 银发 · 居家康养健康陪伴</text>
+</g>
+
+<!-- 右侧: 核心问题·痛点 -->
+<g filter="url(#cardShadow)">
+  <rect x="366" y="512" width="694" height="76" rx="20" fill="#FFFFFF"/>
+  <text x="392" y="540" font-size="22" font-weight="bold" fill="#16362E"><tspan fill="#FFB86B">●</tspan> 核心问题 · 痛点</text>
+  <text x="392" y="564" font-size="15" fill="#334455">① 补氧设备缺数字化入口 → 需求难持续触达，使用频次与连接不足</text>
+  <text x="392" y="588" font-size="15" fill="#334455">② 情绪易忽视、硬件缺陪伴触点 → 难以建立情感连接与长期粘性</text>
+</g>
+
+<g>
+  <rect x="40" y="606" width="6" height="30" rx="3" fill="#2EC4B6"/>
+  <text x="56" y="630" font-size="28" font-weight="bold" fill="#16362E">方案核心 · 双氧体验 × AI 协同工作流</text>
+  <text x="1060" y="632" font-size="19" fill="#5A7E72" text-anchor="end">产品逻辑 × 实现逻辑（核心成果：可运行业务闭环 Demo）</text>
+  <line x1="56" y1="646" x2="1060" y2="646" stroke="#BFDCD2" stroke-width="1.5"/>
+</g>
+
+<!-- 左图卡: 双氧体验框架·产品逻辑 -->
+<g filter="url(#softShadow)">
+  <rect x="40" y="658" width="500" height="452" rx="24" fill="#FFFFFF"/>
+  <rect x="40" y="658" width="500" height="50" rx="24" fill="#16362E"/>
+  <rect x="40" y="690" width="500" height="18" fill="#16362E"/>
+  <text x="60" y="690" font-size="24" font-weight="bold" fill="#FFFFFF">双氧体验框架 · 产品逻辑</text>
+  <image href="assets/double-oxygen.png" x="160" y="720" width="260" height="358"
+         preserveAspectRatio="xMidYMid meet"/>
+  <text x="290" y="1102" font-size="16" fill="#5A7E72" text-anchor="middle">图 1 · 双氧体验框架：身体氧 × 心灵氧 → AI 融合陪伴</text>
+</g>
+
+<!-- 右图卡: AI协同工作流·实现逻辑 -->
+<g filter="url(#softShadow)">
+  <rect x="560" y="658" width="500" height="452" rx="24" fill="#FFFFFF"/>
+  <rect x="560" y="658" width="500" height="50" rx="24" fill="#16362E"/>
+  <rect x="560" y="690" width="500" height="18" fill="#16362E"/>
+  <text x="580" y="690" font-size="24" font-weight="bold" fill="#FFFFFF">AI 协同工作流 · 实现逻辑</text>
+  <image href="assets/ai-workflow.png" x="640" y="720" width="340" height="372"
+         preserveAspectRatio="xMidYMid meet"/>
+  <text x="810" y="1102" font-size="16" fill="#5A7E72" text-anchor="middle">图 2 · AI 协同工作流：输入 → 理解 → 双氧分析 → 反馈 → 成长 → 安全兜底</text>
+</g>
+
+<!-- 底部: 三大核心能力 -->
+<g filter="url(#cardShadow)">
+  <rect x="40" y="1124" width="1020" height="44" rx="22" fill="#FFFFFF"/>
+  <text x="70" y="1152" font-size="21" font-weight="bold" fill="#16362E">核心能力</text>
+  <rect x="190" y="1126" width="282" height="40" rx="20" fill="#E3F6F2"/>
+  <text x="331" y="1152" font-size="16" fill="#209E92" text-anchor="middle" font-weight="600">双氧感知模型 · 身体 × 心灵</text>
+  <rect x="484" y="1126" width="300" height="40" rx="20" fill="#EAF7FE"/>
+  <text x="634" y="1152" font-size="16" fill="#1674C8" text-anchor="middle" font-weight="600">AI 陪伴交互 · 豆包真AI验证</text>
+  <rect x="796" y="1126" width="252" height="40" rx="20" fill="#FEF3E6"/>
+  <text x="922" y="1152" font-size="16" fill="#C77E2E" text-anchor="middle" font-weight="600">场景化方案 · 四场景推荐</text>
+</g>
+
+<g>
+  <rect x="40" y="1184" width="6" height="30" rx="3" fill="#2EC4B6"/>
+  <text x="56" y="1208" font-size="28" font-weight="bold" fill="#16362E">成果与验证 · 已交付 × 验证证据 × 创新点</text>
+  <line x1="56" y1="1222" x2="1060" y2="1222" stroke="#BFDCD2" stroke-width="1.5"/>
+</g>
+
+<!-- 卡1: 已交付成果 -->
+<g filter="url(#cardShadow)">
+  <rect x="40" y="1240" width="333" height="196" rx="20" fill="#FFFFFF"/>
+  <rect x="40" y="1240" width="333" height="8" rx="4" fill="#FFB86B"/>
+  <text x="60" y="1280" font-size="23" font-weight="bold" fill="#16362E">已交付成果</text>
+  <text x="60" y="1314" font-size="17" fill="#334455">· 微信小程序 V1.0.0 · 24 页面</text>
+  <text x="75" y="1338" font-size="14" fill="#5A7E72">（主包 17 + 分包 7 · 已交付原型）</text>
+  <text x="60" y="1366" font-size="17" fill="#334455">· AI 聊天陪伴 · 豆包大模型接入</text>
+  <text x="75" y="1390" font-size="14" fill="#5A7E72">真实对话验证通过（已验证 · 真AI）</text>
+  <text x="60" y="1418" font-size="17" fill="#334455">· 后端接口 · 22 接口 + 29 项冒烟</text>
+  <text x="75" y="1440" font-size="14" fill="#5A7E72">核心流程测试通过（已交付原型）</text>
+</g>
+
+<!-- 卡2: 验证证据 -->
+<g filter="url(#cardShadow)">
+  <rect x="393" y="1240" width="314" height="196" rx="20" fill="#FFFFFF"/>
+  <rect x="393" y="1240" width="314" height="8" rx="4" fill="#7CCFEA"/>
+  <text x="413" y="1280" font-size="23" font-weight="bold" fill="#16362E">验证证据</text>
+  <text x="413" y="1314" font-size="17" fill="#334455">· 豆包真实大模型 · H5 实测</text>
+  <text x="428" y="1338" font-size="14" fill="#5A7E72">真实对话调用通过（已验证）</text>
+  <text x="413" y="1366" font-size="17" fill="#334455">· 后端接口与核心流程测试</text>
+  <text x="428" y="1390" font-size="14" fill="#5A7E72">22 接口 · 29 项冒烟测试（已验证）</text>
+  <text x="413" y="1418" font-size="17" fill="#334455">· 核心业务流程测试</text>
+  <text x="428" y="1440" font-size="14" fill="#5A7E72">5 组完整流程测试（已验证）</text>
+</g>
+
+<!-- 卡3: 创新点与差异 -->
+<g filter="url(#cardShadow)">
+  <rect x="727" y="1240" width="333" height="196" rx="20" fill="#FFFFFF"/>
+  <rect x="727" y="1240" width="333" height="8" rx="4" fill="#4CAF7D"/>
+  <text x="747" y="1280" font-size="23" font-weight="bold" fill="#16362E">创新点与差异</text>
+  <text x="747" y="1314" font-size="17" fill="#334455">01 从"补氧设备"升级为</text>
+  <text x="762" y="1338" font-size="14" fill="#5A7E72">"氧健康智能陪伴"</text>
+  <text x="747" y="1366" font-size="17" fill="#334455">02 融合身体氧 + 心灵氧</text>
+  <text x="762" y="1390" font-size="14" fill="#5A7E72">双维度体验</text>
+  <text x="747" y="1418" font-size="17" fill="#334455">03 以 IP 成长增强长期</text>
+  <text x="762" y="1440" font-size="14" fill="#5A7E72">用户连接与陪伴粘性</text>
+</g>
+
+<!-- 当前阶段横幅 -->
+<rect x="40" y="1450" width="1020" height="0" fill="none"/>
+
+<rect x="0" y="1460" width="1100" height="140" fill="url(#gBot)"/>
+<circle cx="1060" cy="1500" r="64" fill="#7CCFEA" opacity="0.06"/>
+<circle cx="30" cy="1580" r="56" fill="#FFB86B" opacity="0.06"/>
+
+<text x="60" y="1488" font-size="20" font-weight="bold" fill="#FFFFFF">实施路径</text>
+<g>
+  <rect x="150" y="1468" width="268" height="40" rx="20" fill="#1E4D3F" stroke="#2EC4B6" stroke-width="1.5"/>
+  <text x="284" y="1493" font-size="15" fill="#C9E9DE" text-anchor="middle">① 目前完成：V2 原型+测试+真AI验证</text>
+  <text x="438" y="1490" font-size="22" fill="#7BDCD0" text-anchor="middle">→</text>
+  <rect x="462" y="1468" width="268" height="40" rx="20" fill="#1E4D3F" stroke="#2EC4B6" stroke-width="1.5"/>
+  <text x="596" y="1493" font-size="15" fill="#C9E9DE" text-anchor="middle">② 下一步：硬件联动+企业验收+试用</text>
+  <text x="750" y="1490" font-size="22" fill="#7BDCD0" text-anchor="middle">→</text>
+  <rect x="774" y="1468" width="260" height="40" rx="20" fill="url(#gMint)"/>
+  <text x="904" y="1493" font-size="15" font-weight="600" fill="#FFFFFF" text-anchor="middle">③ 可落地：产品级小程序+蓝牙血氧</text>
+</g>
+
+<text x="60" y="1538" font-size="17" font-weight="bold" fill="#C9E9DE">企业与合作</text>
+<text x="150" y="1538" font-size="16" fill="#C9E9DE">珠海横琴我可爱科技有限公司（Work Air 充氧宝）· 企业已验收</text>
+<text x="1060" y="1538" font-size="16" fill="#7BDCD0" text-anchor="end">充氧宝补身体氧，氧氧宝帮用户发现自己的氧</text>
+
+<text x="60" y="1578" font-size="14" fill="#8FB8AB">合规：非医疗诊断·仅作体验参考 ｜ 数据安全·隐私保护 ｜ 人工把关·参数为真 ｜ 不推产品·安全兜底 ｜ 预测与真实结果已区分</text>
+<text x="1060" y="1578" font-size="13" fill="#7BDCD0" text-anchor="end">氧氧宝 · Oxygen Baby ｜ 2026 OPC</text>
+</svg>
