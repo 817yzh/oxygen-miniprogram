@@ -57,9 +57,8 @@
 <!-- 左侧: 人物卡 (含证件照/身份/人机协同) -->
 <g filter="url(#cardShadow)">
   <rect x="40" y="296" width="300" height="292" rx="24" fill="#FFFFFF"/>
-  <image href="assets/portrait_lobster.png" x="118" y="274" width="144" height="144"
-         clip-path="url(#avatarClip)" preserveAspectRatio="xMidYMid slice"/>
-  <circle cx="190" cy="346" r="72" fill="none" stroke="#2EC4B6" stroke-width="3"/>
+  <image href="assets/portrait_circle.png" x="118" y="288" width="144" height="144"/>
+  <circle cx="190" cy="360" r="72" fill="none" stroke="#2EC4B6" stroke-width="3"/>
   <text x="190" y="452" font-size="32" font-weight="bold" fill="#16362E" text-anchor="middle">杨子涵</text>
   <text x="190" y="486" font-size="20" fill="#5A7E72" text-anchor="middle">北京工商大学</text>
   <text x="190" y="512" font-size="20" fill="#5A7E72" text-anchor="middle">商学院 · 供应链管理</text>
@@ -112,7 +111,7 @@
   <rect x="40" y="658" width="500" height="50" rx="24" fill="#16362E"/>
   <rect x="40" y="690" width="500" height="18" fill="#16362E"/>
   <text x="60" y="690" font-size="24" font-weight="bold" fill="#FFFFFF">双氧体验框架 · 产品逻辑</text>
-  <image href="assets/double-oxygen.png" x="160" y="720" width="260" height="358"
+  <image href="assets/double-oxygen_crop.png" x="122" y="710" width="336" height="360"
          preserveAspectRatio="xMidYMid meet"/>
   <text x="290" y="1102" font-size="16" fill="#5A7E72" text-anchor="middle">图 1 · 双氧体验框架：身体氧 × 心灵氧 → AI 融合陪伴</text>
 </g>
